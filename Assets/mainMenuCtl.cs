@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class mainMenuCtl : MonoBehaviour
 {
@@ -42,9 +43,21 @@ public class mainMenuCtl : MonoBehaviour
                 gotoSettings();
                 break;
             default:
+                //throw new NotImplementedException();
+                Debug.Log("nothing");
                 throw new NotImplementedException();
+                break;
 
         }
     }
-    
+
+    private void StartGame()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void gotoSettings()
+    {
+        throw new NotImplementedException();
+    }
 }
