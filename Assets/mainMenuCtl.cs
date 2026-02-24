@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
+using UnityEngine.InputSystem;
 
 public class mainMenuCtl : MonoBehaviour
 {
@@ -10,16 +12,38 @@ public class mainMenuCtl : MonoBehaviour
     public enum actions
     {startGame, settings}
     public Transform cursorObj;
+
+    InputAction navigate;
+    InputAction confirm;
+    InputAction cancel;
+    [SerializeField]int dpadDir;
+    int oldDpadDir;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        navigate = InputSystem.actions.FindAction("Navigate");
+        confirm = InputSystem.actions.FindAction("Submit");
+        cancel = InputSystem.actions.FindAction("Cancel");
+        CursorOver(menuItems[menuSelection]);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         cursorObj.position = menuItems[menuSelection].transform.position;
+        dpadDir = 0-Mathf.RoundToInt(Mathf.Clamp(navigate.ReadValue<Vector2>().y, -1,1));
+        if (dpadDir != oldDpadDir) { menuSelection += dpadDir; }
+        if (menuSelection < 0) { menuSelection = menuItems.Count-1; }
+        if(menuSelection >= menuItems.Count) {menuSelection = 0;}
+        if (dpadDir != oldDpadDir)
+        {
+            CursorOver(menuItems[menuSelection]);
+        }
+        if (confirm.IsPressed()) 
+        {
+            CallMenuAct(menuItems[menuSelection].GetComponent<MouseSensorForMenu>().MenuAction);
+        }
+        oldDpadDir = dpadDir;
     }
     public void CursorOver(GameObject g)
     {
@@ -32,7 +56,7 @@ public class mainMenuCtl : MonoBehaviour
     }
     public void CursorLeave(GameObject g)
     { material = g.GetComponent<MeshRenderer>().material; material.color = Color.blue; }
-    public void CallMenuAct(actions act)
+    void CallMenuAct(actions act)
     {
         switch(act)
         {
@@ -53,11 +77,12 @@ public class mainMenuCtl : MonoBehaviour
 
     private void StartGame()
     {
-        throw new NotImplementedException();
+        Debug.Log("Start");
+        SceneManager.LoadScene("testLevel");
     }
 
     private void gotoSettings()
     {
-        throw new NotImplementedException();
+        SceneManager.LoadScene("settings");
     }
 }
