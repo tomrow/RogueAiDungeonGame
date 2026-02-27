@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerCtl : MonoBehaviour
@@ -9,12 +10,15 @@ public class PlayerCtl : MonoBehaviour
     GameObject viewModel;
     GameObject attackOrigin;
     public bool faceWithCameraWhenLockingOn;
+    bool oldLockOnKeyState;
 
     //Labels for player action states
     public enum States
     { NoLockOn, LockedOn, Airborne, LightAttack, HeavyAttack, SpecialAttack, Attacked}
     public States state = States.NoLockOn;
-
+    public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer}
+    public CameraModes cameraState, cameraStateNext;
+    float camLerpTimer;
     // Weapon type labels to identify which animations and attack boxes to use. This will be set in the parameter script for each weapon.
     public enum WeaponTypes
     { PalmGun, HandGun, Rifle, Sword, Knife, Bazooka}
@@ -25,33 +29,52 @@ public class PlayerCtl : MonoBehaviour
     Vector2 headingTargetRotated;
     Vector2 currentHeading;
     Vector2 multipliedMove;
-
-
+    RaycastHit cameraRayOut;
+    public float camDistFromPlayerSetting=2.5f;
     //GameObjects to be handled
     public GameObject lockedOnEnemy;
+    public GameObject lockOnCheckerPrefab;
+    GameObject lockOnChecker;
+    Vector3 directionFromPlayerToTarget;
+    GameObject lerpCurrent, lerpTarget;
+
+    float dist; //distance calculation between 2 objects for camera use
     void Start()
     {
-        
+        lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
+        lerpTarget = Instantiate(Resources.Load("CamLerpPos").GameObject());
     }
 
     // Update is called once per frame
     void Update()
     {
-        Camera.main.transform.LookAt(transform);
-        switch(state)
+        PositionCamera(cameraState, lerpCurrent);
+        PositionCamera(cameraStateNext, lerpTarget);
+        Camera.main.transform.position = Vector3.Lerp(lerpCurrent.transform.position, lerpTarget.transform.position, camLerpTimer);
+        Camera.main.transform.rotation = Quaternion.Lerp(lerpCurrent.transform.rotation, lerpTarget.transform.rotation, camLerpTimer);
+        if (cameraState != cameraStateNext)
+        {
+            camLerpTimer += Time.deltaTime * 2;
+            if (camLerpTimer >= 1) { camLerpTimer = 0; cameraState = cameraStateNext; }
+        }
+        switch (state)
         { 
             case States.NoLockOn:
                 PlayerMovement(6,2,sprint ? 2f : 0.6f, true); //double speed if sprint is held
-                if (lockOn) { state= States.LockedOn; }
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
+                oldLockOnKeyState = lockOn;
+                if (lockedOnEnemy != null)
+                { state = States.LockedOn; }
                 break;
             case States.LockedOn:
                 PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false); //double speed if sprint is held
                 if (lockedOnEnemy != null)
                 { transform.LookAt(lockedOnEnemy.transform); }
-                else if (faceWithCameraWhenLockingOn)
-                { transform.rotation = Camera.main.transform.rotation; }
+                else
+                { state = States.NoLockOn; }
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //do not tilt pitch or roll
-                if (!lockOn && lockedOnEnemy == null) { state = States.NoLockOn; }
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
+                oldLockOnKeyState = lockOn;
                 break;
             default:
                 throw new NotImplementedException();
@@ -59,6 +82,44 @@ public class PlayerCtl : MonoBehaviour
         
     }
 
+    private void PositionCamera(CameraModes mode, GameObject obj)
+    {
+        switch (mode)
+        {
+            case CameraModes.Follow:
+                obj.transform.Translate(Vector3.right * orbit.x * Time.deltaTime);//push it left or right before the LookAt in order to have it rotate
+                obj.transform.LookAt(transform);
+                dist = Vector3.Distance(transform.position, obj.transform.position);
+                if (dist > 2.5f)
+                { obj.transform.Translate(Vector3.forward * (dist - camDistFromPlayerSetting)); }
+                else
+                { obj.transform.Translate(Vector3.back * (camDistFromPlayerSetting - dist)); } //maintain a fixed distance from the player
+                obj.transform.position = new Vector3(obj.transform.position.x, transform.position.y + (camDistFromPlayerSetting / 5), obj.transform.position.z);
+
+                break;
+            case CameraModes.Strafe:
+                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 5));
+                break;
+            case CameraModes.StickBehindPlayer:
+                obj.transform.rotation = transform.rotation;
+                obj.transform.position = transform.position + (obj.transform.forward * (0-camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 5));
+                break;
+            case CameraModes.Static:
+                break;
+            case CameraModes.FocusPlayerAndBoss:
+                obj.transform.position = lockedOnEnemy.transform.position;
+                obj.transform.Translate(Vector3.up * camDistFromPlayerSetting / 2);
+                obj.transform.LookAt(transform.position);
+                break;
+        }
+    }
+
+    private void checkLockOn()
+    {
+        lockOnChecker = Instantiate(lockOnCheckerPrefab, transform.position, transform.rotation);
+        lockOnChecker.transform.localScale = Vector3.one * 640;
+        lockOnChecker.GetComponent<LockOnChecker>().playerCtl = this;
+    }
 
     void PlayerMovement(float friction, float accel, float multiplier, bool faceMovementTarget) 
     {
