@@ -1,0 +1,549 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: hair
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Arms
+    m_Weight: 0
+  - m_Path: Arms/arms1
+    m_Weight: 0
+  - m_Path: Arms/arms1/larm1
+    m_Weight: 0
+  - m_Path: Arms/arms1/lfist1
+    m_Weight: 0
+  - m_Path: Arms/arms1/lhand1
+    m_Weight: 0
+  - m_Path: Arms/arms1/rarm1
+    m_Weight: 0
+  - m_Path: Arms/arms1/rfist1
+    m_Weight: 0
+  - m_Path: Arms/arms1/rhand1
+    m_Weight: 0
+  - m_Path: Arms/arms2
+    m_Weight: 0
+  - m_Path: Arms/arms2/larm2
+    m_Weight: 0
+  - m_Path: Arms/arms2/lfist2
+    m_Weight: 0
+  - m_Path: Arms/arms2/lhand2
+    m_Weight: 0
+  - m_Path: Arms/arms2/rarm2
+    m_Weight: 0
+  - m_Path: Arms/arms2/rfist2
+    m_Weight: 0
+  - m_Path: Arms/arms2/rhand2
+    m_Weight: 0
+  - m_Path: Arms/arms3
+    m_Weight: 0
+  - m_Path: Arms/arms3/larm3
+    m_Weight: 0
+  - m_Path: Arms/arms3/lfist3
+    m_Weight: 0
+  - m_Path: Arms/arms3/lhand3
+    m_Weight: 0
+  - m_Path: Arms/arms3/rarm3
+    m_Weight: 0
+  - m_Path: Arms/arms3/rfist3
+    m_Weight: 0
+  - m_Path: Arms/arms3/rhand3
+    m_Weight: 0
+  - m_Path: Arms/arms4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4/lelbowj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4/lhumerus4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4/lshoulderj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4/lulna4
+    m_Weight: 0
+  - m_Path: Arms/arms4/larm4/lwristj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/lfist4
+    m_Weight: 0
+  - m_Path: Arms/arms4/lhand4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4/relbowj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4/rhumerus4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4/rshoulderj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4/rulna4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rarm4/rwristj4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rfist4
+    m_Weight: 0
+  - m_Path: Arms/arms4/rhand4
+    m_Weight: 0
+  - m_Path: Arms/arms5
+    m_Weight: 0
+  - m_Path: Arms/arms5/larm5
+    m_Weight: 0
+  - m_Path: Arms/arms5/larm5/lhumerus5
+    m_Weight: 0
+  - m_Path: Arms/arms5/larm5/lulna5
+    m_Weight: 0
+  - m_Path: Arms/arms5/lfist5
+    m_Weight: 0
+  - m_Path: Arms/arms5/lhand5
+    m_Weight: 0
+  - m_Path: Arms/arms5/rarm5
+    m_Weight: 0
+  - m_Path: Arms/arms5/rarm5/rhumerus5
+    m_Weight: 0
+  - m_Path: Arms/arms5/rarm5/rulna5
+    m_Weight: 0
+  - m_Path: Arms/arms5/rfist5
+    m_Weight: 0
+  - m_Path: Arms/arms5/rhand5
+    m_Weight: 0
+  - m_Path: Arms/arms6
+    m_Weight: 0
+  - m_Path: Arms/arms6/larm6
+    m_Weight: 0
+  - m_Path: Arms/arms6/larm6/Cone002
+    m_Weight: 0
+  - m_Path: Arms/arms6/larm6/Cone003
+    m_Weight: 0
+  - m_Path: Arms/arms6/lfist6
+    m_Weight: 0
+  - m_Path: Arms/arms6/lhand6
+    m_Weight: 0
+  - m_Path: Arms/arms6/rarm6
+    m_Weight: 0
+  - m_Path: Arms/arms6/rarm6/Cone004
+    m_Weight: 0
+  - m_Path: Arms/arms6/rarm6/Cone005
+    m_Weight: 0
+  - m_Path: Arms/arms6/rfist6
+    m_Weight: 0
+  - m_Path: Arms/arms6/rhand6
+    m_Weight: 0
+  - m_Path: Arms/arms7
+    m_Weight: 0
+  - m_Path: Arms/arms7/lfist7
+    m_Weight: 0
+  - m_Path: Arms/arms7/lhand7
+    m_Weight: 0
+  - m_Path: Arms/arms7/rfist7
+    m_Weight: 0
+  - m_Path: Arms/arms7/rhand7
+    m_Weight: 0
+  - m_Path: Arms/arms8
+    m_Weight: 0
+  - m_Path: Arms/arms8/larm8
+    m_Weight: 0
+  - m_Path: Arms/arms8/lfist8
+    m_Weight: 0
+  - m_Path: Arms/arms8/lhand8
+    m_Weight: 0
+  - m_Path: Arms/arms8/rarm8
+    m_Weight: 0
+  - m_Path: Arms/arms8/rfist8
+    m_Weight: 0
+  - m_Path: Arms/arms8/rhand8
+    m_Weight: 0
+  - m_Path: Arms/arms9
+    m_Weight: 0
+  - m_Path: Arms/arms9/lfist9
+    m_Weight: 0
+  - m_Path: Arms/arms9/lhand9
+    m_Weight: 0
+  - m_Path: Arms/arms9/llarm9
+    m_Weight: 0
+  - m_Path: Arms/arms9/luarm9
+    m_Weight: 0
+  - m_Path: Arms/arms9/rfist9
+    m_Weight: 0
+  - m_Path: Arms/arms9/rhand9
+    m_Weight: 0
+  - m_Path: Arms/arms9/rlarm9
+    m_Weight: 0
+  - m_Path: Arms/arms9/ruarm9
+    m_Weight: 0
+  - m_Path: Heads
+    m_Weight: 0
+  - m_Path: Heads/head1
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyBangs1
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyBangs2
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyHair
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyHairAcc
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyHead
+    m_Weight: 0
+  - m_Path: Heads/head1/cassyPtail
+    m_Weight: 0
+  - m_Path: Heads/head1/neck001
+    m_Weight: 0
+  - m_Path: Heads/head2
+    m_Weight: 0
+  - m_Path: Heads/head2/head2
+    m_Weight: 0
+  - m_Path: Heads/head2/neck002
+    m_Weight: 0
+  - m_Path: Heads/head3
+    m_Weight: 0
+  - m_Path: Heads/head3/cubeFace
+    m_Weight: 0
+  - m_Path: Heads/head3/cubeHead
+    m_Weight: 0
+  - m_Path: Heads/head3/neck003
+    m_Weight: 0
+  - m_Path: Heads/head4
+    m_Weight: 0
+  - m_Path: Heads/head4/antenna
+    m_Weight: 0
+  - m_Path: Heads/head4/antenna/Cylinder010
+    m_Weight: 0
+  - m_Path: Heads/head4/antenna/Sphere007
+    m_Weight: 0
+  - m_Path: Heads/head4/Cylinder009
+    m_Weight: 0
+  - m_Path: Heads/head4/neck004
+    m_Weight: 0
+  - m_Path: Heads/head5
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyHair001
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyHairAcc001
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyHairAcc002
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyHead001
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyPtail001
+    m_Weight: 0
+  - m_Path: Heads/head5/cassyPtail002
+    m_Weight: 0
+  - m_Path: Heads/head5/neck
+    m_Weight: 0
+  - m_Path: Heads/head6
+    m_Weight: 0
+  - m_Path: Heads/head6/6glasses
+    m_Weight: 0
+  - m_Path: Heads/head6/6mainhead
+    m_Weight: 0
+  - m_Path: Heads/head6/corona1
+    m_Weight: 0
+  - m_Path: Heads/head6/corona2
+    m_Weight: 0
+  - m_Path: Heads/head6/corona3
+    m_Weight: 0
+  - m_Path: Heads/head6/corona4
+    m_Weight: 0
+  - m_Path: Heads/head6/neck6
+    m_Weight: 0
+  - m_Path: Heads/head7
+    m_Weight: 0
+  - m_Path: Heads/head7/headMesh
+    m_Weight: 0
+  - m_Path: Heads/head7/l_eye
+    m_Weight: 0
+  - m_Path: Heads/head7/neck7
+    m_Weight: 0
+  - m_Path: Heads/head7/r_eye
+    m_Weight: 0
+  - m_Path: Heads/head8
+    m_Weight: 0
+  - m_Path: Heads/head8/mainhead8
+    m_Weight: 0
+  - m_Path: Heads/head8/neck008
+    m_Weight: 0
+  - m_Path: Heads/head9
+    m_Weight: 0
+  - m_Path: Legs
+    m_Weight: 0
+  - m_Path: Legs/legs1
+    m_Weight: 0
+  - m_Path: Legs/legs1/lfoot01
+    m_Weight: 0
+  - m_Path: Legs/legs1/lleg01
+    m_Weight: 0
+  - m_Path: Legs/legs1/rfoot01
+    m_Weight: 0
+  - m_Path: Legs/legs1/rleg01
+    m_Weight: 0
+  - m_Path: Legs/legs2
+    m_Weight: 0
+  - m_Path: Legs/legs2/lfoot02
+    m_Weight: 0
+  - m_Path: Legs/legs2/lleg02
+    m_Weight: 0
+  - m_Path: Legs/legs2/rfoot02
+    m_Weight: 0
+  - m_Path: Legs/legs2/rleg02
+    m_Weight: 0
+  - m_Path: Legs/legs3
+    m_Weight: 0
+  - m_Path: Legs/legs3/lfoot03
+    m_Weight: 0
+  - m_Path: Legs/legs3/lleg03
+    m_Weight: 0
+  - m_Path: Legs/legs3/rfoot03
+    m_Weight: 0
+  - m_Path: Legs/legs3/rleg03
+    m_Weight: 0
+  - m_Path: Legs/legs4
+    m_Weight: 0
+  - m_Path: Legs/legs4/lfoot04
+    m_Weight: 0
+  - m_Path: Legs/legs4/lleg04
+    m_Weight: 0
+  - m_Path: Legs/legs4/lleg04/lanklej4
+    m_Weight: 0
+  - m_Path: Legs/legs4/lleg04/lfemur4
+    m_Weight: 0
+  - m_Path: Legs/legs4/lleg04/lfibula4
+    m_Weight: 0
+  - m_Path: Legs/legs4/lleg04/lkneej4
+    m_Weight: 0
+  - m_Path: Legs/legs4/rfoot04
+    m_Weight: 0
+  - m_Path: Legs/legs4/rleg04
+    m_Weight: 0
+  - m_Path: Legs/legs4/rleg04/ranklej4
+    m_Weight: 0
+  - m_Path: Legs/legs4/rleg04/rfemur4
+    m_Weight: 0
+  - m_Path: Legs/legs4/rleg04/rfibula4
+    m_Weight: 0
+  - m_Path: Legs/legs4/rleg04/rkneej4
+    m_Weight: 0
+  - m_Path: Legs/legs5
+    m_Weight: 0
+  - m_Path: Legs/legs5/lfoot05
+    m_Weight: 0
+  - m_Path: Legs/legs5/lfoot05/lankle5
+    m_Weight: 0
+  - m_Path: Legs/legs5/lfoot05/ltoes5
+    m_Weight: 0
+  - m_Path: Legs/legs5/lleg05
+    m_Weight: 0
+  - m_Path: Legs/legs5/lleg05/lfemur5
+    m_Weight: 0
+  - m_Path: Legs/legs5/lleg05/lfibula5
+    m_Weight: 0
+  - m_Path: Legs/legs5/rfoot05
+    m_Weight: 0
+  - m_Path: Legs/legs5/rfoot05/rankle5
+    m_Weight: 0
+  - m_Path: Legs/legs5/rfoot05/rtoes5
+    m_Weight: 0
+  - m_Path: Legs/legs5/rleg05
+    m_Weight: 0
+  - m_Path: Legs/legs5/rleg05/rfemur5
+    m_Weight: 0
+  - m_Path: Legs/legs5/rleg05/rfibula5
+    m_Weight: 0
+  - m_Path: Legs/legs6
+    m_Weight: 0
+  - m_Path: Legs/legs6/lleg6
+    m_Weight: 0
+  - m_Path: Legs/legs6/lleg6/Cylinder015
+    m_Weight: 0
+  - m_Path: Legs/legs6/lleg6/Cylinder016
+    m_Weight: 0
+  - m_Path: Legs/legs6/lleg6/Sphere009
+    m_Weight: 0
+  - m_Path: Legs/legs6/rleg6
+    m_Weight: 0
+  - m_Path: Legs/legs6/rleg6/Cylinder017
+    m_Weight: 0
+  - m_Path: Legs/legs6/rleg6/Cylinder018
+    m_Weight: 0
+  - m_Path: Legs/legs6/rleg6/Sphere010
+    m_Weight: 0
+  - m_Path: Legs/legs7
+    m_Weight: 0
+  - m_Path: Legs/legs7/Cylinder019
+    m_Weight: 0
+  - m_Path: Legs/legs7/Cylinder020
+    m_Weight: 0
+  - m_Path: Legs/legs8
+    m_Weight: 0
+  - m_Path: Legs/legs8/legsMesh8
+    m_Weight: 0
+  - m_Path: Legs/legs8/lFoot8
+    m_Weight: 0
+  - m_Path: Legs/legs8/rFoot8
+    m_Weight: 0
+  - m_Path: Legs/legs9
+    m_Weight: 0
+  - m_Path: Legs/legs9/lleg9
+    m_Weight: 0
+  - m_Path: Legs/legs9/lleg9/lfoot9
+    m_Weight: 0
+  - m_Path: Legs/legs9/lleg9/llleg9
+    m_Weight: 0
+  - m_Path: Legs/legs9/lleg9/luleg9
+    m_Weight: 0
+  - m_Path: Legs/legs9/rleg9
+    m_Weight: 0
+  - m_Path: Legs/legs9/rleg9/lfoot010
+    m_Weight: 0
+  - m_Path: Legs/legs9/rleg9/llleg010
+    m_Weight: 0
+  - m_Path: Legs/legs9/rleg9/luleg010
+    m_Weight: 0
+  - m_Path: Omni001
+    m_Weight: 0
+  - m_Path: Omni002
+    m_Weight: 0
+  - m_Path: Omni003
+    m_Weight: 0
+  - m_Path: Omni004
+    m_Weight: 0
+  - m_Path: Omni005
+    m_Weight: 0
+  - m_Path: RemoveMeFloorPlane
+    m_Weight: 0
+  - m_Path: RemoveMeFloorPlane001
+    m_Weight: 0
+  - m_Path: skel
+    m_Weight: 0
+  - m_Path: skel/IK Chain001
+    m_Weight: 0
+  - m_Path: skel/IK Chain002
+    m_Weight: 0
+  - m_Path: skel/root
+    m_Weight: 0
+  - m_Path: skel/root/lhip
+    m_Weight: 0
+  - m_Path: skel/root/lhip/lfemur
+    m_Weight: 0
+  - m_Path: skel/root/lhip/lfemur/lfibula
+    m_Weight: 0
+  - m_Path: skel/root/lhip/lfemur/lfibula/lankle
+    m_Weight: 0
+  - m_Path: skel/root/lhip/lfemur/lfibula/lankle/ltoe
+    m_Weight: 0
+  - m_Path: skel/root/lhip/lfemur/lfibula/lankle/ltoe/Bone007(mirrored)
+    m_Weight: 0
+  - m_Path: skel/root/rhip
+    m_Weight: 0
+  - m_Path: skel/root/rhip/rfemur
+    m_Weight: 0
+  - m_Path: skel/root/rhip/rfemur/rfibula
+    m_Weight: 0
+  - m_Path: skel/root/rhip/rfemur/rfibula/rankle
+    m_Weight: 0
+  - m_Path: skel/root/rhip/rfemur/rfibula/rankle/rtoe
+    m_Weight: 0
+  - m_Path: skel/root/rhip/rfemur/rfibula/rankle/rtoe/Bone007
+    m_Weight: 0
+  - m_Path: skel/root/waist
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder/lhumerus
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder/lhumerus/lulna
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder/lhumerus/lulna/lwrist
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder/lhumerus/lulna/lwrist/lfinger
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/lshoulder/lhumerus/lulna/lwrist/lfinger/Bone019(mirrored)
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder/rhumerus
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder/rhumerus/rulna
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder/rhumerus/rulna/rwrist
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder/rhumerus/rulna/rwrist/rfinger
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/rshoulder/rhumerus/rulna/rwrist/rfinger/Bone019
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/spineNeck
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/spineNeck/skull
+    m_Weight: 0
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle/cp0
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle/cp0/cp1
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle/cp0/cp1/cp2
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle/cp0/cp1/cp2/cp3
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/cfolicle/cp0/cp1/cp2/cp3/Bone034
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle/lp0
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle/lp0/lp1
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle/lp0/lp1/lp2
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle/lp0/lp1/lp2/lp3
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/lfolicle/lp0/lp1/lp2/lp3/Bone028(mirrored)
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle/rp0
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle/rp0/rp1
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle/rp0/rp1/rp2
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle/rp0/rp1/rp2/rp3
+    m_Weight: 1
+  - m_Path: skel/root/waist/spine/spineNeck/skull/rfolicle/rp0/rp1/rp2/rp3/Bone028
+    m_Weight: 1
+  - m_Path: SunPositioner001
+    m_Weight: 0
+  - m_Path: torsos
+    m_Weight: 0
+  - m_Path: torsos/torso1
+    m_Weight: 0
+  - m_Path: torsos/torso2
+    m_Weight: 0
+  - m_Path: torsos/torso3
+    m_Weight: 0
+  - m_Path: torsos/torso4
+    m_Weight: 0
+  - m_Path: torsos/torso5
+    m_Weight: 0
+  - m_Path: torsos/torso5/hips05
+    m_Weight: 0
+  - m_Path: torsos/torso5/upperTorso05
+    m_Weight: 0
+  - m_Path: torsos/torso5/waistTube05
+    m_Weight: 0
+  - m_Path: torsos/torso6
+    m_Weight: 0
+  - m_Path: torsos/torso7
+    m_Weight: 0
+  - m_Path: torsos/torso8
+    m_Weight: 0
+  - m_Path: torsos/torso9
+    m_Weight: 0
+  - m_Path: torsos/torsoBase
+    m_Weight: 0

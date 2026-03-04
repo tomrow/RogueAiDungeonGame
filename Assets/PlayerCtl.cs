@@ -11,7 +11,7 @@ public class PlayerCtl : MonoBehaviour
     GameObject attackOrigin;
     public bool faceWithCameraWhenLockingOn;
     bool oldLockOnKeyState;
-
+    public GameObject animCtl;
     //Labels for player action states
     public enum States
     { NoLockOn, LockedOn, Airborne, LightAttack, HeavyAttack, SpecialAttack, Attacked}
@@ -27,7 +27,7 @@ public class PlayerCtl : MonoBehaviour
     float headingTarget;
     [SerializeField]float lastMagnitude;
     Vector2 headingTargetRotated;
-    Vector2 currentHeading;
+    [SerializeField]Vector2 currentHeading;
     Vector2 multipliedMove;
     RaycastHit cameraRayOut;
     public float camDistFromPlayerSetting=2.5f;
@@ -37,12 +37,14 @@ public class PlayerCtl : MonoBehaviour
     GameObject lockOnChecker;
     Vector3 directionFromPlayerToTarget;
     GameObject lerpCurrent, lerpTarget;
+    Animator animator;
 
     float dist; //distance calculation between 2 objects for camera use
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
         lerpTarget = Instantiate(Resources.Load("CamLerpPos").GameObject());
+        animator = animCtl.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -60,21 +62,35 @@ public class PlayerCtl : MonoBehaviour
         switch (state)
         { 
             case States.NoLockOn:
+                
                 PlayerMovement(6,2,sprint ? 2f : 0.6f, true); //double speed if sprint is held
                 if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
                 oldLockOnKeyState = lockOn;
                 if (lockedOnEnemy != null)
-                { state = States.LockedOn; }
+                { 
+                    state = States.LockedOn;
+                    animator.SetTrigger("battleStance");
+                }
+                animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
+                animator.SetFloat("speed", currentHeading.magnitude);
+                animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude*2, 0.3f, 5f));
+                //Debug.Log(currentHeading.magnitude);
                 break;
             case States.LockedOn:
                 PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false); //double speed if sprint is held
                 if (lockedOnEnemy != null)
                 { transform.LookAt(lockedOnEnemy.transform); }
                 else
-                { state = States.NoLockOn; }
+                { 
+                    state = States.NoLockOn;
+                    animator.SetTrigger("noBattleStance");
+                }
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //do not tilt pitch or roll
                 if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
                 oldLockOnKeyState = lockOn;
+                animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
+                animator.SetFloat("speed", currentHeading.magnitude);
+                animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude * 2, 0.3f, 5f));
                 break;
             default:
                 throw new NotImplementedException();
