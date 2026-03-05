@@ -6,6 +6,7 @@ public class LockOnChecker : MonoBehaviour
     public PlayerCtl playerCtl;
     GameObject origTarget;
     float timer;
+    public bool autoLockOn;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,7 +19,7 @@ public class LockOnChecker : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > 0.03)
         {
-            if (origTarget == closest) { playerCtl.lockedOnEnemy = null; }
+            if ((origTarget == closest) && !autoLockOn) { playerCtl.lockedOnEnemy = null; }
             Destroy(gameObject);
         }
     }

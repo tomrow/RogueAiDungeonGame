@@ -38,19 +38,29 @@ public class PlayerCtl : MonoBehaviour
     Vector3 directionFromPlayerToTarget;
     GameObject lerpCurrent, lerpTarget;
     Animator animator;
-
+    public float shouldersWidth;
+    Transform leftShoulder;
+    Transform rightShoulder;
+    public Transform weaponHand;
+    public WeaponClass weapon;
+    float weaponCoolDown;
     float dist; //distance calculation between 2 objects for camera use
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
         lerpTarget = Instantiate(Resources.Load("CamLerpPos").GameObject());
         animator = animCtl.GetComponent<Animator>();
+        leftShoulder = animCtl.transform.Find("skel/root/waist/spine/lshoulder/lhumerus");
+        rightShoulder = animCtl.transform.Find("skel/root/waist/spine/rshoulder/rhumerus");
+        weaponHand = rightShoulder.Find("rulna/rwrist");
+        leftShoulder.Translate(Vector3.left * shouldersWidth);
+        rightShoulder.Translate(Vector3.left * shouldersWidth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        PositionCamera(cameraState, lerpCurrent);
+        if (cameraState == cameraStateNext) { PositionCamera(cameraState, lerpCurrent); }
         PositionCamera(cameraStateNext, lerpTarget);
         Camera.main.transform.position = Vector3.Lerp(lerpCurrent.transform.position, lerpTarget.transform.position, camLerpTimer);
         Camera.main.transform.rotation = Quaternion.Lerp(lerpCurrent.transform.rotation, lerpTarget.transform.rotation, camLerpTimer);
@@ -64,7 +74,7 @@ public class PlayerCtl : MonoBehaviour
             case States.NoLockOn:
                 
                 PlayerMovement(6,2,sprint ? 2f : 0.6f, true); //double speed if sprint is held
-                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
                 oldLockOnKeyState = lockOn;
                 if (lockedOnEnemy != null)
                 { 
@@ -74,6 +84,8 @@ public class PlayerCtl : MonoBehaviour
                 animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
                 animator.SetFloat("speed", currentHeading.magnitude);
                 animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude*2, 0.3f, 5f));
+                cameraStateNext = CameraModes.Follow;
+                if (Atk1) { if (weaponCoolDown > 0) { weaponCoolDown = 0; } state = States.LightAttack; }  //fire light attack when button is pressed
                 //Debug.Log(currentHeading.magnitude);
                 break;
             case States.LockedOn:
@@ -86,16 +98,42 @@ public class PlayerCtl : MonoBehaviour
                     animator.SetTrigger("noBattleStance");
                 }
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //do not tilt pitch or roll
-                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(); }
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
                 oldLockOnKeyState = lockOn;
                 animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
                 animator.SetFloat("speed", currentHeading.magnitude);
                 animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude * 2, 0.3f, 5f));
+                cameraStateNext = CameraModes.StickBehindPlayer;
+                if (Atk1) { if (weaponCoolDown > 0) { weaponCoolDown = 0; } state = States.LightAttack; }  //fire light attack when button is pressed
+                break;
+            case States.LightAttack:
+                if (lockedOnEnemy != null)
+                { transform.LookAt(lockedOnEnemy.transform); }
+                switch (weapon.weaponType)
+                { 
+                    case WeaponTypes.HandGun:
+                        PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false);
+                        Projectile bullet;
+                        if (weaponCoolDown == 0) 
+                        { 
+                            bullet=Instantiate(weapon.bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>(); 
+                            bullet.attackPower = weapon.attackPower;
+                            bullet.hitscan = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                weaponCoolDown += Time.deltaTime; 
+                if (weaponCoolDown >= weapon.weaponCoolDownDuration) { state = States.LockedOn; if (Atk1) { weaponCoolDown = -0.5f; } }
                 break;
             default:
                 throw new NotImplementedException();
+                break;
+
         }
         
+
     }
 
     private void PositionCamera(CameraModes mode, GameObject obj)
@@ -130,11 +168,12 @@ public class PlayerCtl : MonoBehaviour
         }
     }
 
-    private void checkLockOn()
+    private void checkLockOn(bool automaticLockOn)
     {
         lockOnChecker = Instantiate(lockOnCheckerPrefab, transform.position, transform.rotation);
         lockOnChecker.transform.localScale = Vector3.one * 640;
         lockOnChecker.GetComponent<LockOnChecker>().playerCtl = this;
+        lockOnChecker.GetComponent<LockOnChecker>().autoLockOn = automaticLockOn;
     }
 
     void PlayerMovement(float friction, float accel, float multiplier, bool faceMovementTarget) 
