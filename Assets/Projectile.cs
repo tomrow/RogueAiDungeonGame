@@ -28,8 +28,8 @@ public class Projectile : MonoBehaviour
                 {
                     Debug.Log(rayout.point);
                     Debug.Log(rayout.transform.gameObject.name);
-                    this.enabled = false;
-                    //Destroy(gameObject); 
+                    //this.enabled = false;
+                    Destroy(gameObject); 
                 }
             }
         }
@@ -42,8 +42,8 @@ public class Projectile : MonoBehaviour
                 {
                     Debug.Log(rayout.point);
                     Debug.Log(rayout.transform.gameObject.name);
-                    this.enabled = false;
-                    //Destroy(gameObject); 
+                    //this.enabled = false;
+                    Destroy(gameObject); 
                 }
             }
             Destroy(gameObject);

@@ -14,14 +14,14 @@ public class PlayerCtl : MonoBehaviour
     public GameObject animCtl;
     //Labels for player action states
     public enum States
-    { NoLockOn, LockedOn, Airborne, LightAttack, HeavyAttack, SpecialAttack, Attacked}
+    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7}
     public States state = States.NoLockOn;
     public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer}
     public CameraModes cameraState, cameraStateNext;
     float camLerpTimer;
     // Weapon type labels to identify which animations and attack boxes to use. This will be set in the parameter script for each weapon.
     public enum WeaponTypes
-    { PalmGun, HandGun, Rifle, Sword, Knife, Bazooka}
+    { PalmGun = 0, HandGun=1, Rifle=2, Sword=3, Knife=4, Bazooka=5}
 
     //momentum parameters for current movement
     float headingTarget;
@@ -41,6 +41,7 @@ public class PlayerCtl : MonoBehaviour
     public float shouldersWidth;
     Transform leftShoulder;
     Transform rightShoulder;
+    public GameObject defaultBullet;
     public Transform weaponHand;
     public WeaponClass weapon;
     float weaponCoolDown;
@@ -69,71 +70,86 @@ public class PlayerCtl : MonoBehaviour
             camLerpTimer += Time.deltaTime * 2;
             if (camLerpTimer >= 1) { camLerpTimer = 0; cameraState = cameraStateNext; }
         }
+        if (weapon != null) { animator.SetInteger("weaponType", (int)weapon.weaponType); }
+        else { animator.SetInteger("weaponType", 0); }
+        animator.SetInteger("mode", (int)state);
         switch (state)
-        { 
+        {
             case States.NoLockOn:
-                
-                PlayerMovement(6,2,sprint ? 2f : 0.6f, true); //double speed if sprint is held
-                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
-                oldLockOnKeyState = lockOn;
-                if (lockedOnEnemy != null)
-                { 
-                    state = States.LockedOn;
-                    animator.SetTrigger("battleStance");
-                }
-                animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
-                animator.SetFloat("speed", currentHeading.magnitude);
-                animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude*2, 0.3f, 5f));
-                cameraStateNext = CameraModes.Follow;
-                if (Atk1) { if (weaponCoolDown > 0) { weaponCoolDown = 0; } state = States.LightAttack; }  //fire light attack when button is pressed
-                //Debug.Log(currentHeading.magnitude);
-                break;
+                  PlayerMovement(6, 2, sprint ? 2f : 0.6f, true); //double speed if sprint is held
+                  if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
+                  oldLockOnKeyState = lockOn;
+                  if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
+                  AnimatorUpdateWalking();
+                  cameraStateNext = CameraModes.Follow;
+                  if (Atk1) { LightAttackWithCurrentWeapon(); }  //fire light attack when button is pressed
+                  break;
             case States.LockedOn:
-                PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false); //double speed if sprint is held
-                if (lockedOnEnemy != null)
-                { transform.LookAt(lockedOnEnemy.transform); }
-                else
-                { 
-                    state = States.NoLockOn;
-                    animator.SetTrigger("noBattleStance");
-                }
-                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //do not tilt pitch or roll
-                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
-                oldLockOnKeyState = lockOn;
-                animator.SetInteger("mode", 0);  //set animation to walking/idle at current speed
-                animator.SetFloat("speed", currentHeading.magnitude);
-                animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude * 2, 0.3f, 5f));
-                cameraStateNext = CameraModes.StickBehindPlayer;
-                if (Atk1) { if (weaponCoolDown > 0) { weaponCoolDown = 0; } state = States.LightAttack; }  //fire light attack when button is pressed
-                break;
+                  PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false); //double speed if sprint is held
+                  if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
+                  else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
+                  if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
+                  oldLockOnKeyState = lockOn;
+                  AnimatorUpdateWalking();
+                  cameraStateNext = CameraModes.StickBehindPlayer;
+                  if (Atk1) { LightAttackWithCurrentWeapon(); }  //fire light attack when button is pressed
+                  transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                  break;
             case States.LightAttack:
-                if (lockedOnEnemy != null)
-                { transform.LookAt(lockedOnEnemy.transform); }
-                switch (weapon.weaponType)
-                { 
-                    case WeaponTypes.HandGun:
-                        PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false);
-                        Projectile bullet;
-                        if (weaponCoolDown == 0) 
-                        { 
-                            bullet=Instantiate(weapon.bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>(); 
-                            bullet.attackPower = weapon.attackPower;
-                            bullet.hitscan = false;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                weaponCoolDown += Time.deltaTime; 
-                if (weaponCoolDown >= weapon.weaponCoolDownDuration) { state = States.LockedOn; if (Atk1) { weaponCoolDown = -0.5f; } }
-                break;
+                  LightAttackInitiate(weapon);
+                  transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                  break;
             default:
                 throw new NotImplementedException();
                 break;
 
-        }
+            }
         
 
+    }
+
+    private void LightAttackInitiate(WeaponClass weapon)
+    {
+        if (lockedOnEnemy != null)
+        { transform.LookAt(lockedOnEnemy.transform); }
+        Projectile bullet;
+        PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false);
+        States returnState = (lockedOnEnemy != null) ? States.LockedOn : States.NoLockOn;
+        if (weapon!=null)
+        {
+            if (weaponCoolDown == 0)
+            {
+                bullet = Instantiate(defaultBullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
+                bullet.attackPower = weapon.attackPower;
+                bullet.hitscan = false;
+            }
+            weaponCoolDown += Time.deltaTime;
+            if (weaponCoolDown >= weapon.weaponCoolDownDuration) { state = returnState; if (Atk1) { weaponCoolDown = -0.5f; } }
+        }
+        else
+        {
+            if (weaponCoolDown == 0)
+            {
+                bullet = Instantiate(defaultBullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
+                bullet.attackPower = 10;
+                bullet.hitscan = false;
+            }
+            weaponCoolDown += Time.deltaTime;
+            if (weaponCoolDown >= 0.3f) { state = returnState; if (Atk1) { weaponCoolDown = -0.5f; } }
+
+        }
+    }
+
+    private void LightAttackWithCurrentWeapon()
+    {
+        if (weaponCoolDown > 0) { weaponCoolDown = 0; }
+        state = States.LightAttack;
+    }
+
+    private void AnimatorUpdateWalking()
+    {
+        animator.SetFloat("speed", currentHeading.magnitude);
+        animator.SetFloat("animSpeed", Mathf.Clamp(currentHeading.magnitude * 2, 0.3f, 5f));
     }
 
     private void PositionCamera(CameraModes mode, GameObject obj)

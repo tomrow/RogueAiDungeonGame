@@ -6,6 +6,7 @@ public class PlayerInputAggregator : MonoBehaviour
     PlayerCtl playerCtl;
 
     InputAction moveAction;
+    InputAction lookAction;
     InputAction sprintAction;
     InputAction lightAttackAction;
     InputAction heavyAttackAction;
@@ -16,6 +17,7 @@ public class PlayerInputAggregator : MonoBehaviour
     {
         playerCtl = GetComponent<PlayerCtl>();
         moveAction = InputSystem.actions.FindAction("Move");
+        lookAction = InputSystem.actions.FindAction("Look");
         lightAttackAction = InputSystem.actions.FindAction("AttackLight");
         heavyAttackAction = InputSystem.actions.FindAction("AttackHeavy");
         interactAction = InputSystem.actions.FindAction("Interact");
@@ -32,5 +34,6 @@ public class PlayerInputAggregator : MonoBehaviour
         playerCtl.Atk3 = interactAction.IsPressed();
         playerCtl.sprint = sprintAction.IsPressed();
         playerCtl.lockOn = lockOnAction.IsPressed();
+        playerCtl.orbit = lookAction.ReadValue<Vector2>();
     }
 }
