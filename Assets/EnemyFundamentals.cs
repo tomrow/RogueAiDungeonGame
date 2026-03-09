@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyFundamentals : MonoBehaviour
 {
     public float hp;
+    public bool dead;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

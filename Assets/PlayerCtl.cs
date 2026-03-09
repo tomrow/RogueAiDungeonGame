@@ -7,8 +7,7 @@ public class PlayerCtl : MonoBehaviour
     //Control inputs are put here by the aggregator
     public Vector2 move, orbit;
     public bool sprint, resetCamera, lockOn, Atk1, Atk2, Atk3, jump;
-    GameObject viewModel;
-    GameObject attackOrigin;
+    GameObject viewModel, attackOrigin;
     public bool faceWithCameraWhenLockingOn;
     bool oldLockOnKeyState;
     public GameObject animCtl;
@@ -26,26 +25,23 @@ public class PlayerCtl : MonoBehaviour
     //momentum parameters for current movement
     float headingTarget;
     [SerializeField]float lastMagnitude;
-    Vector2 headingTargetRotated;
-    [SerializeField]Vector2 currentHeading;
-    Vector2 multipliedMove;
-    RaycastHit cameraRayOut;
+    [SerializeField]Vector2 headingTargetRotated, currentHeading, multipliedMove;
     public float camDistFromPlayerSetting=2.5f;
+    public float walkSpeed = 0.7f;
+    public float runSpeed=2f;
     //GameObjects to be handled
-    public GameObject lockedOnEnemy;
-    public GameObject lockOnCheckerPrefab;
-    GameObject lockOnChecker;
-    Vector3 directionFromPlayerToTarget;
-    GameObject lerpCurrent, lerpTarget;
+    public GameObject lockedOnEnemy, lockOnCheckerPrefab;
+    GameObject lockOnChecker, lerpCurrent, lerpTarget;
     Animator animator;
     public float shouldersWidth;
-    Transform leftShoulder;
-    Transform rightShoulder;
+    Transform leftShoulder, rightShoulder;
     public GameObject defaultBullet;
     public Transform weaponHand;
     public WeaponClass weapon;
     float weaponCoolDown;
     float dist; //distance calculation between 2 objects for camera use
+    bool swordSwingDirection;
+    GameObject handCannonSfx;
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
@@ -56,6 +52,7 @@ public class PlayerCtl : MonoBehaviour
         weaponHand = rightShoulder.Find("rulna/rwrist");
         leftShoulder.Translate(Vector3.left * shouldersWidth);
         rightShoulder.Translate(Vector3.left * shouldersWidth);
+        handCannonSfx = Resources.Load("sfxEmitters/handCannonSfx").GameObject();
     }
 
     // Update is called once per frame
@@ -76,7 +73,7 @@ public class PlayerCtl : MonoBehaviour
         switch (state)
         {
             case States.NoLockOn:
-                  PlayerMovement(6, 2, sprint ? 2f : 0.6f, true); //double speed if sprint is held
+                  PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
                   if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
                   oldLockOnKeyState = lockOn;
                   if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
@@ -85,7 +82,7 @@ public class PlayerCtl : MonoBehaviour
                   if (Atk1) { LightAttackWithCurrentWeapon(); }  //fire light attack when button is pressed
                   break;
             case States.LockedOn:
-                  PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false); //double speed if sprint is held
+                  PlayerMovement(6, 2, 0.8f*(sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                   if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
                   else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
                   if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
@@ -119,9 +116,13 @@ public class PlayerCtl : MonoBehaviour
         {
             if (weaponCoolDown == 0)
             {
-                bullet = Instantiate(defaultBullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
+                bullet = Instantiate(weapon.bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
                 bullet.attackPower = weapon.attackPower;
-                bullet.hitscan = false;
+                //bullet.hitscan = false;
+                animator.SetBool("swordSwingRandom", swordSwingDirection);
+                Instantiate(weapon.firesfx, transform.position, Quaternion.identity);
+                animator.SetTrigger("attack");
+                swordSwingDirection = !swordSwingDirection;
             }
             weaponCoolDown += Time.deltaTime;
             if (weaponCoolDown >= weapon.weaponCoolDownDuration) { state = returnState; if (Atk1) { weaponCoolDown = -0.5f; } }
@@ -133,17 +134,24 @@ public class PlayerCtl : MonoBehaviour
                 bullet = Instantiate(defaultBullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
                 bullet.attackPower = 10;
                 bullet.hitscan = false;
+                Instantiate(handCannonSfx, transform.position, Quaternion.identity);
+                animator.SetTrigger("attack");
             }
             weaponCoolDown += Time.deltaTime;
-            if (weaponCoolDown >= 0.3f) { state = returnState; if (Atk1) { weaponCoolDown = -0.5f; } }
-
+            if (weaponCoolDown >= 0.3f) 
+            { 
+                state = returnState; 
+                if (Atk1) { weaponCoolDown = -0.5f; } 
+                if(returnState == States.NoLockOn) { animator.SetTrigger("noBattleStance"); }
+            }
+            
         }
     }
 
     private void LightAttackWithCurrentWeapon()
     {
         if (weaponCoolDown > 0) { weaponCoolDown = 0; }
-        state = States.LightAttack;
+        state = States.LightAttack; 
     }
 
     private void AnimatorUpdateWalking()
@@ -157,7 +165,7 @@ public class PlayerCtl : MonoBehaviour
         switch (mode)
         {
             case CameraModes.Follow:
-                obj.transform.Translate(Vector3.right * orbit.x * Time.deltaTime);//push it left or right before the LookAt in order to have it rotate
+                obj.transform.Translate(Vector3.right * orbit.x * Time.deltaTime * 3);//push it left or right before the LookAt in order to have it rotate
                 obj.transform.LookAt(transform);
                 dist = Vector3.Distance(transform.position, obj.transform.position);
                 if (dist > 2.5f)
@@ -168,11 +176,11 @@ public class PlayerCtl : MonoBehaviour
 
                 break;
             case CameraModes.Strafe:
-                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 5));
+                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 3));
                 break;
             case CameraModes.StickBehindPlayer:
                 obj.transform.rotation = transform.rotation;
-                obj.transform.position = transform.position + (obj.transform.forward * (0-camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 5));
+                obj.transform.position = transform.position + (obj.transform.forward * (0-camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 3));
                 break;
             case CameraModes.Static:
                 break;

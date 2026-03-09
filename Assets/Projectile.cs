@@ -37,6 +37,7 @@ public class Projectile : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, transform.forward, out rayout, maxRange))
             {
+                Debug.DrawRay(transform.position, transform.forward * maxRange, Color.red);
                 try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
                 finally
                 {
@@ -49,5 +50,15 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void OnTriggerEnter(Collider collision)
+    {
+        try { collision.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
+        finally
+        {
+            Debug.Log(rayout.point);
+            Debug.Log(rayout.transform.gameObject.name);
+            //this.enabled = false;
+            Destroy(gameObject);
+        }
+    }
 }

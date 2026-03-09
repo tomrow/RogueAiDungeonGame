@@ -8,6 +8,10 @@ public class WeaponClass : MonoBehaviour
     public PlayerCtl playerCtl;
     public float weaponCoolDownDuration;
     public GameObject bullet;
+    public GameObject superBullet;
+    public GameObject firesfx;
+    public string resPath;
+    public Vector3 rotationForHand;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,7 +25,7 @@ public class WeaponClass : MonoBehaviour
         {
             transform.position = playerCtl.weaponHand.position;
             transform.rotation = playerCtl.weaponHand.rotation;
-            
+            transform.Rotate(rotationForHand);
         }
     }
 
