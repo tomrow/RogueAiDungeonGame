@@ -9,7 +9,8 @@ public class WeaponClass : MonoBehaviour
     public float weaponCoolDownDuration;
     public GameObject bullet;
     public GameObject superBullet;
-    public GameObject firesfx;
+    public GameObject firesfx, superFireSfx;
+    public bool hitScan, superHitScan;
     public string resPath;
     public Vector3 rotationForHand;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

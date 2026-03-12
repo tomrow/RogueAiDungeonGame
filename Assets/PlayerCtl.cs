@@ -38,10 +38,11 @@ public class PlayerCtl : MonoBehaviour
     public GameObject defaultBullet;
     public Transform weaponHand;
     public WeaponClass weapon;
-    float weaponCoolDown;
+    
+    public float weaponCoolDown;
     float dist; //distance calculation between 2 objects for camera use
     bool swordSwingDirection;
-    GameObject handCannonSfx;
+    GameObject handCannonSfx, handCannonSuperSfx;
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
@@ -53,6 +54,7 @@ public class PlayerCtl : MonoBehaviour
         leftShoulder.Translate(Vector3.left * shouldersWidth);
         rightShoulder.Translate(Vector3.left * shouldersWidth);
         handCannonSfx = Resources.Load("sfxEmitters/handCannonSfx").GameObject();
+        handCannonSuperSfx = Resources.Load("sfxEmitters/handCannonSuperSfx").GameObject();
     }
 
     // Update is called once per frame
@@ -73,87 +75,97 @@ public class PlayerCtl : MonoBehaviour
         switch (state)
         {
             case States.NoLockOn:
-                  PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
-                  if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
-                  oldLockOnKeyState = lockOn;
-                  if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
-                  AnimatorUpdateWalking();
-                  cameraStateNext = CameraModes.Follow;
-                  if (Atk1) { LightAttackWithCurrentWeapon(); }  //fire light attack when button is pressed
-                  break;
+                PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
+                oldLockOnKeyState = lockOn;
+                if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
+                AnimatorUpdateWalking();
+                cameraStateNext = CameraModes.Follow;
+                if (Atk1) { Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); }  //fire light attack when button is pressed
+                if (Atk2) { Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); }
+                break;
             case States.LockedOn:
-                  PlayerMovement(6, 2, 0.8f*(sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
-                  if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
-                  else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
-                  if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
-                  oldLockOnKeyState = lockOn;
-                  AnimatorUpdateWalking();
-                  cameraStateNext = CameraModes.StickBehindPlayer;
-                  if (Atk1) { LightAttackWithCurrentWeapon(); }  //fire light attack when button is pressed
-                  transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
-                  break;
+                PlayerMovement(6, 2, 0.8f*(sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
+                else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
+                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
+                oldLockOnKeyState = lockOn;
+                AnimatorUpdateWalking();
+                cameraStateNext = CameraModes.StickBehindPlayer;
+                if (Atk1) { Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); }  //fire light attack when button is pressed
+                if (Atk2) { Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); }
+                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                break;
             case States.LightAttack:
-                  LightAttackInitiate(weapon);
-                  transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
-                  break;
+                if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx); }
+                else { 
+                    AttackCreate(
+                        defaultBullet.GameObject(),
+                        true,
+                        10,
+                        0.3f,
+                        handCannonSfx);
+                }
+                PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                break;
+            case States.HeavyAttack:
+                if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx); }
+                else { AttackCreate(defaultBullet, true, 20, 1, handCannonSuperSfx); }
+                PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                break;
             default:
                 throw new NotImplementedException();
                 break;
-
             }
-        
-
     }
 
-    private void LightAttackInitiate(WeaponClass weapon)
+
+
+    void AttackCreate(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx)
     {
-        if (lockedOnEnemy != null)
-        { transform.LookAt(lockedOnEnemy.transform); }
-        Projectile bullet;
-        PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false);
+        Debug.Log("Attacking");
+        if (lockedOnEnemy != null){ transform.LookAt(lockedOnEnemy.transform); }
+        
+        Projectile newBullet;
+        //PlayerMovement(6, 2, sprint ? 1.5f : 0.3f, false);
         States returnState = (lockedOnEnemy != null) ? States.LockedOn : States.NoLockOn;
-        if (weapon!=null)
+        float firetime = state == States.HeavyAttack ? cooldownMax - (Time.deltaTime) : 0;
+        if (weaponCoolDown < Time.deltaTime)
         {
-            if (weaponCoolDown == 0)
+            if (state == States.HeavyAttack) { Instantiate(Resources.Load("heavyCharge").GameObject(), transform.position, transform.rotation).GetComponent<ChargeEffect>().duration = firetime - Time.deltaTime; }
+            else 
             {
-                bullet = Instantiate(weapon.bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
-                bullet.attackPower = weapon.attackPower;
-                //bullet.hitscan = false;
+                newBullet = Instantiate(bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
+                newBullet.attackPower = power;
+                newBullet.hitscan = hitscan;
                 animator.SetBool("swordSwingRandom", swordSwingDirection);
-                Instantiate(weapon.firesfx, transform.position, Quaternion.identity);
+                Instantiate(firesfx, transform.position, Quaternion.identity);
                 animator.SetTrigger("attack");
                 swordSwingDirection = !swordSwingDirection;
             }
-            weaponCoolDown += Time.deltaTime;
-            if (weaponCoolDown >= weapon.weaponCoolDownDuration) { state = returnState; if (Atk1) { weaponCoolDown = -0.5f; } }
         }
-        else
+        if(weaponCoolDown > firetime)
         {
-            if (weaponCoolDown == 0)
+            Debug.Log("Done waiting for timer");
+            if(state == States.HeavyAttack) 
             {
-                bullet = Instantiate(defaultBullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
-                bullet.attackPower = 10;
-                bullet.hitscan = false;
-                Instantiate(handCannonSfx, transform.position, Quaternion.identity);
-                animator.SetTrigger("attack");
+                newBullet = Instantiate(bullet, weaponHand.position, transform.rotation).GetComponent<Projectile>();
+                newBullet.attackPower = power;
+                newBullet.hitscan = hitscan;
+                animator.SetBool("swordSwingRandom", swordSwingDirection);
+                Instantiate(firesfx, transform.position, Quaternion.identity);
+                animator.SetTrigger("attack");  //animator.SetTrigger("attackHeavy");
+                swordSwingDirection = !swordSwingDirection;
             }
-            weaponCoolDown += Time.deltaTime;
-            if (weaponCoolDown >= 0.3f) 
-            { 
-                state = returnState; 
-                if (Atk1) { weaponCoolDown = -0.5f; } 
-                if(returnState == States.NoLockOn) { animator.SetTrigger("noBattleStance"); }
-            }
-            
+            Debug.Log("Returning to walking");
+            state = States.LockedOn; //weaponCoolDown = -2*Time.deltaTime;
         }
-    }
 
-    private void LightAttackWithCurrentWeapon()
-    {
-        if (weaponCoolDown > 0) { weaponCoolDown = 0; }
-        state = States.LightAttack; 
-    }
 
+        weaponCoolDown += Time.deltaTime;
+    }
     private void AnimatorUpdateWalking()
     {
         animator.SetFloat("speed", currentHeading.magnitude);

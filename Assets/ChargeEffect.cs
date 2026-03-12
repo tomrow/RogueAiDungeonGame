@@ -1,0 +1,33 @@
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class ChargeEffect : MonoBehaviour
+{
+    MeshRenderer mr;
+    Material mat;
+    public float duration;
+    float timer;
+    Transform player;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        timer = 0;
+        mr = GetComponent<MeshRenderer>();
+        mat = mr.material;
+        player = GameObject.Find("DungeonPlayer").transform;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        transform.position = player.position;
+        transform.LookAt(Camera.main.transform.position);
+        transform.Translate(Vector3.forward);
+        transform.Rotate(180, 0, 0);
+        timer += Time.deltaTime;
+        transform.localScale = Vector3.one * (timer/duration);
+        if(timer>duration)
+        { Destroy(gameObject); }
+        mat.mainTextureOffset = Vector2.right * (Mathf.Floor(timer*8)/4);
+    }
+}
