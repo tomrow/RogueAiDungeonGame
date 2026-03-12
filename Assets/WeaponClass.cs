@@ -30,11 +30,45 @@ public class WeaponClass : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<PlayerCtl>() != null) 
+        if (other.gameObject.GetComponent<PlayerCtl>() != null) //if the touching trigger is a player and weapon is not equipped
         {
-            playerCtl = other.gameObject.GetComponent<PlayerCtl>(); playerCtl.weapon = this;
+            Collect();
+        }
+    }
+    public void Collect()
+    {
+        if (playerCtl == null)
+        {
+            PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
+            newWeaponInv.attackPower = attackPower;                           //build inventory obj
+            newWeaponInv.name = weaponName;
+            newWeaponInv.resPath = resPath;
+            newWeaponInv.weaponCoolDownDuration = weaponCoolDownDuration;
+            PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
+            Destroy(gameObject);         //remove this gameObject from the world
+        }
+    }
+
+    public static void Collect(WeaponClass weapon)
+    {
+        if (weapon.playerCtl == null)
+        {
+            PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
+            newWeaponInv.attackPower = weapon.attackPower;                           //build inventory obj
+            newWeaponInv.name = weapon.weaponName;
+            newWeaponInv.resPath = weapon.resPath;
+            newWeaponInv.weaponCoolDownDuration = weapon.weaponCoolDownDuration;
+            PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
+            Destroy(weapon.gameObject);         //remove this gameObject from the world
+        }
+    }
+    private void Use(GameObject player)
+    {
+        if (player.GetComponent<PlayerCtl>() != null) 
+        {
+            playerCtl = player.GetComponent<PlayerCtl>(); playerCtl.weapon = this;
         }
     }
 }

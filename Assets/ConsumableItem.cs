@@ -29,7 +29,10 @@ public class ConsumableItem : MonoBehaviour
         {
             if(other.gameObject.GetComponent<PlayerCtl>().Atk3)
             {
-
+                PlayerHealth.Consumable newcons = new PlayerHealth.Consumable();
+                newcons.resPath = resPath;
+                PlayerHealth.inventory.Add(newcons);
+                Destroy(gameObject) ;
             }
         }
     }
