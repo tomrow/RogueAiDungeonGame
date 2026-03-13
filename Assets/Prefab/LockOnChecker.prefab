@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5977219173835304032}
   - component: {fileID: 6107404337545317011}
   - component: {fileID: 226274211244558273}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LockOnChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerCtl: {fileID: 0}
+  autoLockOn: 0
 --- !u!54 &226274211244558273
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -34,6 +34,6 @@ public class PlayerInputAggregator : MonoBehaviour
         playerCtl.Atk3 = interactAction.IsPressed();
         playerCtl.sprint = sprintAction.IsPressed();
         playerCtl.lockOn = lockOnAction.IsPressed();
-        playerCtl.orbit = lookAction.ReadValue<Vector2>();
+        playerCtl.orbit = lookAction.ReadValue<Vector2>()*-1;
     }
 }

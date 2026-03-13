@@ -32,7 +32,8 @@ public class WeaponClass : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<PlayerCtl>() != null) //if the touching trigger is a player and weapon is not equipped
+        PlayerCtl p = other.gameObject.GetComponent<PlayerCtl>();
+        if ((p != null) && p.Atk3) //if the touching trigger is a player and weapon is not equipped
         {
             Collect();
         }
@@ -62,6 +63,18 @@ public class WeaponClass : MonoBehaviour
             newWeaponInv.weaponCoolDownDuration = weapon.weaponCoolDownDuration;
             PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
             Destroy(weapon.gameObject);         //remove this gameObject from the world
+        }
+    }
+    public static void Equip(WeaponClass weapon)
+    {
+        if ( weapon.gameObject != null)
+        {
+            if (PlayerHealth.thisPlayer.weapon != null)
+            {
+                WeaponClass.Collect(PlayerHealth.thisPlayer.weapon);
+            }
+            weapon.playerCtl = PlayerHealth.thisPlayer;
+            PlayerHealth.thisPlayer.weapon = weapon;
         }
     }
     private void Use(GameObject player)

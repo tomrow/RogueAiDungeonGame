@@ -1371,7 +1371,6 @@ MonoBehaviour:
   weaponHand: {fileID: 0}
   weapon: {fileID: 0}
   weaponCoolDown: 0
-  shotFired: 0
 --- !u!4 &832417351
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,7 +1380,7 @@ Transform:
   m_GameObject: {fileID: 832417348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.8, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4768,10 +4767,6 @@ PrefabInstance:
       propertyPath: firesfx
       value: 
       objectReference: {fileID: 8360450570904253505, guid: 4877b5c18198b274381377c03d3a8cac, type: 3}
-    - target: {fileID: 9112465157662261151, guid: b6989a8376a93fe47bfab7d241e5ce7c, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4788,10 +4783,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3144879233490085004, guid: 61db2ae10b044cc4c9abe9071a3f11c5, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4446420436547777287, guid: 61db2ae10b044cc4c9abe9071a3f11c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.152

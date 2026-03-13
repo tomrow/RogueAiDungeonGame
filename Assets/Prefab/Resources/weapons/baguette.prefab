@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 5119930661082093986}
   - component: {fileID: 9192917829398631877}
   - component: {fileID: 7791476956480313325}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: baguette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,12 +241,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   weaponType: 4
-  weaponName: baguette
+  weaponName: Baguette
   attackPower: 10
   playerCtl: {fileID: 0}
   weaponCoolDownDuration: 0.2
   bullet: {fileID: 9176913463659912956, guid: c7fd583d873d15743bd0e2ebf5f66950, type: 3}
   superBullet: {fileID: 0}
   firesfx: {fileID: 8624168931246723514, guid: 6cb80f80ab018624bb4220003b7d1b43, type: 3}
-  resPath: 
+  superFireSfx: {fileID: 0}
+  hitScan: 0
+  superHitScan: 0
+  resPath: weapons/baguette
   rotationForHand: {x: 0, y: -90, z: -90}

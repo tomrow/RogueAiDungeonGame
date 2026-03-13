@@ -788,7 +788,6 @@ GameObject:
   - component: {fileID: 385059481}
   - component: {fileID: 385059483}
   - component: {fileID: 385059482}
-  - component: {fileID: 385059484}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -805,15 +804,15 @@ RectTransform:
   m_GameObject: {fileID: 385059480}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.73, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1979174057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 65.3, y: 0.6}
-  m_SizeDelta: {x: 122.3849, y: 65.1914}
+  m_AnchoredPosition: {x: 63.6, y: 0}
+  m_SizeDelta: {x: 192.9, y: 72.79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &385059482
 MonoBehaviour:
@@ -842,19 +841,19 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Inventory
+  m_Text: '4 LINES!!!!!!
 
-    Unequip weapon
+    4 LINES!!!!!!
 
-    Quit
+    4 LINES!!!!!!
 
-    4 LINES!!!!!!!!!!!!!!!!!'
+    4 LINES!!!!!!'
 --- !u!222 &385059483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -863,18 +862,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385059480}
   m_CullTransparentMesh: 1
---- !u!114 &385059484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385059480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8883cbe560e41e489ca959407375a61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &419292737
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,56 +980,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFundamentals
   hp: 50
   dead: 0
---- !u!1 &556883289
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 556883291}
-  - component: {fileID: 556883290}
-  m_Layer: 0
-  m_Name: CharacterStatus
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &556883290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556883289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30d5cf4cd5e767b4da013385b3394e1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  selectBtn: 0
-  startBtn: 0
-  backBtn: 0
-  oldSelect: 0
-  oldBack: 0
-  oldStart: 0
---- !u!4 &556883291
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556883289}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.80773, y: -0, z: 678.0963}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &665404985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,7 +1308,6 @@ MonoBehaviour:
   weaponHand: {fileID: 0}
   weapon: {fileID: 0}
   weaponCoolDown: 0
-  shotFired: 0
 --- !u!4 &832417351
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,7 +1317,7 @@ Transform:
   m_GameObject: {fileID: 832417348}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.8, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4768,10 +4704,6 @@ PrefabInstance:
       propertyPath: firesfx
       value: 
       objectReference: {fileID: 8360450570904253505, guid: 4877b5c18198b274381377c03d3a8cac, type: 3}
-    - target: {fileID: 9112465157662261151, guid: b6989a8376a93fe47bfab7d241e5ce7c, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4788,10 +4720,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3144879233490085004, guid: 61db2ae10b044cc4c9abe9071a3f11c5, type: 3}
-      propertyPath: m_Layer
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4446420436547777287, guid: 61db2ae10b044cc4c9abe9071a3f11c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.152
@@ -4854,4 +4782,3 @@ SceneRoots:
   - {fileID: 7800295591381467990}
   - {fileID: 1639337641}
   - {fileID: 2122425029}
-  - {fileID: 556883291}

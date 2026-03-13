@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3012074283840764355}
   - component: {fileID: 5311736257117570513}
   - component: {fileID: 7732127312598024344}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: corkgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,11 @@ MonoBehaviour:
   weaponCoolDownDuration: 0.2
   bullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
   superBullet: {fileID: 0}
-  resPath: 
+  firesfx: {fileID: 0}
+  superFireSfx: {fileID: 0}
+  hitScan: 0
+  superHitScan: 0
+  resPath: weapons/corkgun
   rotationForHand: {x: 0, y: -90, z: -90}
 --- !u!1001 &8265392939008000718
 PrefabInstance:
