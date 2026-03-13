@@ -137,8 +137,11 @@ public class PlayerHealth : MonoBehaviour
                             inventory[inventorySelectionIndex].Drop();
                             inventory.RemoveAt(inventorySelectionIndex);
                             break;
+                        default:
+                            MenuMode = MenuModes.inventory; selection = inventorySelectionIndex; break;
                     }
                 }
+                break;
             case MenuModes.main: // This mode consists of a submenu selection menu.
                 selection += JustPressedDirection();
                 Math.Clamp(selection, 0, 1);

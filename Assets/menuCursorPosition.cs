@@ -1,17 +1,17 @@
 using UnityEngine;
-using UnityEngine.UI;
-public class healthUiText : MonoBehaviour
+
+public class menuCursorPosition : MonoBehaviour
 {
-    Text hudText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        hudText = GetComponent<Text>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        hudText.text = "HP " + PlayerHealth.health;
+        transform.localPosition = new Vector3(3, 24,0);
+        transform.Translate(Vector3.down * (PlayerHealth.cursorPos * 16));
     }
 }
