@@ -450,7 +450,7 @@ AvatarMask:
   - m_Path: skel/root/rhip/rfemur/rfibula/rankle/rtoe/Bone007
     m_Weight: 0
   - m_Path: skel/root/waist
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: skel/root/waist/spine
     m_Weight: 1
   - m_Path: skel/root/waist/spine/lshoulder

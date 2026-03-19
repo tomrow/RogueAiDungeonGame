@@ -33,37 +33,31 @@ public class WeaponClass : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         PlayerCtl p = other.gameObject.GetComponent<PlayerCtl>();
-        if ((p != null) && p.Atk3) //if the touching trigger is a player and weapon is not equipped
+        if ((p != null && p.weapon == null) && p.Atk3) //if the touching trigger is a player and weapon is not equipped
         {
             Collect();
         }
     }
     public void Collect()
     {
-        if (playerCtl == null)
-        {
-            PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
-            newWeaponInv.attackPower = attackPower;                           //build inventory obj
-            newWeaponInv.name = weaponName;
-            newWeaponInv.resPath = resPath;
-            newWeaponInv.weaponCoolDownDuration = weaponCoolDownDuration;
-            PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
-            Destroy(gameObject);         //remove this gameObject from the world
-        }
+        PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
+        newWeaponInv.attackPower = attackPower;                           //build inventory obj
+        newWeaponInv.name = weaponName;
+        newWeaponInv.resPath = resPath;
+        newWeaponInv.weaponCoolDownDuration = weaponCoolDownDuration;
+        PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
+        Destroy(gameObject);         //remove this gameObject from the world
     }
 
     public static void Collect(WeaponClass weapon)
     {
-        if (weapon.playerCtl == null)
-        {
-            PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
-            newWeaponInv.attackPower = weapon.attackPower;                           //build inventory obj
-            newWeaponInv.name = weapon.weaponName;
-            newWeaponInv.resPath = weapon.resPath;
-            newWeaponInv.weaponCoolDownDuration = weapon.weaponCoolDownDuration;
-            PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
-            Destroy(weapon.gameObject);         //remove this gameObject from the world
-        }
+        PlayerHealth.Weapon newWeaponInv = new PlayerHealth.Weapon();
+        newWeaponInv.attackPower = weapon.attackPower;                           //build inventory obj
+        newWeaponInv.name = weapon.weaponName;
+        newWeaponInv.resPath = weapon.resPath;
+        newWeaponInv.weaponCoolDownDuration = weapon.weaponCoolDownDuration;
+        PlayerHealth.inventory.Add(newWeaponInv);                         //add it to list
+        Destroy(weapon.gameObject);         //remove this gameObject from the world
     }
     public static void Equip(WeaponClass weapon)
     {

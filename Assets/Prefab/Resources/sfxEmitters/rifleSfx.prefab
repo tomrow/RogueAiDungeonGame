@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6312175352061218879}
   - component: {fileID: 5946875583035919458}
   - component: {fileID: 8916290249853958147}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: rifleSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

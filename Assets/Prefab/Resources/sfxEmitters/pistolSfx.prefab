@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5426759160797584970}
   - component: {fileID: 1937718927559147960}
   - component: {fileID: 7119243330131804517}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pistolSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4281368141922051325}
   - component: {fileID: 4417672638475520457}
   - component: {fileID: 4317264004433662941}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: swordSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

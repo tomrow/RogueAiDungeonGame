@@ -13,7 +13,6 @@ public class ChargeEffect : MonoBehaviour
     {
         timer = 0;
         mr = GetComponent<MeshRenderer>();
-        mat = mr.material;
         player = GameObject.Find("DungeonPlayer").transform;
     }
 
@@ -26,8 +25,9 @@ public class ChargeEffect : MonoBehaviour
         transform.Rotate(180, 0, 0);
         timer += Time.deltaTime;
         transform.localScale = Vector3.one * (timer/duration);
+        mr.material.mainTextureOffset = Vector2.right * (Mathf.Floor(timer*8)/4);
         if(timer>duration)
-        { Destroy(gameObject); }
-        mat.mainTextureOffset = Vector2.right * (Mathf.Floor(timer*8)/4);
+        { Destroy(mr.material); Destroy(mr); Destroy(gameObject); }
+        
     }
 }

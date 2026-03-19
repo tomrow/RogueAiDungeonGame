@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9110567286495470473}
   - component: {fileID: 3653402513103987176}
   - component: {fileID: 8577088929350196659}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MenuBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

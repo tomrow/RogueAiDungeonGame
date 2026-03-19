@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
             travel += Time.deltaTime * speed;
             if (Physics.Raycast(transform.position, transform.forward, out rayout, Time.deltaTime * speed * 2f))
             {
-                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
+                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); } catch { }
                 finally 
                 {
                     Debug.Log(rayout.point);
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
             if (Physics.Raycast(transform.position, transform.forward, out rayout, maxRange))
             {
                 Debug.DrawRay(transform.position, transform.forward * maxRange, Color.red);
-                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
+                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }catch { }
                 finally
                 {
                     Debug.Log(rayout.point);

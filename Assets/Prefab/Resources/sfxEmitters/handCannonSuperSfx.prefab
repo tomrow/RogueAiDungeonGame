@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7351622568541649223}
   - component: {fileID: 1178133083526868900}
   - component: {fileID: 6027648768660896700}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: handCannonSuperSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

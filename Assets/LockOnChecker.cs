@@ -11,15 +11,21 @@ public class LockOnChecker : MonoBehaviour
     void Start()
     {
         origTarget = playerCtl.lockedOnEnemy;
+        timer = 0;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if (timer > 0.03)
+        if (timer > 0)
         {
-            if ((origTarget == closest) && !autoLockOn) { playerCtl.lockedOnEnemy = null; }
+            if ((origTarget == closest) && !autoLockOn)
+            {
+                try { Debug.Log("Locked on enemy " + closest.name + " is the same as the last one! " + origTarget.name); } catch { }
+                playerCtl.lockedOnEnemy = null;
+            }
+            else { playerCtl.lockedOnEnemy = closest; }
             Destroy(gameObject);
         }
     }
@@ -33,8 +39,6 @@ public class LockOnChecker : MonoBehaviour
                 && (collision.gameObject.GetComponent<LockOnTarget>().on)) //and targeting is enabled for this thing
             {
                 closest = collision.gameObject;
-                playerCtl.lockedOnEnemy = closest; //then add it
-                Debug.Log("replacing...");
             }
         }
         else
@@ -43,8 +47,6 @@ public class LockOnChecker : MonoBehaviour
                 && (collision.gameObject.GetComponent<LockOnTarget>().on) ) 
             {
                 closest = collision.gameObject;
-                playerCtl.lockedOnEnemy = closest;
-                Debug.Log("Setting...");
             }
         }
     }

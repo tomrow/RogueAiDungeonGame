@@ -26,7 +26,7 @@ public class PlayerInputAggregator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     { //this code sucks and can be better
         playerCtl.move = moveAction.ReadValue<Vector2>();
         playerCtl.Atk1 = lightAttackAction.IsPressed();

@@ -126,15 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8afe24d9eae078044a0816334ac30604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  weaponType: 4
+  weaponType: 1
   weaponName: Cork gun
   attackPower: 10
   playerCtl: {fileID: 0}
   weaponCoolDownDuration: 0.2
   bullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
-  superBullet: {fileID: 0}
-  firesfx: {fileID: 0}
-  superFireSfx: {fileID: 0}
+  superBullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
+  firesfx: {fileID: 8360450570904253505, guid: 4877b5c18198b274381377c03d3a8cac, type: 3}
+  superFireSfx: {fileID: 9045368329813304969, guid: b8fa40bd9938ca64cb6c1d720c981278, type: 3}
   hitScan: 0
   superHitScan: 0
   resPath: weapons/corkgun

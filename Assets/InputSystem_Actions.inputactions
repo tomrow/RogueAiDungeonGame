@@ -272,6 +272,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ace4e957-fe21-4ef9-8c0b-17ab03196b61",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c045b402-678b-4851-8d5f-61175db372d5",
                     "path": "*/{Submit}",
                     "interactions": "",

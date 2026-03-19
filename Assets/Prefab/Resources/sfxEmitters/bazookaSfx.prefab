@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7117491300863451009}
   - component: {fileID: 7148395300823840994}
   - component: {fileID: 6365180460223146771}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bazookaSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

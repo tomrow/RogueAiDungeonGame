@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ConsumableItem : MonoBehaviour
 {
-    public float HP, SP;
+    public int HP, SP;
     public GameObject useParticles;
     public string resPath;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

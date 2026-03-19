@@ -12,6 +12,6 @@ public class menuCursorPosition : MonoBehaviour
     void Update()
     {
         transform.localPosition = new Vector3(3, 24,0);
-        transform.Translate(Vector3.down * (PlayerHealth.cursorPos * 36));
+        transform.localPosition += (Vector3.down * (PlayerHealth.cursorPos * 16));
     }
 }
