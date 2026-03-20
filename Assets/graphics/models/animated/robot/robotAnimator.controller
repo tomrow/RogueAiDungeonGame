@@ -590,7 +590,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StrafeLeft
-  m_Speed: 0.2
+  m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8625105881924102301}
@@ -917,10 +917,10 @@ AnimatorStateMachine:
     m_Position: {x: 750, y: -640, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2797978491209646515}
-    m_Position: {x: 785, y: -575, z: 0}
+    m_Position: {x: 1090, y: -660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5883772653803832331}
-    m_Position: {x: 820, y: -510, z: 0}
+    m_Position: {x: 1090, y: -620, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -2118260519015463252}
@@ -1284,7 +1284,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StrafeRight
-  m_Speed: 0.2
+  m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4860821399727759875}
@@ -2083,7 +2083,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StrafeLeft run
-  m_Speed: 0.4
+  m_Speed: 0.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3105422178069987590}
@@ -3023,7 +3023,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StrafeRight run
-  m_Speed: 0.4
+  m_Speed: 0.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5750990396499833237}

@@ -9,7 +9,8 @@ using UnityEngine.Networking;
 public class PlayerHealth : MonoBehaviour
 {
     public static PlayerCtl thisPlayer;
-    public static int health, stamina, money, level, baseAtk, exp, maxHealth;
+    public static int health=40, stamina=10, money=0, level=1;
+    public static int baseAtk=10, exp=0, maxHealth=40;
     GameObject openMenuSfx;
     GameObject selectMenuSfx;
     GameObject confirmMenuSfx;
@@ -139,7 +140,7 @@ public class PlayerHealth : MonoBehaviour
                 statuses[1] = "Base ATK: " + baseAtk.ToString();
                 statuses[2] = "WPN: " + (thisPlayer.weapon != null ? (thisPlayer.weapon.weaponName + ";" + thisPlayer.weapon.attackPower.ToString()) : "Arm Cannon");
                 statuses[3] = "LV." + level.ToString() + " EXP " + exp.ToString() ;
-                MenuText = statuses[0] + "\n" + statuses[1] + "\n" + statuses[2];
+                MenuText = statuses[0] + "\n" + statuses[1] + "\n" + statuses[2] + "\n" + statuses[3];
                 if (JustPressedBack()) { MenuMode = MenuModes.main; selection = 0; } // when b pressed, return to inventory menu, setting the selection cursor back to where it was
                 break;
             case MenuModes.inventory:

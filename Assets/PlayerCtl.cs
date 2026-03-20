@@ -45,6 +45,9 @@ public class PlayerCtl : MonoBehaviour
     GameObject handCannonSfx, handCannonSuperSfx;
     float airSpd;
     float knockBackTimer;
+    AnimatorStateInfo upperBody; 
+    AnimatorStateInfo lowerBody;
+    //AnimatorStateInfo hair;
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
@@ -58,6 +61,8 @@ public class PlayerCtl : MonoBehaviour
         handCannonSfx = Resources.Load("sfxEmitters/handCannonSfx").GameObject();
         handCannonSuperSfx = Resources.Load("sfxEmitters/handCannonSuperSfx").GameObject();
         PlayerHealth.thisPlayer = this;
+        upperBody = animator.GetNextAnimatorStateInfo(1);
+        upperBody = animator.GetNextAnimatorStateInfo(0);
     }
 
     // Update is called once per frame
@@ -130,7 +135,13 @@ public class PlayerCtl : MonoBehaviour
                 break;
             case States.Knockback:
                 knockBackTimer -= Time.fixedDeltaTime;
-                if(knockBackTimer < 0) { state = States.KnockbackGetUp; }
+                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("getUp"); }
+                break;
+            case States.KnockbackGetUp:
+                //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
+                if (lowerBody.IsName("knockback") && lowerBody.normalizedTime >= 0.99f)
+                { state = States.NoLockOn; }
+                break;
             default:
                 throw new NotImplementedException();
                 break;
@@ -141,6 +152,7 @@ public class PlayerCtl : MonoBehaviour
     { 
         if (PlayerHealth.health == 0) { state = States.Dead; }
         else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; }
+        animator.SetTrigger("knockBack");
     }
 
     void AttackCreate(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx)
@@ -269,9 +281,9 @@ public class PlayerCtl : MonoBehaviour
         Vector3 mov = Vector3.zero;
         mov += Vector3.right * currentHeading.x * Time.fixedDeltaTime * 3;
         mov += Vector3.forward * currentHeading.y * Time.fixedDeltaTime * 3;
-        if (Physics.Raycast(transform.position, mov.normalized, out rayout, transform.localScale.x * (mov.magnitude+0.5f)))
+        if (Physics.Raycast(transform.position, mov.normalized, out rayout, transform.localScale.x * (mov.magnitude+0.2f)))
         {
-            transform.position = rayout.point - (transform.localScale.x*(mov.normalized * 0.5f));
+            transform.position = rayout.point - (transform.localScale.x*(mov.normalized * 0.2f));
             currentHeading = Vector2.zero;
         }
         else { transform.position += mov; }
