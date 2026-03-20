@@ -16,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
     GameObject confirmMenuSfx;
     GameObject backMenuSfx;
     GameObject levelUpEffect;
+    public string marco()
+    { return "polo"; }
     public class Item
     {
         public string resPath;

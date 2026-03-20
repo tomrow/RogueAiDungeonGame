@@ -49,6 +49,7 @@ public class PlayerCtl : MonoBehaviour
     AnimatorStateInfo lowerBody;
     public int firingSequence = 0;
     //AnimatorStateInfo hair;
+    PlayerHealth health;
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
@@ -64,6 +65,13 @@ public class PlayerCtl : MonoBehaviour
         PlayerHealth.thisPlayer = this;
         upperBody = animator.GetNextAnimatorStateInfo(1);
         upperBody = animator.GetNextAnimatorStateInfo(0);
+        
+        try
+        {
+            health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>();
+            if (health.marco() != "polo") { Instantiate(Resources.Load("CharacterStatus").GameObject()); health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
+        }
+        catch { Instantiate(Resources.Load("CharacterStatus").GameObject()); health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
     }
 
     // Update is called once per frame
@@ -234,10 +242,10 @@ public class PlayerCtl : MonoBehaviour
                 obj.transform.Translate(Vector3.right * orbit.x * Time.fixedDeltaTime * 3 * transform.localScale.x);//push it left or right before the LookAt in order to have it rotate
                 obj.transform.LookAt(transform);
                 dist = Vector3.Distance(transform.position, obj.transform.position);
-                if (dist > 2.5f * transform.localScale.z)
-                { obj.transform.Translate(Vector3.forward * (dist - camDistFromPlayerSetting) * transform.localScale.z); }
+                if (dist > (2.5f * transform.localScale.z))
+                { obj.transform.Translate(Vector3.forward * (dist - (camDistFromPlayerSetting* transform.localScale.z)) ); }
                 else
-                { obj.transform.Translate(Vector3.back * (camDistFromPlayerSetting - dist) * transform.localScale.z); } //maintain a fixed distance from the player
+                { obj.transform.Translate(Vector3.back * ((camDistFromPlayerSetting* transform.localScale.z) - dist) ); } //maintain a fixed distance from the player
                 obj.transform.position = new Vector3(obj.transform.position.x, transform.position.y + ((camDistFromPlayerSetting / 5) * transform.localScale.z), obj.transform.position.z);
 
                 break;
@@ -302,6 +310,15 @@ public class PlayerCtl : MonoBehaviour
             if (state == States.Airborne) { state = States.NoLockOn; airSpd = 0; }
         }
         else { state = States.Airborne; animator.SetTrigger("airborne"); }
-
+        PlayerCollide();
+    }
+    void PlayerCollide()
+    { 
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 raydir = transform.TransformVector(new Vector3(Mathf.Sin(i / 2 * Mathf.PI), 0, Mathf.Cos(i / 2 * Mathf.PI)));
+            if (Physics.Raycast(transform.position, raydir, out rayout, transform.localScale.x * 0.2f))
+            { transform.position = rayout.point - (raydir * 0.2f); }
+        } 
     }
 }
