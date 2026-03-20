@@ -50,9 +50,9 @@ public class EnemyAgentBrain : MonoBehaviour
 
 
 
-        Vector3 directionToPlayer = (this.transform.position - PlayerHealth.thisPlayer.transform.position);
+        Vector3 directionToPlayer = ((this.transform.position - PlayerHealth.thisPlayer.transform.position)*-1);
         //determines angle to shoot raycast at?
-        
+        Debug.DrawRay(this.transform.position,directionToPlayer,Color.teal);
         if (Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= SightRange)
         { //if the player is within sight range
             if (Physics.Raycast(this.transform.position, directionToPlayer.normalized, out rayout, SightRange))
