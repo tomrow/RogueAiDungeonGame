@@ -279,8 +279,8 @@ public class PlayerCtl : MonoBehaviour
         }
         Vector3 newPos = transform.position;
         Vector3 mov = Vector3.zero;
-        mov += Vector3.right * currentHeading.x * Time.fixedDeltaTime * 3;
-        mov += Vector3.forward * currentHeading.y * Time.fixedDeltaTime * 3;
+        mov += Vector3.right * currentHeading.x * Time.fixedDeltaTime * 3 * transform.localScale.x;
+        mov += Vector3.forward * currentHeading.y * Time.fixedDeltaTime * 3 * transform.localScale.z;
         if (Physics.Raycast(transform.position, mov.normalized, out rayout, transform.localScale.x * (mov.magnitude+0.2f)))
         {
             transform.position = rayout.point - (transform.localScale.x*(mov.normalized * 0.2f));
