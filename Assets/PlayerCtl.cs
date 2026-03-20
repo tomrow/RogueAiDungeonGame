@@ -231,28 +231,28 @@ public class PlayerCtl : MonoBehaviour
         switch (mode)
         {
             case CameraModes.Follow:
-                obj.transform.Translate(Vector3.right * orbit.x * Time.fixedDeltaTime * 3);//push it left or right before the LookAt in order to have it rotate
+                obj.transform.Translate(Vector3.right * orbit.x * Time.fixedDeltaTime * 3 * transform.localScale.x);//push it left or right before the LookAt in order to have it rotate
                 obj.transform.LookAt(transform);
                 dist = Vector3.Distance(transform.position, obj.transform.position);
-                if (dist > 2.5f)
-                { obj.transform.Translate(Vector3.forward * (dist - camDistFromPlayerSetting)); }
+                if (dist > 2.5f * transform.localScale.z)
+                { obj.transform.Translate(Vector3.forward * (dist - camDistFromPlayerSetting) * transform.localScale.z); }
                 else
-                { obj.transform.Translate(Vector3.back * (camDistFromPlayerSetting - dist)); } //maintain a fixed distance from the player
-                obj.transform.position = new Vector3(obj.transform.position.x, transform.position.y + (camDistFromPlayerSetting / 5), obj.transform.position.z);
+                { obj.transform.Translate(Vector3.back * (camDistFromPlayerSetting - dist) * transform.localScale.z); } //maintain a fixed distance from the player
+                obj.transform.position = new Vector3(obj.transform.position.x, transform.position.y + ((camDistFromPlayerSetting / 5) * transform.localScale.z), obj.transform.position.z);
 
                 break;
             case CameraModes.Strafe:
-                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 3));
+                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting) * transform.localScale.z) + (obj.transform.up * (camDistFromPlayerSetting / 3) * transform.localScale.z);
                 break;
             case CameraModes.StickBehindPlayer:
                 obj.transform.rotation = transform.rotation;
-                obj.transform.position = transform.position + (obj.transform.forward * (0-camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 3));
+                obj.transform.position = transform.position + (obj.transform.forward * (0-camDistFromPlayerSetting)* transform.localScale.z) + (obj.transform.up * (camDistFromPlayerSetting / 3)*transform.localScale.z);
                 break;
             case CameraModes.Static:
                 break;
             case CameraModes.FocusPlayerAndBoss:
                 obj.transform.rotation = transform.rotation;
-                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 1));
+                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)*transform.localScale.z) + (obj.transform.up * (camDistFromPlayerSetting / 1)*transform.localScale.z);
                 if (lockedOnEnemy!=null) { obj.transform.LookAt(lockedOnEnemy.transform); } else { obj.transform.LookAt(transform); }
                 break;
         }
