@@ -8,9 +8,11 @@ public class ChargeEffect : MonoBehaviour
     public float duration;
     float timer;
     Transform player;
+    AudioSource sfx;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        sfx = GetComponent<AudioSource>();
         timer = 0;
         mr = GetComponent<MeshRenderer>();
         player = GameObject.Find("DungeonPlayer").transform;
@@ -27,7 +29,7 @@ public class ChargeEffect : MonoBehaviour
         transform.localScale = Vector3.one * (timer/duration);
         mr.material.mainTextureOffset = Vector2.right * (Mathf.Floor(timer*8)/4);
         if(timer>duration)
-        { Destroy(mr.material); Destroy(mr); Destroy(gameObject); }
+        { sfx.Stop(); Destroy(sfx); Destroy(mr.material); Destroy(mr); Destroy(gameObject); }
         
     }
 }

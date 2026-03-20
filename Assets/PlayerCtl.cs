@@ -47,6 +47,7 @@ public class PlayerCtl : MonoBehaviour
     float knockBackTimer;
     AnimatorStateInfo upperBody; 
     AnimatorStateInfo lowerBody;
+    public int firingSequence = 0;
     //AnimatorStateInfo hair;
     void Start()
     {
@@ -80,6 +81,7 @@ public class PlayerCtl : MonoBehaviour
         if (weapon != null) { animator.SetInteger("weaponType", (int)weapon.weaponType); }
         else { animator.SetInteger("weaponType", 0); }
         animator.SetInteger("mode", (int)state);
+        weaponCoolDown += Time.fixedDeltaTime;
         switch (state)
         {
             case States.NoLockOn:
@@ -89,8 +91,8 @@ public class PlayerCtl : MonoBehaviour
                 if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
                 AnimatorUpdateWalking();
                 cameraStateNext = CameraModes.Follow;
-                if (Atk1) { Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
-                if (Atk2) { Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
+                if (Atk1 && weaponCoolDown>=0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
+                if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
                 break;
             case States.LockedOn:
                 PlayerMovement(6, 2, 0.8f*(sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
@@ -100,8 +102,8 @@ public class PlayerCtl : MonoBehaviour
                 oldLockOnKeyState = lockOn;
                 AnimatorUpdateWalking();
                 cameraStateNext = CameraModes.StickBehindPlayer;
-                if (Atk1) { Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
-                if (Atk2) { Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
+                if (Atk1 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
+                if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0-Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                 break;
             case States.Airborne:
@@ -115,32 +117,33 @@ public class PlayerCtl : MonoBehaviour
                 transform.Translate(Vector3.up * (-1 * airSpd * Time.fixedDeltaTime));
                 break;
             case States.LightAttack:
-                if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, PlayerHealth.baseAtk + weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx); }
+                if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, PlayerHealth.baseAtk + weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx, false); }
                 else { 
                     AttackCreate(
                         defaultBullet.GameObject(),
                         false,
                         PlayerHealth.baseAtk,
                         0.4f,
-                        handCannonSfx);
+                        handCannonSfx, 
+                        false);
                 }
                 PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                 break;
             case States.HeavyAttack:
-                if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx); }
-                else { AttackCreate(defaultBullet, true, 20, 1, handCannonSuperSfx); }
+                if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
+                else { AttackCreate(defaultBullet, true, 20, 1, handCannonSuperSfx, true); }
                 PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                 break;
             case States.Knockback:
                 knockBackTimer -= Time.fixedDeltaTime;
-                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("getUp"); }
+                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); }
                 break;
             case States.KnockbackGetUp:
                 //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
                 if (lowerBody.IsName("knockback") && lowerBody.normalizedTime >= 0.99f)
-                { state = States.NoLockOn; }
+                { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }
                 break;
             default:
                 throw new NotImplementedException();
@@ -151,11 +154,11 @@ public class PlayerCtl : MonoBehaviour
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
     { 
         if (PlayerHealth.health == 0) { state = States.Dead; }
-        else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; }
-        animator.SetTrigger("knockBack");
+        else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; animator.SetTrigger("knockbackHeavy"); }
+        
     }
 
-    void AttackCreate(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx)
+    void AttackCreate(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx, bool heavy)
     {
         Debug.Log("Attacking");
         if (lockedOnEnemy != null){ transform.LookAt(lockedOnEnemy.transform); }
@@ -180,18 +183,23 @@ public class PlayerCtl : MonoBehaviour
             {
                 CreateBullet(bullet, hitscan, power, cooldownMax, firesfx);
             }
-            if (!Atk1 && !Atk2)
+            shotFired = false;
+            if (true)//(!Atk1 && !Atk2)
             {
+                firingSequence++;
                 Debug.Log("Returning to walking");
+                weaponCoolDown = (firingSequence >= 3 ? cooldownMax/-1.2f : 0);
+                if (state == States.HeavyAttack) { weaponCoolDown = 0 - cooldownMax; }
+                if (firingSequence >= 3) { firingSequence = 0; }
                 state = returnState; //weaponCoolDown = -2*Time.fixedDeltaTime;
-                shotFired = false;
+                
                 if (returnState == States.NoLockOn) { animator.SetTrigger("noBattleStance"); }
             }
             else { state = States.LightAttack; } //super terrible hack to prevent shooting 3600 rounds per minute automatic heavy attacks
         }
 
 
-        weaponCoolDown += Time.fixedDeltaTime;
+        //weaponCoolDown += Time.fixedDeltaTime;
     }
 
     private Projectile CreateBullet(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx)
@@ -243,9 +251,9 @@ public class PlayerCtl : MonoBehaviour
             case CameraModes.Static:
                 break;
             case CameraModes.FocusPlayerAndBoss:
-                obj.transform.position = lockedOnEnemy.transform.position;
-                obj.transform.Translate(Vector3.up * camDistFromPlayerSetting / 2);
-                obj.transform.LookAt(transform.position);
+                obj.transform.rotation = transform.rotation;
+                obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)) + (obj.transform.up * (camDistFromPlayerSetting / 1));
+                if (lockedOnEnemy!=null) { obj.transform.LookAt(lockedOnEnemy.transform); } else { obj.transform.LookAt(transform); }
                 break;
         }
     }
