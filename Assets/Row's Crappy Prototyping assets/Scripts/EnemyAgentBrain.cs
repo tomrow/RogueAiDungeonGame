@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+//using UnityEngine.
 
 public class EnemyAgentBrain : MonoBehaviour
 {
@@ -12,8 +13,12 @@ public class EnemyAgentBrain : MonoBehaviour
     [SerializeField, Tooltip("This is the max attack distance. this trigger object tells the brain it can attack.")] float MyAttackMaxDist;
     [SerializeField, Tooltip("This is the ''Too Close'' range. Enemies with this enabled will back away if both IsInRange and UhOhTooClose are TRUE. Set to 0 to disable this behaviour.")] float MyComfortableDist;
     EnemyFundamentals EnemyAttributes;
+    [SerializeField, Tooltip("This object is the bluprint template for the Enemy attack. It's only used for ranged attacks.")] GameObject EnemyAttackBullet;
+    [SerializeField, Tooltip("This object is the bluprint template for the Enemy attack. It's only used for melee attacks.")] GameObject EnemyAttackMelee;
     bool IsInRange;
     bool UhOhTooClose;
+    float AttackInterval;
+    [SerializeField, Tooltip("Configureable wait period before attack in seconds.")] float TimeToAttack;
     RaycastHit rayout;
     #endregion
 
@@ -84,17 +89,57 @@ public class EnemyAgentBrain : MonoBehaviour
         }*/
         if (Mytarget != null)
         {
-            if (Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyAttackMaxDist)
+            if (Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist)
             {
                 this.agent.ResetPath();
                 //this.agent.SetDestination(this.transform.position);
-                //Alternative if above code fails.
+                //Alternative if above code fails.  
             }
             else
             this.agent.SetDestination(Mytarget.transform.position);
         }
-        
+
+    if (Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyAttackMaxDist)
+        {    
+            AttackInterval = AttackInterval + Time.deltaTime;
+            if (AttackInterval >= TimeToAttack)
+            {
+                attack(); Debug.Log("Entity has attacked!");
+                AttackInterval = 0;
+            }
+        }
+            
+    
+
+    
+                
+                       
         //agent.SetDestination(new Vector3(Mytarget.transform.position.x, Mytarget.transform.position.y, Mytarget.transform.position.z));
         //alternative if the above fails to work as intended.
+    }
+    void attack()
+    {
+        /*
+         Hey, Just a note, I really don't know what you want to do regarding enemy attacks.
+        Maybe a switchcase? It'd be suitably modular, and can be customised further still.
+        In any case, attack() gets called when the enemy needs to attack. Place whatever
+        the enemy needs to do here!
+        -Rowan.
+         */
+
+        /*
+         In the projectile script:
+        To damage the player do the following;
+
+         */
+        if (UhOhTooClose)
+        {
+            Instantiate(EnemyAttackBullet);
+        }
+        else if ((Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist) && !UhOhTooClose)
+        {
+            Instantiate(EnemyAttackMelee);
+        }
+        return;
     }
 }
