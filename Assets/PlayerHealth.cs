@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 public class PlayerHealth : MonoBehaviour
 {
     public static PlayerCtl thisPlayer;
+    public static GameObject canvasObj;
     public static int health=40, stamina=10, money=0, level=1;
     public static int baseAtk=10, exp=0, maxHealth=40;
     GameObject openMenuSfx;
@@ -16,6 +17,8 @@ public class PlayerHealth : MonoBehaviour
     GameObject confirmMenuSfx;
     GameObject backMenuSfx;
     GameObject levelUpEffect;
+    
+    public static int[] body = new int[4];
     public string marco()
     { return "polo"; }
     public class Item
@@ -106,17 +109,20 @@ public class PlayerHealth : MonoBehaviour
         statuses.Add("BaseAtk:");
         statuses.Add("Weapon:");
         statuses.Add("exp");
+        canvasObj = GameObject.Find("Canvas");
     }
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("MenuUpdate");
+        //clamp body part values in bounds
+        body[0] = Math.Clamp(body[0], 1, 9); body[1] = Math.Clamp(body[1], 1, 9); body[2] = Math.Clamp(body[2], 1, 9); body[3] = Math.Clamp(body[3], 1, 9);
         //send old input states to old vars, and get new input state
         oldSelect = selectBtn; oldStart = startBtn; oldBack = backBtn;
         oldDpad = dpadDir;
         selectBtn = select.IsPressed(); startBtn = start.IsPressed(); backBtn = back.IsPressed();
         //get up/down
         dpadDir = 0 - Mathf.RoundToInt(Mathf.Clamp(cursor.ReadValue<Vector2>().y, -1, 1));
+        //level up when exp is maxed out for that level
         UpdateLevelExp();
 
         //open menu to main if its closed, otherwise close it
@@ -146,27 +152,27 @@ public class PlayerHealth : MonoBehaviour
                 if (JustPressedBack()) { MenuMode = MenuModes.main; selection = 0; } // when b pressed, return to inventory menu, setting the selection cursor back to where it was
                 break;
             case MenuModes.inventory:
-                selection += JustPressedDirection();
+                selection += JustPressedDirection();  //get user input for selection
                 if (selection > PlayerHealth.inventory.Count - 1)
                 { selection = PlayerHealth.inventory.Count-1; }
                 if (selection < 0) { selection = 0; }
                 if (selection < inventorySelectionViewPos) { inventorySelectionViewPos--; }
                 if (selection > inventorySelectionViewPos+3) { inventorySelectionViewPos++; }
-                cursorPos = selection + inventorySelectionViewPos;
+                cursorPos = selection + inventorySelectionViewPos; //set cursor graphic location
                 //Debug.Log(newDir); Debug.Log("cursorPos "+ cursorPos.ToString() + " selection " + selection.ToString());
                 if (PlayerHealth.inventory.Count > 0)
-                {
+                { //populate menu text with list items
                     MenuText = "";
                     for (int i = 0; i < (PlayerHealth.inventory.Count < 4 ? PlayerHealth.inventory.Count : 4); i++)
                     { MenuText += PlayerHealth.inventory[i].name + "\n"; }
 
                 }
-                else { MenuMode = MenuModes.emptyInventoryMessage; }
-                if (JustPressedBack()) { MenuMode = MenuModes.main;}
+                else { MenuMode = MenuModes.emptyInventoryMessage; } //show error when inventory is empty
+                if (JustPressedBack()) { MenuMode = MenuModes.main;} //press b to go back
                 
                 if (JustPressedSelect())
                 {
-                    inventorySelectionIndex = selection;
+                    inventorySelectionIndex = selection;//press a to perform action on selection
                     MenuMode = MenuModes.item;
                 }
                 break;

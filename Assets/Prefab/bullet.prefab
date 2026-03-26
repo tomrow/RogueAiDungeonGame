@@ -139,3 +139,4 @@ MonoBehaviour:
   hitscan: 1
   speed: 10
   maxRange: 100
+  muzzleFlash: {fileID: 3730523139398891534, guid: 31687be9f53a1a7438507ff75eed3550, type: 3}

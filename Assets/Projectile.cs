@@ -8,10 +8,12 @@ public class Projectile : MonoBehaviour
     public float maxRange;
     RaycastHit rayout;
     float travel;
+    public GameObject muzzleFlash;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        try { Instantiate(muzzleFlash, transform.position, Quaternion.identity); } catch { }
     }
 
     // Update is called once per frame

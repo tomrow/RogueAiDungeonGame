@@ -1,5 +1,7 @@
 using System;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerCtl : MonoBehaviour
@@ -48,8 +50,11 @@ public class PlayerCtl : MonoBehaviour
     AnimatorStateInfo upperBody; 
     AnimatorStateInfo lowerBody;
     public int firingSequence = 0;
+    Vector3 leftShoulderPosition, rightShoulderPosition;
     //AnimatorStateInfo hair;
     PlayerHealth health;
+
+
     void Start()
     {
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
@@ -58,13 +63,14 @@ public class PlayerCtl : MonoBehaviour
         leftShoulder = animCtl.transform.Find("skel/root/waist/spine/lshoulder/lhumerus");
         rightShoulder = animCtl.transform.Find("skel/root/waist/spine/rshoulder/rhumerus");
         weaponHand = rightShoulder.Find("rulna/rwrist");
-        leftShoulder.Translate(Vector3.left * shouldersWidth);
-        rightShoulder.Translate(Vector3.left * shouldersWidth);
+        leftShoulderPosition = leftShoulder.transform.localPosition;
+        rightShoulderPosition = rightShoulder.transform.localPosition;
+        SetProportions();
         handCannonSfx = Resources.Load("sfxEmitters/handCannonSfx").GameObject();
         handCannonSuperSfx = Resources.Load("sfxEmitters/handCannonSuperSfx").GameObject();
         PlayerHealth.thisPlayer = this;
         upperBody = animator.GetNextAnimatorStateInfo(1);
-        upperBody = animator.GetNextAnimatorStateInfo(0);
+        lowerBody = animator.GetNextAnimatorStateInfo(0);
         
         try
         {
@@ -77,6 +83,8 @@ public class PlayerCtl : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        upperBody = animator.GetNextAnimatorStateInfo(1);
+        lowerBody = animator.GetNextAnimatorStateInfo(0);
         if (cameraState == cameraStateNext) { PositionCamera(cameraState, lerpCurrent); }
         PositionCamera(cameraStateNext, lerpTarget);
         Camera.main.transform.position = Vector3.Lerp(lerpCurrent.transform.position, lerpTarget.transform.position, camLerpTimer);
@@ -90,6 +98,7 @@ public class PlayerCtl : MonoBehaviour
         else { animator.SetInteger("weaponType", 0); }
         animator.SetInteger("mode", (int)state);
         weaponCoolDown += Time.fixedDeltaTime;
+        if (PlayerHealth.health <= 0) { state = States.Dead; }            
         switch (state)
         {
             case States.NoLockOn:
@@ -129,7 +138,7 @@ public class PlayerCtl : MonoBehaviour
                 else { 
                     AttackCreate(
                         defaultBullet.GameObject(),
-                        false,
+                        true,
                         PlayerHealth.baseAtk,
                         0.4f,
                         handCannonSfx, 
@@ -140,27 +149,33 @@ public class PlayerCtl : MonoBehaviour
                 break;
             case States.HeavyAttack:
                 if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
-                else { AttackCreate(defaultBullet, true, 20, 1, handCannonSuperSfx, true); }
+                else { AttackCreate(defaultBullet, false, 20, 1, handCannonSuperSfx, true); }
                 PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                 transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                 break;
             case States.Knockback:
                 knockBackTimer -= Time.fixedDeltaTime;
-                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); }
+                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); Debug.Log("Getting Up"); }
                 break;
             case States.KnockbackGetUp:
                 //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
-                if (lowerBody.IsName("knockback") && lowerBody.normalizedTime >= 0.99f)
-                { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }
+                Debug.Log(lowerBody.ToString() + lowerBody.normalizedTime.ToString() + lowerBody.IsName("KnockBackGetUp").ToString());
+                if (!lowerBody.IsName("KnockBackGetUp")&& !upperBody.IsName("KnockBackGetUp"))
+                { state = States.NoLockOn;  Debug.Log("GetUp Complete"); }
+                break;
+            case States.Dead:
+                //kablammo!
+                Destroy(gameObject);
                 break;
             default:
                 throw new NotImplementedException();
                 break;
-            }
+        }
     }
 
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
-    { 
+    {
+        Debug.Log("Ouch");
         if (PlayerHealth.health == 0) { state = States.Dead; }
         else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; animator.SetTrigger("knockbackHeavy"); }
         
@@ -320,5 +335,35 @@ public class PlayerCtl : MonoBehaviour
             if (Physics.Raycast(transform.position, raydir, out rayout, transform.localScale.x * 0.2f))
             { transform.position = rayout.point - (raydir * 0.2f); }
         } 
+    }
+    public void SetProportions()
+    {
+        leftShoulder.transform.localPosition = leftShoulderPosition;
+        rightShoulder.transform.localPosition = rightShoulderPosition;
+        leftShoulder.Translate(Vector3.left * shouldersWidth);
+        rightShoulder.Translate(Vector3.left * shouldersWidth);
+    }
+    public void LoadCharacter()
+    {
+        foreach (Transform part in animCtl.transform.Find("Heads"))
+        { if (part.name == "head" + PlayerHealth.body[0]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } }
+        foreach (Transform part in animCtl.transform.Find("Arms")) 
+        {
+            try
+            {
+                part.Find("lfist" + PlayerHealth.body[1]).gameObject.SetActive(true); part.Find("rfist" + PlayerHealth.body[1]).gameObject.SetActive(true);
+                part.Find("lhand" + PlayerHealth.body[1]).gameObject.SetActive(false); part.Find("rhand" + PlayerHealth.body[1]).gameObject.SetActive(false);
+            }
+            catch { }
+            if (part.name == "arms" + PlayerHealth.body[1]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } 
+        }
+        foreach (Transform part in animCtl.transform.Find("torsos"))
+        { if (part.name == "torso" + PlayerHealth.body[2]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } }
+        foreach (Transform part in animCtl.transform.Find("Legs"))
+        { if (part.name == "legs" + PlayerHealth.body[3]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } }
+        shouldersWidth = 0;
+        if (PlayerHealth.body[2]==9) //big robot torso
+        { shouldersWidth = 0.06f; }
+        SetProportions();
     }
 }
