@@ -11,12 +11,12 @@ public class EnemyAgentBrain : MonoBehaviour
     [SerializeField] NavMeshAgent agent;
     [SerializeField, Tooltip("This is the brain's sight range. enemies farther than the max distance cannot be targets.")] float SightRange;
     [SerializeField, Tooltip("This is the max attack distance. this trigger object tells the brain it can attack.")] float MyAttackMaxDist;
-    [SerializeField, Tooltip("This is the ''Too Close'' range. Enemies with this enabled will back away if both IsInRange and UhOhTooClose are TRUE. Set to 0 to disable this behaviour.")] float MyComfortableDist;
+    [SerializeField, Tooltip("This is the ''Too Close'' range. Enemies with this enabled will Cease Moving if within this range. Set to 0 to disable this behaviour. (INADVISED)")] float MyComfortableDist;
     EnemyFundamentals EnemyAttributes;
     [SerializeField, Tooltip("This object is the bluprint template for the Enemy attack. It's only used for ranged attacks.")] GameObject EnemyAttackBullet;
     [SerializeField, Tooltip("This object is the bluprint template for the Enemy attack. It's only used for melee attacks.")] GameObject EnemyAttackMelee;
     bool IsInRange;
-    bool UhOhTooClose;
+    [SerializeField,Tooltip("This handles what attack the enemy should do. True makes the enemy ranged, false makes them Melee.")] bool MyAttackIsRanged;
     float AttackInterval;
     [SerializeField, Tooltip("Configureable wait period before attack in seconds.")] float TimeToAttack;
     RaycastHit rayout;
@@ -26,10 +26,6 @@ public class EnemyAgentBrain : MonoBehaviour
     void Start()
     {
         EnemyAttributes = GetComponent<EnemyFundamentals>();
-        if (MyComfortableDist == 0)
-        {
-            UhOhTooClose = false;
-        }
     }
 
     // Update is called once per frame
@@ -132,13 +128,13 @@ public class EnemyAgentBrain : MonoBehaviour
         To damage the player do the following;
 
          */
-        if (UhOhTooClose)
+        if (MyAttackIsRanged)
         {
-            Instantiate(EnemyAttackBullet);
+            Instantiate(EnemyAttackBullet,this.transform.position, this.transform.rotation);
         }
-        else if ((Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist) && !UhOhTooClose)
+        else if ((Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist) && !MyAttackIsRanged)
         {
-            Instantiate(EnemyAttackMelee);
+            Instantiate(EnemyAttackMelee, this.transform.position, this.transform.rotation);
         }
         return;
     }
