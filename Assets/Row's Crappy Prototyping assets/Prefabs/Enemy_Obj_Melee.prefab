@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6419905494915331883}
   - component: {fileID: 4967481899804809686}
   m_Layer: 0
-  m_Name: Enemy_Obj_Bullet
+  m_Name: Enemy_Obj_Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   damagenumber: 1
   stuntimertemp: 1
   ProjectileSpeed: 3
-  IsMelee: 0
+  IsMelee: 1
   MeleeAttackScaleVar: 0
   ProjectileLifespan: 10
+  ProjectileScale: 10

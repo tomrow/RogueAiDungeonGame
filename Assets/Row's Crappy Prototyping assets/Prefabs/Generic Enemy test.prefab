@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1653205861892343613}
   - component: {fileID: 4248023437975432815}
   - component: {fileID: 5624335453878425496}
+  - component: {fileID: 2005671240399551013}
   m_Layer: 0
   m_Name: Generic Enemy test
   m_TagString: Untagged
@@ -157,7 +158,7 @@ MonoBehaviour:
   MyAttackMaxDist: 20
   MyComfortableDist: 10
   EnemyAttackBullet: {fileID: 5202910514285715138, guid: 980cf576f415efa4fa1b55bae932ebf0, type: 3}
-  EnemyAttackMelee: {fileID: 0}
+  EnemyAttackMelee: {fileID: 5202910514285715138, guid: aa5884dcc1511894c871bae92399db1e, type: 3}
   MyAttackIsRanged: 1
   TimeToAttack: 3
 --- !u!114 &5624335453878425496
@@ -176,3 +177,16 @@ MonoBehaviour:
   dead: 0
   expAward: 0
   KnockBackTimer: 0
+--- !u!114 &2005671240399551013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939786754782615762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db415a58b24a65429ec9165edade9fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockOnTarget
+  on: 1

@@ -9,10 +9,15 @@ public class enemybulletscrip : MonoBehaviour
     [SerializeField, Tooltip("IS This A Melee Attack?")] bool IsMelee;
     [SerializeField] float MeleeAttackScaleVar;
     [SerializeField, Tooltip("Lifespan of projectile in Seconds.")] float ProjectileLifespan;
+    [SerializeField, Tooltip("Scale Of Melee Attack. Currently Unused.")] float ProjectileScale;
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (IsMelee)
+        {
+            ProjectileLifespan = 0.5f;
+        }
         /*Do we want some kind of algorithmic stun time?
          Something to think about.*/
     }
@@ -26,7 +31,7 @@ public class enemybulletscrip : MonoBehaviour
         }
         else
         {
-            this.transform.localScale.Set(1, 1, 1);
+            this.transform.localScale = Vector3.one * ProjectileScale;
         }
         if (ProjectileLifespan <=0)
         {
@@ -34,8 +39,9 @@ public class enemybulletscrip : MonoBehaviour
         }
         ProjectileLifespan -= Time.deltaTime;
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
+        Debug.Log("I've hit something!");
         try
         {
             PlayerCtl p = collision.gameObject.GetComponent<PlayerCtl>();
