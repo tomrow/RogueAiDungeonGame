@@ -25,7 +25,14 @@ public class EnemyAgentBrain : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        LockOnTarget MyTargetableState = this.GetComponent<LockOnTarget>();
+        MyTargetableState.on = true;
         EnemyAttributes = GetComponent<EnemyFundamentals>();
+        /*
+         * This script sets the enemyattributes and LockOnTargetability.
+         * Doing this here allows for the template to have it's targetability off by default.
+         * Enemies will automatically turn theirs on.
+         */
     }
 
     // Update is called once per frame
