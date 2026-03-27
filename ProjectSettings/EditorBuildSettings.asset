@@ -11,6 +11,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/testLevel.unity
     guid: 829bf45f0afcd644ea5929f971c5e417
+  - enabled: 1
+    path: Assets/Scenes/characterPartRenderStage.unity
+    guid: e17ada1106b97494b9bd608b2dbaba1b
+  - enabled: 1
+    path: Assets/Scenes/Connection Screen Scene.unity
+    guid: 591c5e74050bc21449e99b3cb201398b
+  - enabled: 1
+    path: Assets/Scenes/CharacterCreator.unity
+    guid: 1b1abe9a34d10a14fad7451ba10592f2
+  - enabled: 1
+    path: Assets/Scenes/Level Templating area.unity
+    guid: 628fa0a1344c55c4abdf234bf7b60f99
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0

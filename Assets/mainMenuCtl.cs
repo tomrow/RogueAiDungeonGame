@@ -78,7 +78,7 @@ public class mainMenuCtl : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("Start");
-        SceneManager.LoadScene("testLevel");
+        SceneManager.LoadScene("CharacterCreator");
     }
 
     private void gotoSettings()
