@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyFundamentals : MonoBehaviour
 {
@@ -28,8 +29,9 @@ public class EnemyFundamentals : MonoBehaviour
     public void Damage(float amount)
     {
         GameObject h = Instantiate(Resources.Load("AttackHudAnim").GameObject(), PlayerHealth.canvasObj.transform, false);
-        h.transform.position = Camera.main.WorldToViewportPoint(transform.position);
-        hp-=amount;
+        h.GetComponent<AttackHudAnim>().subject = this.transform; h.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        h.GetComponent<Text>().text = ((int)amount).ToString();
+        hp-=(int)amount;
         KnockBackTimer += amount / 6;
         if(hp <= 0) { Die(); }
     }

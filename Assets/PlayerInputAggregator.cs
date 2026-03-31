@@ -12,6 +12,7 @@ public class PlayerInputAggregator : MonoBehaviour
     InputAction heavyAttackAction;
     InputAction interactAction;
     InputAction lockOnAction;
+    public static bool inputEnabled = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,12 +29,13 @@ public class PlayerInputAggregator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     { //this code sucks and can be better
-        playerCtl.move = moveAction.ReadValue<Vector2>();
-        playerCtl.Atk1 = lightAttackAction.IsPressed();
-        playerCtl.Atk2 = heavyAttackAction.IsPressed();
-        playerCtl.Atk3 = interactAction.IsPressed();
-        playerCtl.sprint = sprintAction.IsPressed();
-        playerCtl.lockOn = lockOnAction.IsPressed();
-        playerCtl.orbit = lookAction.ReadValue<Vector2>()*-1;
+
+        playerCtl.move = inputEnabled ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+        playerCtl.Atk1 = inputEnabled ? lightAttackAction.IsPressed() : false;
+        playerCtl.Atk2 = inputEnabled ? heavyAttackAction.IsPressed() : false;
+        playerCtl.Atk3 = inputEnabled ? interactAction.IsPressed() : false;
+        playerCtl.sprint = inputEnabled ? sprintAction.IsPressed() : false;
+        playerCtl.lockOn = inputEnabled ? lockOnAction.IsPressed() : false;
+        playerCtl.orbit = inputEnabled ? lookAction.ReadValue<Vector2>()*-1 : Vector2.zero; 
     }
 }
