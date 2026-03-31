@@ -77,7 +77,7 @@ public class PlayerCtl : MonoBehaviour
             health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>();
             if (health.marco() != "polo") { Instantiate(Resources.Load("CharacterStatus").GameObject()); health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
         }
-        catch { Instantiate(Resources.Load("CharacterStatus").GameObject()); health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
+        catch { health = Instantiate(Resources.Load("CharacterStatus").GameObject()).GetComponent<PlayerHealth>(); }
     }
 
     // Update is called once per frame

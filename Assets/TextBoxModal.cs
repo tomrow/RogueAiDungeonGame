@@ -23,9 +23,12 @@ public class TextBoxModal : MonoBehaviour
         dialogueTextGrp.enabled = false;
         transform.localScale = Vector3.up + Vector3.forward;
         PlayerInputAggregator.inputEnabled = false;
-        dialogueTextGrp.text = text[0];
+        try { dialogueTextGrp.text = text[0]; } catch { Destroy(gameObject); }
         ok = InputSystem.actions.FindAction("Submit");
         confirmMenuSfx = Resources.Load("sfxEmitters/TextBoxAdvance").GameObject();
+        transform.position = Vector3.zero;
+        transform.localPosition = Vector3.zero;
+        //GetComponent<RectTransform>().position = Vector3.zero;
     }
     private bool JustPressedSelect()
     {
@@ -39,26 +42,30 @@ public class TextBoxModal : MonoBehaviour
         switch (mode)
         {
             case 0:
-                timer += Time.deltaTime;
-                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer)*2;
+                timer += Time.deltaTime * 3;
+                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer)*1;
                 if (timer > 1) { mode++; }
                 break;
             case 1:
-                timer = 0;
-                if (JustPressedSelect()) { dialogueLine++; }
-                dialogueTextGrp.enabled = false;
-                if (dialogueLine >= text.Length)
-                {
-                    dialogueLine = text.Length; //probably wont be needed but ill put it here for safety
-                    mode++;
-                    dialogueTextGrp.enabled = false;
-                    break;
+                timer = 0;dialogueTextGrp.enabled = true;
+                if (JustPressedSelect()) 
+                { 
+                    dialogueLine++; 
+                    if (dialogueLine >= text.Length)
+                    {
+                        dialogueLine = text.Length; //probably wont be needed but ill put it here for safety
+                        mode++;
+                        dialogueTextGrp.enabled = false;
+                        break;
+                    }
+                    dialogueTextGrp.text = text[dialogueLine];
                 }
-                dialogueTextGrp.text += text[dialogueLine];
+                
+                
                 break;
             default:
-                timer += Time.deltaTime;
-                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 2;
+                timer += Time.deltaTime * 3;
+                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 1;
                 if (timer > 1) { PlayerInputAggregator.inputEnabled = true; Destroy(gameObject); }
                 break;
         }
