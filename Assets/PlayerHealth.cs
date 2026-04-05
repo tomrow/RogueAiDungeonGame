@@ -12,10 +12,7 @@ public class PlayerHealth : MonoBehaviour
     public static GameObject canvasObj;
     public static int health=40, stamina=10, money=0, level=1;
     public static int baseAtk=10, exp=0, maxHealth=40;
-    GameObject openMenuSfx;
-    GameObject selectMenuSfx;
-    GameObject confirmMenuSfx;
-    GameObject backMenuSfx;
+    //GameObject openMenuSfx,selectMenuSfx,confirmMenuSfx, backMenuSfx;
     GameObject levelUpEffect;
     
     public static int[] body = new int[4];
@@ -100,10 +97,10 @@ public class PlayerHealth : MonoBehaviour
         back = InputSystem.actions.FindAction("Cancel");
         start = InputSystem.actions.FindAction("OpenMenu");
         DontDestroyOnLoad(gameObject);
-        openMenuSfx = Resources.Load("sfxEmitters/OpenMenu").GameObject();
+        /*openMenuSfx = Resources.Load("sfxEmitters/OpenMenu").GameObject();
         selectMenuSfx = Resources.Load("sfxEmitters/MenuSelect").GameObject();
         confirmMenuSfx = Resources.Load("sfxEmitters/MenuConfirm").GameObject();
-        backMenuSfx = Resources.Load("sfxEmitters/MenuBack").GameObject();
+        backMenuSfx = Resources.Load("sfxEmitters/MenuBack").GameObject();*/
         levelUpEffect = Resources.Load("LevelUpEffect").GameObject();
         statuses.Add("Money:");
         statuses.Add("BaseAtk:");
@@ -126,7 +123,7 @@ public class PlayerHealth : MonoBehaviour
         UpdateLevelExp();
 
         //open menu to main if its closed, otherwise close it
-        if (JustPressedStart()) { if (MenuMode == MenuModes.disabled) { MenuMode = MenuModes.main; selection = 0; } else { MenuMode = MenuModes.disabled; } }
+        if (JustPressedStart() && PlayerInputAggregator.inputEnabled) { if (MenuMode == MenuModes.disabled) { MenuMode = MenuModes.main; selection = 0; } else { MenuMode = MenuModes.disabled; } }
         //Debug.Log(MenuMode);
         switch (MenuMode)
         {
@@ -144,10 +141,10 @@ public class PlayerHealth : MonoBehaviour
                 break;
             case MenuModes.status:
                 MenuTitle = "Status";
-                statuses[0] = "Money: "+ money.ToString();
-                statuses[1] = "Base ATK: " + baseAtk.ToString();
-                statuses[2] = "WPN: " + (thisPlayer.weapon != null ? (thisPlayer.weapon.weaponName + ";" + thisPlayer.weapon.attackPower.ToString()) : "Arm Cannon");
-                statuses[3] = "LV." + level.ToString() + " EXP " + exp.ToString() ;
+                statuses[0] = "Money: "+ PlayerHealth.money.ToString();
+                statuses[1] = "Base ATK: " + PlayerHealth.baseAtk.ToString();
+                statuses[2] = "WPN: " + (PlayerHealth.thisPlayer.weapon != null ? (PlayerHealth.thisPlayer.weapon.weaponName + ";" + PlayerHealth.thisPlayer.weapon.attackPower.ToString()) : "Arm Cannon");
+                statuses[3] = "LV." + PlayerHealth.level.ToString() + " EXP " + PlayerHealth.exp.ToString() ;
                 MenuText = statuses[0] + "\n" + statuses[1] + "\n" + statuses[2] + "\n" + statuses[3];
                 if (JustPressedBack()) { MenuMode = MenuModes.main; selection = 0; } // when b pressed, return to inventory menu, setting the selection cursor back to where it was
                 break;
@@ -241,11 +238,13 @@ public class PlayerHealth : MonoBehaviour
     private void UpdateLevelExp()
     {
         int maxExpForLevel = level * level * 4;
-        baseAtk = 10 + (level * (level / 25)); maxHealth = 40 + (level * (level / 45));
+        //PlayerHealth.baseAtk = 10 + (PlayerHealth.level * (PlayerHealth.level / 25)); PlayerHealth.maxHealth = 40 + (PlayerHealth.level * (PlayerHealth.level / 45));
+        PlayerHealth.baseAtk = 10 + (PlayerHealth.level - 1); PlayerHealth.maxHealth = 40 + ((PlayerHealth.level - 1) * 2);
         if (exp>maxExpForLevel)
         { 
-            level++;
-            
+            PlayerHealth.level++;
+            PlayerHealth.baseAtk = 10 + (PlayerHealth.level-1); PlayerHealth.maxHealth = 40 + ((PlayerHealth.level-1) * 2);
+            Debug.Log("Level Up to "+PlayerHealth.level.ToString());
             exp = exp - maxExpForLevel;
             Instantiate(levelUpEffect, thisPlayer.transform.position, Quaternion.identity);
         }
@@ -256,22 +255,22 @@ public class PlayerHealth : MonoBehaviour
     }
     private int JustPressedDirection()
     {
-        if ((dpadDir != oldDpad)&& dpadDir!=0) { Instantiate(selectMenuSfx); return dpadDir; }
+        if ((dpadDir != oldDpad)&& dpadDir!=0) { Instantiate(SoundEffectStorage.selectMenuSfx); return dpadDir; }
         else { return 0; }
     }
     private bool JustPressedBack()
     {
-        if (backBtn && !oldBack) { Instantiate(backMenuSfx); return backBtn; }
+        if (backBtn && !oldBack) { Instantiate(SoundEffectStorage.backMenuSfx); return backBtn; }
         else { return false; }
     }
     private bool JustPressedSelect()
     {
-        if (selectBtn && !oldSelect) { GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); Instantiate(confirmMenuSfx); return selectBtn; }
+        if (selectBtn && !oldSelect) { GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); Instantiate(SoundEffectStorage.confirmMenuSfx); return selectBtn; }
         else { return false; }
     }
     private bool JustPressedStart()
     {
-        if (startBtn && !oldStart) { Debug.Log("START"); Instantiate(openMenuSfx); return startBtn; }
+        if (startBtn && !oldStart) { Debug.Log("START"); Instantiate(SoundEffectStorage.openMenuSfx); return startBtn; }
         else { return false; }
     }
 }

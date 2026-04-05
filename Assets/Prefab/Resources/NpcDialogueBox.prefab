@@ -86,7 +86,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e970876ee7fed4da7a2fccc6f2813f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  text: []
+  text:
+  - Welcome to the game! Press A to advance this dialogue.
+  - Look around with the right stick.
+  - Look around you, and head towards the green Information counter. Walk up to the
+    clerk using the left stick, and press LT to talk.
 --- !u!1 &7995538371322391118
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,8 +157,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 9
+    m_Font: {fileID: 12800000, guid: a05e5df4acfab864e970e1b98d8da30a, type: 3}
+    m_FontSize: 7
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0

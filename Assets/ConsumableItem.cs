@@ -31,6 +31,7 @@ public class ConsumableItem : MonoBehaviour
             {
                 PlayerHealth.Consumable newcons = new PlayerHealth.Consumable();
                 newcons.resPath = resPath;
+                newcons.name = gameObject.name;
                 PlayerHealth.inventory.Add(newcons);
                 Destroy(gameObject) ;
             }

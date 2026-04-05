@@ -64,6 +64,7 @@ public class TextBoxModal : MonoBehaviour
                 
                 break;
             default:
+                dialogueTextGrp.enabled = false;
                 timer += Time.deltaTime * 3;
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 1;
                 if (timer > 1) { PlayerInputAggregator.inputEnabled = true; Destroy(gameObject); }
