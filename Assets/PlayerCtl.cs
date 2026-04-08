@@ -338,10 +338,10 @@ public class PlayerCtl : MonoBehaviour
     }
     public void SetProportions()
     {
-        leftShoulder.transform.localPosition = leftShoulderPosition;
-        rightShoulder.transform.localPosition = rightShoulderPosition;
-        leftShoulder.Translate(Vector3.left * shouldersWidth);
-        rightShoulder.Translate(Vector3.left * shouldersWidth);
+        leftShoulder.transform.localPosition = leftShoulderPosition* shouldersWidth;
+        rightShoulder.transform.localPosition = rightShoulderPosition * shouldersWidth;
+        /*leftShoulder.Translate(leftShoulder.right * 0-shouldersWidth);
+        rightShoulder.Translate(rightShoulder.right * 0-shouldersWidth);*/
     }
     public void LoadCharacter()
     {
