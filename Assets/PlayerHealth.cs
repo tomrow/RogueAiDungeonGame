@@ -112,7 +112,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         //clamp body part values in bounds
-        body[0] = Math.Clamp(body[0], 1, 9); body[1] = Math.Clamp(body[1], 1, 9); body[2] = Math.Clamp(body[2], 1, 9); body[3] = Math.Clamp(body[3], 1, 9);
+        PlayerHealth.body[0] = Math.Clamp(PlayerHealth.body[0], 1, 9); PlayerHealth.body[1] = Math.Clamp(PlayerHealth.body[1], 1, 9); PlayerHealth.body[2] = Math.Clamp(PlayerHealth.body[2], 1, 9); PlayerHealth.body[3] = Math.Clamp(PlayerHealth.body[3], 1, 9);
         //send old input states to old vars, and get new input state
         oldSelect = selectBtn; oldStart = startBtn; oldBack = backBtn;
         oldDpad = dpadDir;

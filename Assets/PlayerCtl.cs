@@ -65,7 +65,7 @@ public class PlayerCtl : MonoBehaviour
         weaponHand = rightShoulder.Find("rulna/rwrist");
         leftShoulderPosition = leftShoulder.transform.localPosition;
         rightShoulderPosition = rightShoulder.transform.localPosition;
-        SetProportions();
+        LoadCharacter();
         handCannonSfx = Resources.Load("sfxEmitters/handCannonSfx").GameObject();
         handCannonSuperSfx = Resources.Load("sfxEmitters/handCannonSuperSfx").GameObject();
         PlayerHealth.thisPlayer = this;
@@ -338,13 +338,14 @@ public class PlayerCtl : MonoBehaviour
     }
     public void SetProportions()
     {
-        leftShoulder.transform.localPosition = leftShoulderPosition* shouldersWidth;
-        rightShoulder.transform.localPosition = rightShoulderPosition * shouldersWidth;
+        leftShoulder.transform.localPosition = leftShoulderPosition* (1+shouldersWidth);
+        rightShoulder.transform.localPosition = rightShoulderPosition * (1+shouldersWidth);
         /*leftShoulder.Translate(leftShoulder.right * 0-shouldersWidth);
         rightShoulder.Translate(rightShoulder.right * 0-shouldersWidth);*/
     }
     public void LoadCharacter()
     {
+        PlayerHealth.body[0] = Math.Clamp(PlayerHealth.body[0], 1, 9); PlayerHealth.body[1] = Math.Clamp(PlayerHealth.body[1], 1, 9); PlayerHealth.body[2] = Math.Clamp(PlayerHealth.body[2], 1, 9); PlayerHealth.body[3] = Math.Clamp(PlayerHealth.body[3], 1, 9);
         foreach (Transform part in animCtl.transform.Find("Heads"))
         { if (part.name == "head" + PlayerHealth.body[0]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } }
         foreach (Transform part in animCtl.transform.Find("Arms")) 
@@ -362,8 +363,8 @@ public class PlayerCtl : MonoBehaviour
         foreach (Transform part in animCtl.transform.Find("Legs"))
         { if (part.name == "legs" + PlayerHealth.body[3]) { part.gameObject.SetActive(true); } else { part.gameObject.SetActive(false); } }
         shouldersWidth = 0;
-        if (PlayerHealth.body[2]==9) //big robot torso
-        { shouldersWidth = 0.06f; }
+        if ((PlayerHealth.body[2] == 3) || (PlayerHealth.body[2] == 4) || (PlayerHealth.body[2]==9)) //big robot torso
+        { shouldersWidth = 0.6f; }
         SetProportions();
     }
 }
