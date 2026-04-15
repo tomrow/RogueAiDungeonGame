@@ -23,7 +23,7 @@ public class SpawnerBrain : MonoBehaviour
     float spawnerTimer;
     bool isDestructible; //A more accurate term would be, "has health".
     int chosenEnemyType;
-    [SerializeField,Tooltip("This field activates the spawner's main behaviour. Use it in conjunction with a trigger volume.")]public bool isActive;
+    [Tooltip("This field activates the spawner's main behaviour. Use it in conjunction with a trigger volume.")]public bool isActive;
 
     #endregion
     #region Config Variables
@@ -86,9 +86,8 @@ public class SpawnerBrain : MonoBehaviour
             {
                 return; //This should only ever run if there's an empty spawner in the map. Even then, it's gonna do fuck all anyway, so what's the issue?
             }//Failsafe in case no templates are assigned.
-        else
-        {
-
+            else
+            {
             if(spawnerTimer <= 0f)
             {
                 //This choses between 0 and 1, hopefully.

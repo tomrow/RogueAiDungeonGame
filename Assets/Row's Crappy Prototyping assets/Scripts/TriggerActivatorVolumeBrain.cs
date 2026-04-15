@@ -15,11 +15,19 @@ public class TriggerActivatorVolumeBrain : MonoBehaviour
     {
 
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.GetComponent<PlayerCtl>())
         {
             SpawnerState.isActive = true;
         }
     }
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.gameObject.GetComponent<PlayerCtl>())
+        {
+            SpawnerState.isActive = false;
+        }
+    }
+
 }
