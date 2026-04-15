@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9b42fcea7a8764dad21ed415c99d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFundamentals
-  hp: 0
+  hp: 25
   dead: 0
   expAward: 0
   KnockBackTimer: 0
