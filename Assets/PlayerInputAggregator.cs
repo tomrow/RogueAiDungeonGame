@@ -12,6 +12,7 @@ public class PlayerInputAggregator : MonoBehaviour
     InputAction heavyAttackAction;
     InputAction interactAction;
     InputAction lockOnAction;
+    InputAction eHealAction;
     public static bool inputEnabled = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,18 +25,20 @@ public class PlayerInputAggregator : MonoBehaviour
         interactAction = InputSystem.actions.FindAction("Interact");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         lockOnAction = InputSystem.actions.FindAction("LockOn");
+        eHealAction = InputSystem.actions.FindAction("EmergencyHeal");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     { //this code sucks and can be better
 
-        playerCtl.move = inputEnabled ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-        playerCtl.Atk1 = inputEnabled ? lightAttackAction.IsPressed() : false;
-        playerCtl.Atk2 = inputEnabled ? heavyAttackAction.IsPressed() : false;
-        playerCtl.Atk3 = inputEnabled ? interactAction.IsPressed() : false;
-        playerCtl.sprint = inputEnabled ? sprintAction.IsPressed() : false;
-        playerCtl.lockOn = inputEnabled ? lockOnAction.IsPressed() : false;
-        playerCtl.orbit = inputEnabled ? lookAction.ReadValue<Vector2>()*-1 : Vector2.zero; 
+        playerCtl.move = PlayerInputAggregator.inputEnabled ? moveAction.ReadValue<Vector2>() : Vector2.zero;
+        playerCtl.Atk1 = PlayerInputAggregator.inputEnabled ? lightAttackAction.IsPressed() : false;
+        playerCtl.Atk2 = PlayerInputAggregator.inputEnabled ? heavyAttackAction.IsPressed() : false;
+        playerCtl.Atk3 = PlayerInputAggregator.inputEnabled ? interactAction.IsPressed() : false;
+        playerCtl.sprint = PlayerInputAggregator.inputEnabled ? sprintAction.IsPressed() : false;
+        playerCtl.lockOn = PlayerInputAggregator.inputEnabled ? lockOnAction.IsPressed() : false;
+        playerCtl.orbit = PlayerInputAggregator.inputEnabled ? lookAction.ReadValue<Vector2>()*-1 : Vector2.zero;
+        playerCtl.eHeal = PlayerInputAggregator.inputEnabled ? eHealAction.IsPressed() : false;
     }
 }

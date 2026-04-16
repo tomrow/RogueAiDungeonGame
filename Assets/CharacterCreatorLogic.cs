@@ -43,7 +43,7 @@ public class CharacterCreatorLogic : MonoBehaviour
     }
     private int JustPressedDirectionHorizontal()
     {
-        Debug.Log(horizDir);
+        //Debug.Log(horizDir);
         if ((horizDir != oldHoriz) && horizDir != 0) 
         { 
             Instantiate(selectMenuSfx);

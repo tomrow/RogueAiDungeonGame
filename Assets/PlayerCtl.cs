@@ -8,10 +8,10 @@ public class PlayerCtl : MonoBehaviour
 {
     //Control inputs are put here by the aggregator
     public Vector2 move, orbit;
-    public bool sprint, resetCamera, lockOn, Atk1, Atk2, Atk3, jump;
+    public bool sprint, resetCamera, lockOn, Atk1, Atk2, Atk3, jump, eHeal;
     GameObject viewModel, attackOrigin;
     public bool faceWithCameraWhenLockingOn;
-    bool oldLockOnKeyState;
+    bool oldLockOnKeyState, oldEHealKeyState;
     public GameObject animCtl;
     //Labels for player action states
     public enum States
@@ -71,13 +71,17 @@ public class PlayerCtl : MonoBehaviour
         PlayerHealth.thisPlayer = this;
         upperBody = animator.GetNextAnimatorStateInfo(1);
         lowerBody = animator.GetNextAnimatorStateInfo(0);
-        
-        try
-        {
-            health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>();
-            if (health.marco() != "polo") { Instantiate(Resources.Load("CharacterStatus").GameObject()); health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
+
+
+        try { health = GameObject.Find("CharacterStatus").GetComponent<PlayerHealth>(); }
+            //health = FindFirstObjectByType<PlayerHealth>();
+        catch 
+        { 
+            Debug.Log("PlayerHealth obj not found."); 
+            health = Instantiate(Resources.Load("CharacterStatus").GameObject()).GetComponent<PlayerHealth>();
+            health.gameObject.name = "CharacterStatus";
         }
-        catch { health = Instantiate(Resources.Load("CharacterStatus").GameObject()).GetComponent<PlayerHealth>(); }
+        
     }
 
     // Update is called once per frame
@@ -103,8 +107,9 @@ public class PlayerCtl : MonoBehaviour
         {
             case States.NoLockOn:
                 PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
-                if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
-                oldLockOnKeyState = lockOn;
+                if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); } oldLockOnKeyState = lockOn;
+                if (eHeal && (oldEHealKeyState == false)) { PlayerHealth.EmergencyHeal(); }
+                oldEHealKeyState = eHeal;
                 if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
                 AnimatorUpdateWalking();
                 cameraStateNext = CameraModes.Follow;

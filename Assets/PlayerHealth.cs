@@ -273,4 +273,15 @@ public class PlayerHealth : MonoBehaviour
         if (startBtn && !oldStart) { Debug.Log("START"); Instantiate(SoundEffectStorage.openMenuSfx); return startBtn; }
         else { return false; }
     }
+    public static void EmergencyHeal()
+    { for(int i=0;i<PlayerHealth.inventory.Count;i++)
+        {
+            if (PlayerHealth.inventory[i] is PlayerHealth.Consumable)
+            {
+                PlayerHealth.inventory[i].Deposit();
+                PlayerHealth.inventory.RemoveAt(i);
+                break;
+            }
+        }
+    }
 }

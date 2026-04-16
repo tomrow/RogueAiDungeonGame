@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GameMenuCtl : MonoBehaviour
 {
-    Vector3 closedPos = Vector3.left * 120;
+    Vector3 closedPos = Vector3.left * 312;
+    Vector3 openPos = Vector3.left * 185;
     RectTransform r;
     bool oldEnabled;
     bool menuenabled;
@@ -22,7 +23,7 @@ public class GameMenuCtl : MonoBehaviour
         menuenabled = PlayerHealth.MenuMode != PlayerHealth.MenuModes.disabled;
         if (menuenabled != oldEnabled)
         {
-            transform.localPosition = Vector3.Lerp(!menuenabled ? Vector3.zero : closedPos, !menuenabled ? closedPos : Vector3.zero, timer);
+            transform.localPosition = Vector3.Lerp(!menuenabled ? openPos : closedPos, !menuenabled ? closedPos : openPos, timer);
             timer += Time.deltaTime * 3;
             if (timer >= 1) { oldEnabled = menuenabled; }
 
@@ -30,7 +31,7 @@ public class GameMenuCtl : MonoBehaviour
         else 
         { 
             timer = 0;
-            transform.localPosition = menuenabled ? Vector3.zero : closedPos;
+            transform.localPosition = menuenabled ? openPos : closedPos;
         }
     }
 

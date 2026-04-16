@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84895df50778f5545930bfee132c7735, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 9192917829398631877}
   - component: {fileID: 7791476956480313325}
   m_Layer: 2
-  m_Name: baguette
+  m_Name: sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   weaponType: 3
-  weaponName: Baguette
+  weaponName: Sword
   attackPower: 10
   playerCtl: {fileID: 0}
   weaponCoolDownDuration: 0.2
@@ -227,5 +227,5 @@ MonoBehaviour:
   superFireSfx: {fileID: 8624168931246723514, guid: 6cb80f80ab018624bb4220003b7d1b43, type: 3}
   hitScan: 1
   superHitScan: 0
-  resPath: weapons/baguette
+  resPath: weapons/sword
   rotationForHand: {x: 0, y: -90, z: -90}

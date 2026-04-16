@@ -21,7 +21,7 @@ public class TextBoxModal : MonoBehaviour
     {
         dialogueTextGrp = transform.GetChild(0).gameObject.GetComponent<Text>();
         dialogueTextGrp.enabled = false;
-        transform.localScale = Vector3.up + Vector3.forward;
+        transform.localScale = (Vector3.up + Vector3.forward) * 2f;
         PlayerInputAggregator.inputEnabled = false;
         try { dialogueTextGrp.text = text[0]; } catch { Destroy(gameObject); }
         ok = InputSystem.actions.FindAction("Submit");
@@ -43,7 +43,7 @@ public class TextBoxModal : MonoBehaviour
         {
             case 0:
                 timer += Time.deltaTime * 3;
-                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer)*1;
+                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer)*2;
                 if (timer > 1) { mode++; }
                 break;
             case 1:
