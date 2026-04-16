@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CharacterCreatorLogic : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class CharacterCreatorLogic : MonoBehaviour
     public int category;
     public List<Transform> categories; //head, arms, torso, legs
     int justpressedh;
+    int mode;
+    float timer;
+    public FadeOverlay fadeOverlay;
+    //public RawImage fadeOverlay;
+    //float alpha;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +33,8 @@ public class CharacterCreatorLogic : MonoBehaviour
         selectMenuSfx = Resources.Load("sfxEmitters/MenuSelect").GameObject();
         confirmMenuSfx = Resources.Load("sfxEmitters/MenuConfirm").GameObject();
         backMenuSfx = Resources.Load("sfxEmitters/MenuBack").GameObject();
+        //fadeOverlay.color = Color.black;
+        
     }
     private int JustPressedDirection()
     {
@@ -60,17 +69,27 @@ public class CharacterCreatorLogic : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        oldSelect = selectBtn; oldStart = startBtn; oldBack = backBtn;
-        oldDpad = dpadDir; oldHoriz = horizDir;
-        selectBtn = select.IsPressed(); startBtn = start.IsPressed(); backBtn = back.IsPressed();
-        //get up/down
-        dpadDir = 0 - Mathf.RoundToInt(Mathf.Clamp(cursor.ReadValue<Vector2>().y, -1, 1));
-        horizDir = Mathf.RoundToInt(Mathf.Clamp(cursor.ReadValue<Vector2>().x, -1, 1));
-        category += JustPressedDirection();justpressedh = JustPressedDirectionHorizontal()+0;
-        category = Math.Clamp(category, 0, 3);
-        PlayerHealth.body[category] = Math.Clamp(PlayerHealth.body[category] + justpressedh, 1, 9);
-        if (justpressedh != 0) { PlayerHealth.thisPlayer.LoadCharacter(); }
-        selectionPosition = categories[category].Find(PlayerHealth.body[category].ToString()).GetComponent<RectTransform>();
-        cursorSq.position = selectionPosition.position;
+        switch(mode)
+        {
+            case 2:
+                fadeOverlay.sceneForTransfer = "hubWorld"; fadeOverlay.mode = FadeOverlay.Transitions.FadeOut;break;
+            default:
+                timer = 0;
+                oldSelect = selectBtn; oldStart = startBtn; oldBack = backBtn;
+                oldDpad = dpadDir; oldHoriz = horizDir;
+                selectBtn = select.IsPressed(); startBtn = start.IsPressed(); backBtn = back.IsPressed();
+                //get up/down
+                dpadDir = 0 - Mathf.RoundToInt(Mathf.Clamp(cursor.ReadValue<Vector2>().y, -1, 1));
+                horizDir = Mathf.RoundToInt(Mathf.Clamp(cursor.ReadValue<Vector2>().x, -1, 1));
+                category += JustPressedDirection();justpressedh = JustPressedDirectionHorizontal()+0;
+                category = Math.Clamp(category, 0, 3);
+                PlayerHealth.body[category] = Math.Clamp(PlayerHealth.body[category] + justpressedh, 1, 9);
+                if (justpressedh != 0) { PlayerHealth.thisPlayer.LoadCharacter(); }
+                if (JustPressedStart()) { Debug.Log("Quit character creator"); mode = 2; }
+                selectionPosition = categories[category].Find(PlayerHealth.body[category].ToString()).GetComponent<RectTransform>();
+                cursorSq.position = selectionPosition.position;
+                break;
+        }
+        
     }
 }

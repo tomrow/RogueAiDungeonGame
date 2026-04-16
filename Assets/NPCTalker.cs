@@ -17,7 +17,7 @@ public class NPCTalker : MonoBehaviour
     }
     private bool JustPressedSelect()
     {
-        if (lt && !oldLt) { GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); return lt; }
+        if (lt && !oldLt) {  return lt; }
         else { return false; }
     }
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class NPCTalker : MonoBehaviour
         oldLt = lt; lt = PlayerHealth.thisPlayer.Atk3;
         if (JustPressedSelect() && Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position)<2)
         {
-            Instantiate(confirmMenuSfx);
+            GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); Instantiate(confirmMenuSfx);
             TextBoxModal box = Instantiate(textBoxPrefab, Vector3.zero, Quaternion.identity, canvas.transform).GetComponent<TextBoxModal>();
             box.text = text;
         }
