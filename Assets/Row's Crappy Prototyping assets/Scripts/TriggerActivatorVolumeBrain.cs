@@ -4,6 +4,7 @@ public class TriggerActivatorVolumeBrain : MonoBehaviour
 {
     [SerializeField, Tooltip("This Variable is what the trigger Volume will interact with.")] GameObject TriggerTargetObject;
     SpawnerBrain SpawnerState;
+    public bool triggerIsRoomVolume;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,7 +25,7 @@ public class TriggerActivatorVolumeBrain : MonoBehaviour
     }
     private void OnTriggerExit(Collider collision)
     {
-        if (collision.gameObject.GetComponent<PlayerCtl>())
+        if ((collision.gameObject.GetComponent<PlayerCtl>()!=null) && triggerIsRoomVolume)
         {
             SpawnerState.isActive = false;
         }

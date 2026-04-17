@@ -9,13 +9,17 @@ using UnityEngine.UI;
 public class TextBoxModal : MonoBehaviour
 {
     Text dialogueTextGrp;
-    int mode = 0;
+    public int mode = 0;
     float timer = 0;
     public string[] text;
     InputAction ok;
     bool selectBtn, oldSelect;
     GameObject confirmMenuSfx;
-    int dialogueLine=0;
+    public int dialogueLine=0;
+    public bool autoAdvanceText;
+    public float advanceInterval;
+    float advTimer = 0;
+    public int stopAutoAdvanceOnThisPage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -48,8 +52,13 @@ public class TextBoxModal : MonoBehaviour
                 break;
             case 1:
                 timer = 0;dialogueTextGrp.enabled = true;
-                if (JustPressedSelect()) 
-                { 
+                if (autoAdvanceText) { advTimer += Time.deltaTime; }
+                if(dialogueLine>=stopAutoAdvanceOnThisPage)
+                { autoAdvanceText = false; }
+                //if (dialogueLine == 0) { dialogueTextGrp.text = text[dialogueLine]; }
+                if ((!autoAdvanceText && JustPressedSelect()) || (autoAdvanceText && (advTimer>advanceInterval))) 
+                {
+                    advTimer = 0;
                     dialogueLine++; 
                     if (dialogueLine >= text.Length)
                     {
@@ -66,7 +75,7 @@ public class TextBoxModal : MonoBehaviour
             default:
                 dialogueTextGrp.enabled = false;
                 timer += Time.deltaTime * 3;
-                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 1;
+                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 2;
                 if (timer > 1) { PlayerInputAggregator.inputEnabled = true; Destroy(gameObject); }
                 break;
         }

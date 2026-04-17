@@ -6,9 +6,10 @@ public class FadeOverlay : MonoBehaviour
 {
     public enum Transitions { FadeIn = 0, Wait = 1, FadeOut = 2, Exit=3 }
     public Transitions mode = Transitions.FadeIn;
-    float timer;
+    public float timer;
     RawImage fadeOverlay;
     float alpha;
+    Color transparent = new Color(0, 0, 0, 0);
     public string sceneForTransfer = "";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +45,9 @@ public class FadeOverlay : MonoBehaviour
                 catch { Debug.Log("Invalid scene"); } 
                 finally { mode = Transitions.Wait; } break;
             default:
+                if (timer > 0) { fadeOverlay.color = transparent; }
                 timer = 0;
+                
                 break;
         }
     }

@@ -16,9 +16,17 @@ public class MuzzleFlash : MonoBehaviour
         mr = GetComponent<MeshRenderer>();
         player = GameObject.Find("DungeonPlayer").transform;
     }
-
+    private void Update()
+    {
+        timer += Time.deltaTime*1.5f;
+        transform.localScale = Vector3.one * Mathf.Sin(timer / duration);
+        transform.LookAt(Camera.main.transform.position);
+        transform.Rotate(180, 0, 0);
+        if (timer > duration)
+        { sfx.Stop(); Destroy(sfx); Destroy(mr.material); Destroy(mr); Destroy(gameObject); }
+    }
     // Update is called once per frame
-    void Update()
+    void OldUpdate()
     {
         //transform.position = player.position;
         transform.LookAt(Camera.main.transform.position);
@@ -27,7 +35,7 @@ public class MuzzleFlash : MonoBehaviour
         timer += Time.deltaTime;
         transform.localScale = Vector3.one * (timer / duration);
         mr.material.mainTextureOffset = Vector2.left * (Mathf.Floor(timer * 8) / 4);
-        mr.material.color = new Color(1, 1, 1, Mathf.Sin((timer/duration)*Mathf.PI));
+        mr.material.color = new Color(1, 1, 1, Mathf.Sin((timer / duration) * Mathf.PI));
         if (timer > duration)
         { sfx.Stop(); Destroy(sfx); Destroy(mr.material); Destroy(mr); Destroy(gameObject); }
 

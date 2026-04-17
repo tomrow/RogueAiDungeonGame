@@ -9,10 +9,11 @@ public class EnemyFundamentals : MonoBehaviour
     public bool dead;
     public int expAward;
     public float KnockBackTimer;
+    public GameObject smoke;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (smoke == null) { smoke = Resources.Load("EnemyExplosion").GameObject(); }
     }
 
     // Update is called once per frame
@@ -24,6 +25,7 @@ public class EnemyFundamentals : MonoBehaviour
     public void Die()
     {
         PlayerHealth.AwardXP(expAward);
+        Instantiate(smoke, transform.position, Quaternion.identity);
         Destroy(gameObject); //todo: proper death animation and drop items
     }
     public void Damage(float amount)

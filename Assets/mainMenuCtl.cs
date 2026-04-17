@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class mainMenuCtl : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class mainMenuCtl : MonoBehaviour
     public enum actions
     {startGame, settings}
     public Transform cursorObj;
-
+    string[] errorText = { "This option is currently unavailable.\nWe are sorry for the inconvenience." };
     InputAction navigate;
     InputAction confirm;
     InputAction cancel;
@@ -78,11 +79,18 @@ public class mainMenuCtl : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("Start");
-        SceneManager.LoadScene("CharacterCreator");
+        SceneManager.LoadScene("Connection Screen Scene");
     }
 
     private void gotoSettings()
     {
-        SceneManager.LoadScene("settings");
+        try { SceneManager.LoadScene("testLevel"); }
+        catch {
+            TextBoxModal t = Instantiate(Resources.Load("NpcDialogueBox").GameObject(), GameObject.Find("Canvas").transform).GetComponent<TextBoxModal>();
+            t.stopAutoAdvanceOnThisPage = 1;
+            t.autoAdvanceText = true;
+            t.advanceInterval = 0.6f;
+            t.text = errorText;
+        }
     }
 }

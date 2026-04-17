@@ -127,13 +127,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   weaponType: 5
-  weaponName: Cork gun
+  weaponName: Launcher
   attackPower: 10
   playerCtl: {fileID: 0}
   weaponCoolDownDuration: 0.2
-  bullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
-  superBullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
-  firesfx: {fileID: 8360450570904253505, guid: 4877b5c18198b274381377c03d3a8cac, type: 3}
+  bullet: {fileID: 9176913463659912956, guid: 32f3124295cda5c428710b839181407a, type: 3}
+  superBullet: {fileID: 9176913463659912956, guid: 42539b480cb5a554385fc920f34bde80, type: 3}
+  firesfx: {fileID: 3468487053185918500, guid: 451999d3876356146bd2b11311f98a68, type: 3}
   superFireSfx: {fileID: 9045368329813304969, guid: b8fa40bd9938ca64cb6c1d720c981278, type: 3}
   hitScan: 0
   superHitScan: 0
@@ -147,6 +147,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4163764758103090870}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 82f838153e2c34146936a1e641770360, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.66412
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82f838153e2c34146936a1e641770360, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.66412
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 82f838153e2c34146936a1e641770360, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.66412
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 82f838153e2c34146936a1e641770360, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

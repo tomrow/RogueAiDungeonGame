@@ -226,6 +226,6 @@ MonoBehaviour:
   firesfx: {fileID: 8624168931246723514, guid: 6cb80f80ab018624bb4220003b7d1b43, type: 3}
   superFireSfx: {fileID: 8624168931246723514, guid: 6cb80f80ab018624bb4220003b7d1b43, type: 3}
   hitScan: 1
-  superHitScan: 0
+  superHitScan: 1
   resPath: weapons/sword
   rotationForHand: {x: 0, y: -90, z: -90}

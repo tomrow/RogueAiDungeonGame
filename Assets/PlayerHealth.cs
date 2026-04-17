@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
     public static PlayerCtl thisPlayer;
     public static GameObject canvasObj;
     public static int health=40, stamina=10, money=0, level=1;
-    public static int baseAtk=10, exp=0, maxHealth=40;
+    public static int baseAtk=10, exp=0, maxHealth=40, maxStamina=10;
     //GameObject openMenuSfx,selectMenuSfx,confirmMenuSfx, backMenuSfx;
     GameObject levelUpEffect;
     
@@ -243,7 +243,7 @@ public class PlayerHealth : MonoBehaviour
         if (exp>maxExpForLevel)
         { 
             PlayerHealth.level++;
-            PlayerHealth.baseAtk = 10 + (PlayerHealth.level-1); PlayerHealth.maxHealth = 40 + ((PlayerHealth.level-1) * 2);
+            PlayerHealth.baseAtk = 10 + (PlayerHealth.level-1); PlayerHealth.maxHealth = 40 + ((PlayerHealth.level-1) * 2); PlayerHealth.maxStamina = Mathf.FloorToInt(10 + ((PlayerHealth.level - 1) * 1.75f));
             Debug.Log("Level Up to "+PlayerHealth.level.ToString());
             exp = exp - maxExpForLevel;
             Instantiate(levelUpEffect, thisPlayer.transform.position, Quaternion.identity);

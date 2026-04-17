@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public float maxRange;
     RaycastHit rayout;
     float travel;
-    public GameObject muzzleFlash;
+    public GameObject muzzleFlash, explosion;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,10 +28,7 @@ public class Projectile : MonoBehaviour
                 try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); } catch { }
                 finally 
                 {
-                    Debug.Log(rayout.point);
-                    Debug.Log(rayout.transform.gameObject.name);
-                    //this.enabled = false;
-                    Destroy(gameObject); 
+                    DestroyOnHitWall();
                 }
             }
         }
@@ -43,10 +40,7 @@ public class Projectile : MonoBehaviour
                 try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }catch { }
                 finally
                 {
-                    Debug.Log(rayout.point);
-                    Debug.Log(rayout.transform.gameObject.name);
-                    //this.enabled = false;
-                    Destroy(gameObject); 
+                    DestroyOnHitWall();
                 }
             }
             Destroy(gameObject);
@@ -57,10 +51,20 @@ public class Projectile : MonoBehaviour
         try { collision.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
         finally
         {
-            Debug.Log(rayout.point);
-            Debug.Log(rayout.transform.gameObject.name);
-            //this.enabled = false;
-            Destroy(gameObject);
+            DestroyOnHitWall();
         }
+    }
+
+    private void DestroyOnHitWall()
+    {
+        Debug.Log(rayout.point);
+        Debug.Log(rayout.transform.gameObject.name);
+        //this.enabled = false;
+        try 
+        { 
+            Projectile explObj = Instantiate(explosion, transform.position, transform.rotation).GetComponent<Projectile>();
+            explObj.attackPower = attackPower*0.7f;
+        } catch { }
+        Destroy(gameObject);
     }
 }

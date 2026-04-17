@@ -55,10 +55,15 @@ public class StoreFront : MonoBehaviour
 
     private void PopulateShop()
     {
-        
-        AddWeaponToShop(10, "Cork gun", "weapons/corkgun", 0.6f, "Simple gun that launches cork", "cylinders.", "Type: Pistol", 100);
-        AddWeaponToShop(10, "Baguette", "weapons/baguette", 0.6f, "A long loaf of bread that you", "can use to strike things.", "Type: Sword", 150);
+        AddWeaponToShop(15, "Blaster", "weapons/laserGun", 0.6f, "Compact laser blaster that", "deals moderate damage.", "Type: Pistol", 100);
+        AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
         AddConsumableToShop("Heals 20HP.", "HealthPack", "TestHealthItem", "A big green capsule with a", "repair kit inside.", "Consumable Item", 20);
+        AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
+        AddWeaponToShop(10, "Launcher", "weapons/bazooka", 0.6f, "A rocket launcher with", "dampened recoil.", "Type: Sword", 150);
+        //old debug weapons
+        AddWeaponToShop(5, "Cork gun", "weapons/corkgun", 0.6f, "Simple gun that launches cork", "cylinders.", "Type: Pistol", 100);
+        AddWeaponToShop(10, "Baguette", "weapons/baguette", 0.6f, "A long loaf of bread that you", "can use to strike things.", "Type: Sword", 150);
+        
     }
 
     private void AddWeaponToShop(float atk, string title, string resPath, float cooldown, string description, string description2, string wtype, int price)
@@ -90,7 +95,7 @@ public class StoreFront : MonoBehaviour
             case 0:
                 PlayerInputAggregator.inputEnabled = false;
                 timer += Time.deltaTime * 3;
-                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer) * 1;
+                transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, timer) * 2;
                 if (timer > 1) { mode++; }
                 break;
             case 1:
@@ -100,7 +105,7 @@ public class StoreFront : MonoBehaviour
             default:
                 dialogueTextGrp.enabled = false;
                 timer += Time.deltaTime * 3;
-                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 1;
+                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, timer) * 2;
                 if (timer > 1) { PlayerInputAggregator.inputEnabled = true; Destroy(gameObject); }
                 break;
         }
@@ -109,9 +114,9 @@ public class StoreFront : MonoBehaviour
     {
         dialogueTextGrp.enabled = true;
         window[0] = "STORE -- Your money: " + PlayerHealth.money.ToString();                                               //Title
-        window[1] = selection > 0 ? "[^]" : ""; //hide if already at top                                                  //Scroll indicators
+        window[1] = (selection > 0 ? "[^] " : "  ") + shelf[selection].merch.name + " (Price: " + shelf[selection].price + ")"; //hide if already at top                                                  //Scroll indicators
         window[7] = (selection < shelf.Count - 1 ? "[v]" : " ") + " - (A) Buy (B) Leave"; //hide if already at bottom
-        window[2] = "    " + shelf[selection].merch.name + " (Price: " + shelf[selection].price + ")";
+        window[2] = "    ";
         window[3] = "    " + shelf[selection].description;
         window[4] = "    " + shelf[selection].description2;
         window[5] = "    Type: " + shelf[selection].itemType;
