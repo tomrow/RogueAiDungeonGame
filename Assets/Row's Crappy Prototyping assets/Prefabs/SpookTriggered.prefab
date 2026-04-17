@@ -52,7 +52,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1733825817828335022
 Transform:
   m_ObjectHideFlags: 0
@@ -160,8 +160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe046c02ecf8aa4395f59e786d58366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  EntitySpookType: 0
+  EntitySpookType: 3
   TargetDestination: {fileID: 6252483579885777183}
+  EventActive: 1
+  SpawnedSpookObject: {fileID: 8161529192523913476, guid: ae24c6f9459bd1c47818e828fc59c079, type: 3}
 --- !u!1 &6252483579885777183
 GameObject:
   m_ObjectHideFlags: 0

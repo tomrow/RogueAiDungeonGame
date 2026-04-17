@@ -15,7 +15,7 @@ public class SpookScripting : MonoBehaviour
     public enum SpookType {WalkThruWalls,WalkThruSpoopmode,inactive,random}; // This Enum Should allow for easy selection in-editor, and ease of development going forward.
     [SerializeField, Tooltip("This deisgnates what this Gameobject will Be when triggered.")] SpookType EntitySpookType;
     [SerializeField, Tooltip("This gameobject is the target for entities with the WalkThru Spooktypes. This is their target destination.")] GameObject TargetDestination;
-    bool EventActive;
+    [SerializeField]bool EventActive;
     float TimeRemainingFromActivation = 5f;
     #endregion
     #region Misc
@@ -26,18 +26,19 @@ public class SpookScripting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        int randomvalue = Random.Range(1, 3);
         StartPos = this.gameObject.transform.position;
         if(EntitySpookType == SpookType.random)
         {
-            if(Random.Range(1,3) == 1)
+            if(randomvalue >= 0f && randomvalue <=1.5f)
             {
                 EntitySpookType = SpookType.WalkThruWalls;
                 Debug.Log("Walk through walls, Ignoring the Player");
-            }else if(Random.Range(1, 3) == 2)
+            }else if(randomvalue >= 1.5f && randomvalue <= 2.5f)
             {
                 EntitySpookType = SpookType.WalkThruSpoopmode;
                 Debug.Log("Walk Through one wall, then spawn a SPOOPMODE enemy.");
-            }else if(Random.Range(1, 3) == 3)
+            }else if(randomvalue >=2.5f)
             {
                 EntitySpookType = SpookType.inactive;
                 Debug.Log("NoSpook");
@@ -51,6 +52,7 @@ public class SpookScripting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("EVENT-ACTIVE");
         Vector3 DirectionOfMovement = ((this.gameObject.transform.position - TargetDestination.transform.position) * -1);
         if (EventActive)
         {
@@ -64,7 +66,7 @@ public class SpookScripting : MonoBehaviour
                     this.transform.position += (DirectionOfMovement * (Time.deltaTime / 2));
                     // This determines the direction of movement, then moves along that direction at a rate of Time.deltatime / 2.
                     // It's fast, but not TOO fast.
-                    if (Vector3.Distance(this.gameObject.transform.position, TargetDestination.transform.position) >= Vector3.Distance(StartPos, TargetDestination.transform.position)/2)
+                    if (Vector3.Distance(this.gameObject.transform.position, TargetDestination.transform.position) <= Vector3.Distance(StartPos, TargetDestination.transform.position)/2)
                     {
                         Instantiate(SpawnedSpookObject,this.transform.position,this.transform.rotation);
                         Destroy(this.gameObject);
