@@ -7,9 +7,12 @@ public class EnemyAgentBrain : MonoBehaviour
 
     /*Dear lord this is really primitive. At current, this enemy can recognise the target location and move toward it. THAT'S IT.*/
     #region variables setup
+    #region Basic Targeting Variables
     [SerializeField, Tooltip("This is the generic enemy target. It moves toward this object's position.")] GameObject Mytarget;
     [SerializeField] NavMeshAgent agent;
     [SerializeField, Tooltip("This is the brain's sight range. enemies farther than the max distance cannot be targets.")] float SightRange;
+    #endregion
+
     [SerializeField, Tooltip("This is the max attack distance. this trigger object tells the brain it can attack.")] float MyAttackMaxDist;
     [SerializeField, Tooltip("This is the ''Too Close'' range. Enemies with this enabled will Cease Moving if within this range. Set to 0 to disable this behaviour. (INADVISED)")] float MyComfortableDist;
     EnemyFundamentals EnemyAttributes;
@@ -20,11 +23,18 @@ public class EnemyAgentBrain : MonoBehaviour
     float AttackInterval;
     [SerializeField, Tooltip("Configureable wait period before attack in seconds.")] float TimeToAttack;
     RaycastHit rayout;
+    #region MiscVariables
+    [SerializeField,Tooltip("The entity forgoes normal behaviour, in favour of spooking the player.")]bool isSpooky;
+    NavMeshAgent MyBodyAndProperties;
+    [SerializeField, Tooltip("This float is the speed an abnormal enemy travels at.")] float SpookSpeed;
+    [SerializeField, Tooltip("This Gameobject is used in conjunction with the isSpooky Parameter. It will not be used otherwise.")] GameObject SpookObj;
+    #endregion
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        MyBodyAndProperties = this.gameObject.GetComponent<NavMeshAgent>();
         LockOnTarget MyTargetableState = this.GetComponent<LockOnTarget>();
         MyTargetableState.on = true;
         EnemyAttributes = GetComponent<EnemyFundamentals>();
@@ -33,11 +43,22 @@ public class EnemyAgentBrain : MonoBehaviour
          * Doing this here allows for the template to have it's targetability off by default.
          * Enemies will automatically turn theirs on.
          */
+        if (isSpooky)
+        {
+            // Here will handle changing the base speed for the enemy, provided it is behaving abnormally.
+            MyBodyAndProperties.speed = SpookSpeed;
+            Debug.Log("The entity" + this.gameObject + "is no longer just an enemy.");
+        }
+        else
+        {
+            Debug.Log(this.gameObject + "is a regular enemy.");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        #region Dev Commentary
         /*
          So... Here's what we need to do.
 
@@ -55,6 +76,7 @@ public class EnemyAgentBrain : MonoBehaviour
         6) Create an attack state that the brain can switch to when needed.
             a) addendum: We may need to manually rotate the enemy while in this state.
          */
+        #endregion
 
 
 
@@ -107,8 +129,18 @@ public class EnemyAgentBrain : MonoBehaviour
             AttackInterval = AttackInterval + Time.deltaTime;
             if (AttackInterval >= TimeToAttack)
             {
-                attack(); Debug.Log("Entity has attacked!");
-                AttackInterval = 0;
+                if (isSpooky) //if the isSpooky paremeter is true, then forgo normal behaviour, in favour of the following.
+                {
+                    Instantiate<GameObject>(SpookObj); // spook the player.
+                    Destroy(this.gameObject); // die.
+                    return;
+                }
+                else if (!isSpooky)
+                {
+                    attack(); Debug.Log("Entity has attacked!");
+                    AttackInterval = 0;
+                }
+                
             }
         }
             
