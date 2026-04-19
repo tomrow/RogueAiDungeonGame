@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6453565861048943062
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 670864544800121521, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d099f37cbd5e66e4c8ea32ee2e857d19, type: 2}
+    - target: {fileID: 2939786754782615762, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_Name
+      value: Generic Enemy test Variant Spooky
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: SpookObj
+      value: 
+      objectReference: {fileID: 7087542539363343948, guid: 3c0e668db7f497a498b36f0db7e8940e, type: 3}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: isSpooky
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: SightRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: SpookSpeed
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: TimeToAttack
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: MyAttackMaxDist
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248023437975432815, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: MyComfortableDist
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7161439118181952723, guid: d72651220ea549d45934d06250618071, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d72651220ea549d45934d06250618071, type: 3}
