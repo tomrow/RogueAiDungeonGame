@@ -47,8 +47,9 @@ public class EnemyAgentBrainWithAnimation : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        animator = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
         
+        animator = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
+        if (animator == null) { animator = GetComponent<Animator>(); }
         MyBodyAndProperties = this.gameObject.GetComponent<NavMeshAgent>();
         LockOnTarget MyTargetableState = this.GetComponent<LockOnTarget>();
         MyTargetableState.on = true;

@@ -178,7 +178,12 @@ public class PlayerCtl : MonoBehaviour
                     { state = States.NoLockOn; Debug.Log("GetUp Complete"); }
                     break;
                 case States.Dead:
-                    //kablammo!
+                    Instantiate(Resources.Load<GameObject>("explosionParticles"), transform.position, Quaternion.identity);
+                    FadeOverlay f = Instantiate(Resources.Load<GameObject>("FadeOverlay"), transform.Find("/Canvas")).GetComponent<FadeOverlay>();
+                    f.sceneForTransfer = "hubWorld";
+                    f.transform.localPosition = Vector3.zero;
+                    f.mode = FadeOverlay.Transitions.FadeOut;
+                    PlayerHealth.health = PlayerHealth.maxHealth;
                     Destroy(gameObject);
                     break;
                 case States.Leap:
@@ -206,7 +211,7 @@ public class PlayerCtl : MonoBehaviour
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
     {
         Debug.Log("Ouch");
-        if (PlayerHealth.health == 0) { state = States.Dead; }
+        if (PlayerHealth.health <= 0) { state = States.Dead; }
         else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; animator.SetTrigger("knockbackHeavy"); }
         
     }
