@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5475674122665715720}
   - component: {fileID: 8195713467148264538}
   - component: {fileID: 5493968067895757352}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: gunFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

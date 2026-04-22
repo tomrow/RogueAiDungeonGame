@@ -13,7 +13,7 @@ public class PlayerCtl : MonoBehaviour
     public GameObject animCtl;
     //Labels for player action states
     public enum States
-    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10, Leap=11}
+    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10, Leap=11, WalkTowardGoal=12, StandOnGoal=13 }
     public States state = States.NoLockOn;
     public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer}
     public CameraModes cameraState, cameraStateNext;
@@ -99,7 +99,7 @@ public class PlayerCtl : MonoBehaviour
         }
         if (weapon != null) { animator.SetInteger("weaponType", (int)weapon.weaponType); }
         else { animator.SetInteger("weaponType", 0); }
-        animator.SetInteger("mode", (int)state);
+        
         weaponCoolDown += Time.fixedDeltaTime;
         if (PlayerHealth.health <= 0) { state = States.Dead; }        
         if(state == States.Leap) { leapTimer += Time.deltaTime; }
@@ -107,6 +107,7 @@ public class PlayerCtl : MonoBehaviour
             switch (state)
             {
                 case States.NoLockOn:
+                    animator.SetInteger("mode", (int)state);
                     PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
                     if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
                     oldLockOnKeyState = lockOn;
@@ -119,6 +120,7 @@ public class PlayerCtl : MonoBehaviour
                     if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
                     break;
                 case States.LockedOn:
+                    animator.SetInteger("mode", (int)state);
                     PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                     if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
                     else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
@@ -141,6 +143,7 @@ public class PlayerCtl : MonoBehaviour
                     transform.Translate(Vector3.up * (-1 * airSpd * Time.fixedDeltaTime));
                     break;
                 case States.LightAttack:
+                    animator.SetInteger("mode", (int)state);
                     if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, PlayerHealth.baseAtk + weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx, false); }
                     else
                     {
@@ -156,16 +159,19 @@ public class PlayerCtl : MonoBehaviour
                     transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                     break;
                 case States.HeavyAttack:
+                    animator.SetInteger("mode", (int)state);
                     if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
                     else { AttackCreate(defaultBullet, false, 20, 1, handCannonSuperSfx, true); }
                     PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                     transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                     break;
                 case States.Knockback:
+                    animator.SetInteger("mode", (int)state);
                     knockBackTimer -= Time.fixedDeltaTime;
                     if (knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); Debug.Log("Getting Up"); }
                     break;
                 case States.KnockbackGetUp:
+                    animator.SetInteger("mode", (int)state);
                     //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
                     Debug.Log(lowerBody.ToString() + lowerBody.normalizedTime.ToString() + lowerBody.IsName("KnockBackGetUp").ToString());
                     if (!lowerBody.IsName("KnockBackGetUp") && !upperBody.IsName("KnockBackGetUp"))
@@ -179,6 +185,17 @@ public class PlayerCtl : MonoBehaviour
                     animator.SetInteger("mode", 2);
                     transform.position = Vector3.Lerp(leapOrigin, leapTarget, leapTimer) + (Vector3.up * Mathf.Sin(camLerpTimer * Mathf.PI)) ;
                     break;
+                case States.WalkTowardGoal:
+                    animator.SetInteger("mode", 0);
+                    animator.SetFloat("speed", 1);
+                    animator.SetFloat("animSpeed", 1);
+                cameraStateNext = CameraModes.Static;
+                break;
+                case States.StandOnGoal:
+                    animator.SetInteger("mode", 0);
+                    animator.SetFloat("speed", 0);
+                    animator.SetFloat("animSpeed", 1);
+                break;
                 default:
                     throw new NotImplementedException();
                     break;
