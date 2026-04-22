@@ -127,7 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   damagenumber: 1
   stuntimertemp: 1
-  ProjectileSpeed: 3
+  ProjectileSpeed: 3.12
   IsMelee: 0
   MeleeAttackScaleVar: 0
   ProjectileLifespan: 10
+  ProjectileScale: 1

@@ -13,7 +13,7 @@ public class PlayerCtl : MonoBehaviour
     public GameObject animCtl;
     //Labels for player action states
     public enum States
-    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10}
+    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10, Leap=11}
     public States state = States.NoLockOn;
     public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer}
     public CameraModes cameraState, cameraStateNext;
@@ -51,7 +51,8 @@ public class PlayerCtl : MonoBehaviour
     Vector3 leftShoulderPosition, rightShoulderPosition;
     //AnimatorStateInfo hair;
     PlayerHealth health;
-
+    public Vector3 leapOrigin, leapTarget;
+    float leapTimer;
 
     void Start()
     {
@@ -100,80 +101,88 @@ public class PlayerCtl : MonoBehaviour
         else { animator.SetInteger("weaponType", 0); }
         animator.SetInteger("mode", (int)state);
         weaponCoolDown += Time.fixedDeltaTime;
-        if (PlayerHealth.health <= 0) { state = States.Dead; }            
-        switch (state)
-        {
-            case States.NoLockOn:
-                PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
-                if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); } oldLockOnKeyState = lockOn;
-                if (eHeal && (oldEHealKeyState == false)) { PlayerHealth.EmergencyHeal(); }
-                oldEHealKeyState = eHeal;
-                if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
-                AnimatorUpdateWalking();
-                cameraStateNext = CameraModes.Follow;
-                if (Atk1 && weaponCoolDown>=0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
-                if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
-                break;
-            case States.LockedOn:
-                PlayerMovement(6, 2, 0.8f*(sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
-                if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
-                else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
-                if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
-                oldLockOnKeyState = lockOn;
-                AnimatorUpdateWalking();
-                cameraStateNext = CameraModes.StickBehindPlayer;
-                if (Atk1 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
-                if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0-Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
-                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
-                break;
-            case States.Airborne:
-                PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
-                if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
-                oldLockOnKeyState = lockOn;
-                AnimatorUpdateWalking();
-                animator.SetInteger("mode", 2);
-                cameraStateNext = CameraModes.Follow;
-                airSpd += 0.5f;
-                transform.Translate(Vector3.up * (-1 * airSpd * Time.fixedDeltaTime));
-                break;
-            case States.LightAttack:
-                if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, PlayerHealth.baseAtk + weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx, false); }
-                else { 
-                    AttackCreate(
-                        defaultBullet.GameObject(),
-                        true,
-                        PlayerHealth.baseAtk,
-                        0.4f,
-                        handCannonSfx, 
-                        false);
-                }
-                PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
-                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
-                break;
-            case States.HeavyAttack:
-                if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
-                else { AttackCreate(defaultBullet, false, 20, 1, handCannonSuperSfx, true); }
-                PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
-                transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
-                break;
-            case States.Knockback:
-                knockBackTimer -= Time.fixedDeltaTime;
-                if(knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); Debug.Log("Getting Up"); }
-                break;
-            case States.KnockbackGetUp:
-                //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
-                Debug.Log(lowerBody.ToString() + lowerBody.normalizedTime.ToString() + lowerBody.IsName("KnockBackGetUp").ToString());
-                if (!lowerBody.IsName("KnockBackGetUp")&& !upperBody.IsName("KnockBackGetUp"))
-                { state = States.NoLockOn;  Debug.Log("GetUp Complete"); }
-                break;
-            case States.Dead:
-                //kablammo!
-                Destroy(gameObject);
-                break;
-            default:
-                throw new NotImplementedException();
-                break;
-        }
+        if (PlayerHealth.health <= 0) { state = States.Dead; }        
+        if(state == States.Leap) { leapTimer += Time.deltaTime; }
+        else { leapTimer = 0; }
+            switch (state)
+            {
+                case States.NoLockOn:
+                    PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
+                    if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
+                    oldLockOnKeyState = lockOn;
+                    if (eHeal && (oldEHealKeyState == false)) { PlayerHealth.EmergencyHeal(); }
+                    oldEHealKeyState = eHeal;
+                    if (lockedOnEnemy != null) { state = States.LockedOn; animator.SetTrigger("battleStance"); }
+                    AnimatorUpdateWalking();
+                    cameraStateNext = CameraModes.Follow;
+                    if (Atk1 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
+                    if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
+                    break;
+                case States.LockedOn:
+                    PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                    if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
+                    else { state = States.NoLockOn; animator.SetTrigger("noBattleStance"); }  //otherwise, un-lockon
+                    if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
+                    oldLockOnKeyState = lockOn;
+                    AnimatorUpdateWalking();
+                    cameraStateNext = CameraModes.StickBehindPlayer;
+                    if (Atk1 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk1 pressed"); state = States.LightAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }  //fire light attack when button is pressed
+                    if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
+                    transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                    break;
+                case States.Airborne:
+                    PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
+                    if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
+                    oldLockOnKeyState = lockOn;
+                    AnimatorUpdateWalking();
+                    animator.SetInteger("mode", 2);
+                    cameraStateNext = CameraModes.Follow;
+                    airSpd += 0.5f;
+                    transform.Translate(Vector3.up * (-1 * airSpd * Time.fixedDeltaTime));
+                    break;
+                case States.LightAttack:
+                    if (weapon != null) { AttackCreate(weapon.bullet, weapon.hitScan, PlayerHealth.baseAtk + weapon.attackPower, weapon.weaponCoolDownDuration, weapon.firesfx, false); }
+                    else
+                    {
+                        AttackCreate(
+                            defaultBullet.GameObject(),
+                            true,
+                            PlayerHealth.baseAtk,
+                            0.4f,
+                            handCannonSfx,
+                            false);
+                    }
+                    PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                    transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                    break;
+                case States.HeavyAttack:
+                    if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
+                    else { AttackCreate(defaultBullet, false, 20, 1, handCannonSuperSfx, true); }
+                    PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
+                    transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
+                    break;
+                case States.Knockback:
+                    knockBackTimer -= Time.fixedDeltaTime;
+                    if (knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); Debug.Log("Getting Up"); }
+                    break;
+                case States.KnockbackGetUp:
+                    //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
+                    Debug.Log(lowerBody.ToString() + lowerBody.normalizedTime.ToString() + lowerBody.IsName("KnockBackGetUp").ToString());
+                    if (!lowerBody.IsName("KnockBackGetUp") && !upperBody.IsName("KnockBackGetUp"))
+                    { state = States.NoLockOn; Debug.Log("GetUp Complete"); }
+                    break;
+                case States.Dead:
+                    //kablammo!
+                    Destroy(gameObject);
+                    break;
+                case States.Leap:
+                    animator.SetInteger("mode", 2);
+                    transform.position = Vector3.Lerp(leapOrigin, leapTarget, leapTimer) + (Vector3.up * Mathf.Sin(camLerpTimer * Mathf.PI)) ;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
     }
 
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
@@ -319,6 +328,7 @@ public class PlayerCtl : MonoBehaviour
         {
             transform.position = rayout.point - (transform.localScale.x*(mov.normalized * 0.2f));
             currentHeading = Vector2.zero;
+            Debug.Log("walkied into "+rayout.collider.gameObject.name);
         }
         else { transform.position += mov; }
         if (Physics.Raycast(transform.position, transform.up * -1f, out rayout, transform.localScale.y * 0.6f))
@@ -336,7 +346,7 @@ public class PlayerCtl : MonoBehaviour
         {
             Vector3 raydir = transform.TransformVector(new Vector3(Mathf.Sin(i / 2 * Mathf.PI), 0, Mathf.Cos(i / 2 * Mathf.PI)));
             if (Physics.Raycast(transform.position, raydir, out rayout, transform.localScale.x * 0.2f))
-            { transform.position = rayout.point - (raydir * 0.2f); }
+            { transform.position = rayout.point - (raydir * 0.2f); Debug.Log("pushed out of " + rayout.collider.gameObject.name); }
         } 
     }
     public void SetProportions()

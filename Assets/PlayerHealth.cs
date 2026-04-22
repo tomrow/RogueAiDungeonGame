@@ -87,6 +87,7 @@ public class PlayerHealth : MonoBehaviour
     int dpadDir, oldDpad;
     public static int selection, inventorySelectionIndex, inventorySelectionViewPos, cursorPos;
     public static bool scrollableUp, scrollableDown;
+    
     List<string> statuses = new List<string>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
