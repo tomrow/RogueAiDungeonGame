@@ -33,15 +33,15 @@ public class SpookScripting : MonoBehaviour
             if(randomvalue >= 0f && randomvalue <=1.5f)
             {
                 EntitySpookType = SpookType.WalkThruWalls;
-                Debug.Log("Walk through walls, Ignoring the Player");
+                //Debug.Log("Walk through walls, Ignoring the Player");
             }else if(randomvalue >= 1.5f && randomvalue <= 2.5f)
             {
                 EntitySpookType = SpookType.WalkThruSpoopmode;
-                Debug.Log("Walk Through one wall, then spawn a SPOOPMODE enemy.");
+                //Debug.Log("Walk Through one wall, then spawn a SPOOPMODE enemy.");
             }else if(randomvalue >=2.5f)
             {
                 EntitySpookType = SpookType.inactive;
-                Debug.Log("NoSpook");
+                //Debug.Log("NoSpook");
             }
         }
         // huzzah! There is now a randomised element that we can implement if wanted!
@@ -52,7 +52,7 @@ public class SpookScripting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("EVENT-ACTIVE");
+        //Debug.Log("EVENT-ACTIVE");
         Vector3 DirectionOfMovement = ((this.gameObject.transform.position - TargetDestination.transform.position) * -1);
         if (EventActive)
         {
