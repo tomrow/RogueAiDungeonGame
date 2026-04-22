@@ -2,7 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ShopKeeper : MonoBehaviour
+public class RepairCenterClerk : MonoBehaviour
 {
     bool lt, oldLt;
     GameObject confirmMenuSfx, shopFrontPrefab, canvas;
@@ -10,7 +10,7 @@ public class ShopKeeper : MonoBehaviour
     void Start()
     {
         confirmMenuSfx = Resources.Load("sfxEmitters/MenuConfirm").GameObject();
-        shopFrontPrefab = Resources.Load("ShopFront").GameObject();
+        shopFrontPrefab = Resources.Load("HealMenu").GameObject();
         canvas = GameObject.Find("/Canvas");
     }
     private bool JustPressedSelect()

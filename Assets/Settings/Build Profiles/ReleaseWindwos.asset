@@ -29,7 +29,11 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/titlescreen.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/MeshVerTemplate.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/hubWorld.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/tutorialWorld.unity
   - m_enabled: 1
     m_path: Assets/Scenes/CharacterCreator.unity
   m_HasScriptingDefines: 0

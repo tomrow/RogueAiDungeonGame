@@ -195,6 +195,7 @@ public class PlayerCtl : MonoBehaviour
                     animator.SetInteger("mode", 0);
                     animator.SetFloat("speed", 0);
                     animator.SetFloat("animSpeed", 1);
+                cameraStateNext = CameraModes.Static;
                 break;
                 default:
                     throw new NotImplementedException();

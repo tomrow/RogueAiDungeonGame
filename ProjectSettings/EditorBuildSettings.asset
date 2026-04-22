@@ -26,6 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/testLevel.unity
     guid: 829bf45f0afcd644ea5929f971c5e417
+  - enabled: 1
+    path: Assets/Scenes/tutorialWorld.unity
+    guid: 3d99ec13b86dbf9478ce96a887afba4b
+  - enabled: 1
+    path: Assets/Scenes/MeshVerTemplate.unity
+    guid: 475032f2513b38748a2058790f1a9492
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0

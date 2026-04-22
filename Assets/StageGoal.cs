@@ -9,11 +9,13 @@ public class StageGoal : MonoBehaviour
     float walkTimer;
     Vector3 playerContactPos;
     public bool revertInventory;
-    public List<PlayerHealth.Item> oldInv;
+    public List<PlayerHealth.Item> oldInv = new List<PlayerHealth.Item>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         oldInv = PlayerHealth.inventory;
+        foreach(PlayerHealth.Item item in PlayerHealth.inventory)
+        { oldInv.Add(item); }
     }
 
     // Update is called once per frame
@@ -34,7 +36,13 @@ public class StageGoal : MonoBehaviour
                     f.sceneForTransfer = nextStage;
                     f.transform.localPosition = Vector3.zero;
                     f.mode = FadeOverlay.Transitions.FadeOut;
-                    PlayerHealth.inventory = oldInv;
+                    if (PlayerHealth.thisPlayer.weapon != null) { WeaponClass.Collect(PlayerHealth.thisPlayer.weapon); PlayerHealth.thisPlayer.weapon = null; }
+                    if (revertInventory)
+                    {
+                        PlayerHealth.inventory.Clear();
+                        foreach (PlayerHealth.Item item in oldInv)
+                        { PlayerHealth.inventory.Add(item); } //set it back to what it was before tutorial
+                    }
                 }
             }
         }

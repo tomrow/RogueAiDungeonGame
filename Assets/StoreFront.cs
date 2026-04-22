@@ -1,8 +1,6 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -51,6 +49,7 @@ public class StoreFront : MonoBehaviour
         PopulateShop();
         dialogueTextGrp.enabled = false;
         transform.localPosition = Vector3.zero;
+        transform.localScale = (Vector3.up + Vector3.forward) * 2f;
     }
 
     private void PopulateShop()
