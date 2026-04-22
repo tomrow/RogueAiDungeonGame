@@ -20,8 +20,8 @@ public class GateSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        laserDoorReference = MyDoor.GetComponentInChildren<LaserDoor>();
-        Debug.Log(laserDoorReference);
+        //laserDoorReference = MyDoor.GetComponentInChildren<LaserDoor>();
+        //Debug.Log(laserDoorReference);
     }
     private void OnTriggerEnter(Collider other)
     {

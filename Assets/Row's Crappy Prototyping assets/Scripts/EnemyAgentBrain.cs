@@ -43,7 +43,7 @@ public class EnemyAgentBrain : MonoBehaviour
          * Doing this here allows for the template to have it's targetability off by default.
          * Enemies will automatically turn theirs on.
          */
-        if (isSpooky)
+        /*if (isSpooky)
         {
             // Here will handle changing the base speed for the enemy, provided it is behaving abnormally.
             MyBodyAndProperties.speed = SpookSpeed;
@@ -52,7 +52,7 @@ public class EnemyAgentBrain : MonoBehaviour
         else
         {
             Debug.Log(this.gameObject + "is a regular enemy.");
-        }
+        }*/
     }
 
     // Update is called once per frame
