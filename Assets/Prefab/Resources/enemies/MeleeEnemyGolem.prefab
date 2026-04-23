@@ -185,7 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Mytarget: {fileID: 0}
   agent: {fileID: 2736038551718929513}
-  SightRange: 50
+  SightRange: 20
   MyAttackMaxDist: 2.3
   MyComfortableDist: 0.64
   EnemyAttackBullet: {fileID: 5202910514285715138, guid: 56d6a1a33fbd1dc4fb3382ab9fcf46c9, type: 3}
