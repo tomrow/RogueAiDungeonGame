@@ -26,5 +26,7 @@ public class XkullBrain : MonoBehaviour
         try
         { p.DamageFrom(transform, 6, 1); }
         catch { }
+        transform.Rotate(0, 180, 0);
+        transform.Translate(translatePerSecond * Time.deltaTime);
     }
 }

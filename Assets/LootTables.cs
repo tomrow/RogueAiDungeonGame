@@ -7,7 +7,9 @@ public class LootTables : MonoBehaviour
     public static GameObject[] currentLootDrops;
     void Start()
     {
-        LootTables.currentLootDrops = lootDropsForThisStage;
+
+        LootTables.currentLootDrops.Add(Resources.Load<GameObject>("Coin"));
+        LootTables.currentLootDrops.Add(Resources.Load<GameObject>("HealthPack"));
     }
 
     // Update is called once per frame
