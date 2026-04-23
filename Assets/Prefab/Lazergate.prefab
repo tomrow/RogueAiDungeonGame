@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 2053162725373611789}
   - component: {fileID: 6788665504979557297}
   - component: {fileID: 9022328513781946551}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GateSwitch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
