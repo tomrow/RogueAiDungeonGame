@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6057103842161435282}
   - component: {fileID: 4299522676823251003}
   m_Layer: 2
-  m_Name: TestHealthItem
+  m_Name: HealthPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,4 +195,4 @@ MonoBehaviour:
   HP: 20
   SP: 0
   useParticles: {fileID: 0}
-  resPath: TestHealthItem
+  resPath: HealthPack

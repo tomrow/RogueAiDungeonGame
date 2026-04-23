@@ -56,7 +56,7 @@ public class StoreFront : MonoBehaviour
     {
         AddWeaponToShop(15, "Blaster", "weapons/laserGun", 0.6f, "Compact laser blaster that", "deals moderate damage.", "Type: Pistol", 100);
         AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
-        AddConsumableToShop("Heals 20HP.", "HealthPack", "TestHealthItem", "A big green capsule with a", "repair kit inside.", "Consumable Item", 20);
+        AddConsumableToShop("Heals 20HP.", "HealthPack", "HealthPack", "A big green capsule with a", "repair kit inside.", "Consumable Item", 20);
         AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
         AddWeaponToShop(10, "Launcher", "weapons/bazooka", 0.6f, "A rocket launcher with", "dampened recoil.", "Type: Sword", 150);
         //old debug weapons

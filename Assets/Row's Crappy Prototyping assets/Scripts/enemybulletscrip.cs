@@ -45,7 +45,7 @@ public class enemybulletscrip : MonoBehaviour
         try
         {
             PlayerCtl p = collision.gameObject.GetComponent<PlayerCtl>();
-            p.DamageFrom(this.transform, damagenumber, stuntimertemp); //using the player's Playerctrl script, sets position, Power, and stun timer value of an attack.
+            if (p != null) { p.DamageFrom(this.transform, damagenumber, stuntimertemp); } //using the player's Playerctrl script, sets position, Power, and stun timer value of an attack.
                                                                        //
             #region Collapsed Commentary on damage-stun script
             //p.DamageFrom(this.transform, damagenumber, damagenumber*1.5f);

@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,12 @@ public class EnemyFundamentals : MonoBehaviour
     public int expAward;
     public float KnockBackTimer;
     public GameObject smoke;
+    GameObject healthHudPrefab;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        healthHudPrefab = Resources.Load<GameObject>("AttackHudAnim");
         if (smoke == null) { smoke = Resources.Load("EnemyExplosion").GameObject(); }
     }
 
@@ -26,15 +30,19 @@ public class EnemyFundamentals : MonoBehaviour
     {
         PlayerHealth.AwardXP(expAward);
         Instantiate(smoke, transform.position, Quaternion.identity);
-        Instantiate(LootTables.currentLootDrops[Random.Range(0, LootTables.currentLootDrops.Count-1)], transform.position, Quaternion.identity);
+        try { Instantiate(LootTables.currentLootDrops[UnityEngine.Random.Range(0, LootTables.currentLootDrops.Count - 1)], transform.position, Quaternion.identity); } catch { Debug.Log("Loot not working or not initialized"); }
         Destroy(gameObject); //todo: proper death animation and drop items
     }
     public void Damage(float amount)
     {
-        GameObject h = Instantiate(Resources.Load("AttackHudAnim").GameObject(), PlayerHealth.canvasObj.transform, false);
-        h.GetComponent<AttackHudAnim>().subject = this.transform; h.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-        h.GetComponent<Text>().text = ((int)amount).ToString();
-        hp-=(int)amount;
+        GameObject healthHudElement;
+        healthHudElement = Instantiate(healthHudPrefab, transform.Find("/Canvas"));
+        healthHudElement.GetComponent<AttackHudAnim>().subject = this.transform;
+        healthHudElement.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        healthHudElement.GetComponent<Text>().text = ((int)amount).ToString();
+        
+
+        hp -=(int)amount;
         KnockBackTimer += amount / 6;
         if(hp <= 0) { Die(); }
     }

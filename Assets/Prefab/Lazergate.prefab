@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7690130935087906884}
   - component: {fileID: 4855736588077612607}
   - component: {fileID: 1947182188441865894}
+  - component: {fileID: 5808863749994041974}
   m_Layer: 0
   m_Name: Shitass1
   m_TagString: Untagged
@@ -113,6 +114,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &5808863749994041974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520216022519256272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da29e900e24a3743a274832c491ec0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  speed: 1.5
 --- !u!1 &1865291440167636406
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,6 +337,7 @@ GameObject:
   - component: {fileID: 976169988393899001}
   - component: {fileID: 5165319145100047473}
   - component: {fileID: 6214097791608990305}
+  - component: {fileID: 6481307980142830235}
   m_Layer: 0
   m_Name: shitass2
   m_TagString: Untagged
@@ -424,6 +439,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6481307980142830235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7270548564794064259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da29e900e24a3743a274832c491ec0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  speed: 1.5
 --- !u!1 &8706371554458296505
 GameObject:
   m_ObjectHideFlags: 0

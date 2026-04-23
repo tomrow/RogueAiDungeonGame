@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -25,7 +26,8 @@ public class Projectile : MonoBehaviour
             travel += Time.deltaTime * speed;
             if (Physics.Raycast(transform.position, transform.forward, out rayout, Time.deltaTime * speed * 2f))
             {
-                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); } catch { }
+                Debug.Log(rayout.collider.gameObject.name);
+                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(UnityEngine.Random.Range(attackPower * 0.8f, attackPower * 1.2f)); } catch(Exception e) { Debug.Log("Shot Failed!" + e.Message); }
                 finally 
                 {
                     DestroyOnHitWall();
@@ -37,7 +39,8 @@ public class Projectile : MonoBehaviour
             if (Physics.Raycast(transform.position, transform.forward, out rayout, maxRange))
             {
                 Debug.DrawRay(transform.position, transform.forward * maxRange, Color.red);
-                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }catch { }
+                Debug.Log(rayout.collider.gameObject.name);
+                try { rayout.collider.gameObject.GetComponent<EnemyFundamentals>().Damage(UnityEngine.Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }catch (Exception e) { Debug.Log("Shot Failed!" + e.Message); }
                 finally
                 {
                     DestroyOnHitWall();
@@ -48,7 +51,7 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        try { collision.gameObject.GetComponent<EnemyFundamentals>().Damage(Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
+        try { collision.gameObject.GetComponent<EnemyFundamentals>().Damage(UnityEngine.Random.Range(attackPower * 0.8f, attackPower * 1.2f)); }
         finally
         {
             DestroyOnHitWall();
