@@ -26,6 +26,7 @@ public class EnemyFundamentals : MonoBehaviour
     {
         PlayerHealth.AwardXP(expAward);
         Instantiate(smoke, transform.position, Quaternion.identity);
+        Instantiate(LootTables.currentLootDrops[Random.Range(0, LootTables.currentLootDrops.Count-1)], transform.position, Quaternion.identity);
         Destroy(gameObject); //todo: proper death animation and drop items
     }
     public void Damage(float amount)
