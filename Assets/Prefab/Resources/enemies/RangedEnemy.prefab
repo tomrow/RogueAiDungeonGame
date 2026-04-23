@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAgentBrainWithAnimation
   Mytarget: {fileID: 0}
   agent: {fileID: 2243936674237175395}
-  SightRange: 20
+  SightRange: 30
   MyAttackMaxDist: 7
   MyComfortableDist: 2
   EnemyAttackBullet: {fileID: 5202910514285715138, guid: 980cf576f415efa4fa1b55bae932ebf0, type: 3}
