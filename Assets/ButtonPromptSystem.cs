@@ -21,7 +21,7 @@ public class ButtonPromptSystem : MonoBehaviour
         else { delay--; }
 
     }
-    public void TalkPrompt(){ talk.SetActive(false); delay = 2; }
-    public void GrabPrompt() { grab.SetActive(false); delay = 2; }
-    public void PcPrompt() { pc.SetActive(false); delay = 2; }
+    public void TalkPrompt(){ grab.SetActive(false); pc.SetActive(false); talk.SetActive(true); delay = 2; }
+    public void GrabPrompt() { grab.SetActive(true); pc.SetActive(false); talk.SetActive(false); delay = 2; }
+    public void PcPrompt() { grab.SetActive(false); pc.SetActive(true); talk.SetActive(false); delay = 2; }
 }
