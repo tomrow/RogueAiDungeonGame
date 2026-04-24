@@ -24,7 +24,7 @@ public class HubWorldConsole : MonoBehaviour
         oldLt = lt; lt = PlayerHealth.thisPlayer.Atk3;
         if (Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position) < 4)
         {
-            try { ButtonPromptSystem.promptObj.GrabPrompt(); } catch { }
+            try { ButtonPromptSystem.promptObj.PcPrompt(); } catch { }
             if(JustPressedSelect())
             {   
                 GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets();
