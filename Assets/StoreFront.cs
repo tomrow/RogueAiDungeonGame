@@ -58,7 +58,7 @@ public class StoreFront : MonoBehaviour
         AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
         AddConsumableToShop("Heals 20HP.", "HealthPack", "HealthPack", "A big green capsule with a", "repair kit inside.", "Consumable Item", 20);
         AddWeaponToShop(10, "Sword", "weapons/sword", 0.6f, "A long and durable metal", "blade.", "Type: Sword", 150);
-        AddWeaponToShop(10, "Launcher", "weapons/bazooka", 0.6f, "A rocket launcher with", "dampened recoil.", "Type: Sword", 150);
+        AddWeaponToShop(10, "Launcher", "weapons/bazooka", 0.6f, "A rocket launcher with", "dampened recoil.", "Type: Heavy Gun", 150);
         //old debug weapons
         AddWeaponToShop(5, "Cork gun", "weapons/corkgun", 0.6f, "Simple gun that launches cork", "cylinders.", "Type: Pistol", 100);
         AddWeaponToShop(10, "Baguette", "weapons/baguette", 0.6f, "A long loaf of bread that you", "can use to strike things.", "Type: Sword", 150);
