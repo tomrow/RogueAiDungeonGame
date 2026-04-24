@@ -2047,6 +2047,7 @@ GameObject:
   - component: {fileID: 237198674}
   - component: {fileID: 237198673}
   - component: {fileID: 237198672}
+  - component: {fileID: 237198676}
   m_Layer: 0
   m_Name: PLR_SPAWN_PLTFRM
   m_TagString: Untagged
@@ -2149,6 +2150,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &237198676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237198671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35806054fbde5b34995cc90e4f44be82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectStorage
 --- !u!1001 &237893632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17170,7 +17183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6145003368627186182, guid: 7d1340d32219e2441a9d8929257a007a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.112
+      value: -8.31
       objectReference: {fileID: 0}
     - target: {fileID: 6145003368627186182, guid: 7d1340d32219e2441a9d8929257a007a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17178,7 +17191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6145003368627186182, guid: 7d1340d32219e2441a9d8929257a007a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.843
+      value: -2.84
       objectReference: {fileID: 0}
     - target: {fileID: 6210831094842358132, guid: 7d1340d32219e2441a9d8929257a007a, type: 3}
       propertyPath: m_LocalScale.x

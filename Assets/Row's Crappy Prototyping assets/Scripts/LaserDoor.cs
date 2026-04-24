@@ -5,19 +5,23 @@ public class LaserDoor : MonoBehaviour
     [SerializeField, Tooltip("This is the object that needs to remain for this one to keep doing it's usual behaviour.")] GameObject PowerGenerator;
     [SerializeField, Tooltip("This is the timer for timed gates. This defines the amount of time the gate remains open.")] float TimeOpenedMax;
     [SerializeField, Tooltip("This Gate is timed.")] public bool GateOpeningIsTimed;
-    public bool GateHasBeenOpened;
+    public bool GateHasBeenOpened = false;
     #region ARGH
     GameObject SHITEASS1;
     GameObject SHITEASS2;
     GameObject SHITEASS3;
     #endregion
     float timeRemainingOpen;
+    GameObject ClosedNoise;
+    bool soundPlayed = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ClosedNoise = Resources.Load<GameObject>("sfxEmitters/doorOpen");
         if (!PowerGenerator)
         {
-            Debug.Log("Object is Unpowered" + this.gameObject + "Will now be deleted.");
+            Instantiate(ClosedNoise);
+            Debug.Log("Object is Unpowered" + this.gameObject + "Will now be deleted.");            
             Destroy(this.gameObject);
         }
         timeRemainingOpen = TimeOpenedMax;
@@ -34,6 +38,7 @@ public class LaserDoor : MonoBehaviour
         {
             if (GateHasBeenOpened == false)
             {
+                soundPlayed = false;
                 SHITEASS1.SetActive(true); // The gate closes.
                 SHITEASS2.SetActive(true); // The gate closes.
                 SHITEASS3.SetActive(true); // The gate closes.
@@ -43,20 +48,30 @@ public class LaserDoor : MonoBehaviour
                 SHITEASS1.SetActive(false); // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                 SHITEASS2.SetActive(false); // WHO'S IDEA WAS "this.gameObject.transform.Find("shitassCollision").gameObject;", ESPECIALLY IN A LANGUAGE THAT EMPHASISES PUTTING THINGS, ATTHEFRONT!
                 SHITEASS3.SetActive(false); //set selected objects to Inactive?
+                Soundplay();
+
                 timeRemainingOpen -= Time.deltaTime; // start decrementing the timer.
 
                 if (timeRemainingOpen <= 0)// if timer runs out...
                 {
                     timeRemainingOpen = TimeOpenedMax; //reset timer.
                     GateHasBeenOpened = false; // close gate.
+
                 }
             }
-            else if(GateHasBeenOpened && !GateOpeningIsTimed) // else, if the gate is opened and not timed then...
+            else if (GateHasBeenOpened && !GateOpeningIsTimed) // else, if the gate is opened and not timed then...
             {
-                Destroy(this.gameObject); // destroy the gate.
-            }
 
+                SHITEASS1.SetActive(false); // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                SHITEASS2.SetActive(false); // WHO'S IDEA WAS "this.gameObject.transform.Find("shitassCollision").gameObject;", ESPECIALLY IN A LANGUAGE THAT EMPHASISES PUTTING THINGS, ATTHEFRONT!
+                SHITEASS3.SetActive(false); //set selected objects to Inactive?
+                Soundplay();
+            }
         }
+    }
+    void Soundplay()
+    {
+        if (!soundPlayed) { Instantiate(ClosedNoise); soundPlayed = true; }
     }
 }
 #region ARGH2
