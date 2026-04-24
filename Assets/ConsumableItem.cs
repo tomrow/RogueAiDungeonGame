@@ -42,7 +42,8 @@ public class ConsumableItem : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerCtl>() != null)
         {
-            if(other.gameObject.GetComponent<PlayerCtl>().Atk3)
+            try { ButtonPromptSystem.promptObj.GrabPrompt(); } catch { }
+            if (other.gameObject.GetComponent<PlayerCtl>().Atk3)
             {
                 CollectThis();
             }

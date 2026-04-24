@@ -16,6 +16,7 @@ public class HubWorldElevator : MonoBehaviour
         {
             PlayerHealth.thisPlayer.state = PlayerCtl.States.StandOnGoal;
             PlayerHealth.thisPlayer.transform.position += Vector3.down * Time.deltaTime; transform.position += Vector3.down * Time.deltaTime;
+            if (PlayerHealth.thisPlayer.weapon != null) { WeaponClass.Collect(PlayerHealth.thisPlayer.weapon); PlayerHealth.thisPlayer.weapon = null; }
         }
     }
     public void StartElevator()

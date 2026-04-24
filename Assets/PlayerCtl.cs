@@ -56,6 +56,7 @@ public class PlayerCtl : MonoBehaviour
 
     void Start()
     {
+        PlayerHealth.canvasObj = transform.Find("/Canvas").gameObject;
         lerpCurrent = Instantiate(Resources.Load("CamLerpPos").GameObject());
         lerpTarget = Instantiate(Resources.Load("CamLerpPos").GameObject());
         animator = animCtl.GetComponent<Animator>();

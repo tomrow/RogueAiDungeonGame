@@ -24,11 +24,15 @@ public class NPCTalker : MonoBehaviour
     void Update()
     {
         oldLt = lt; lt = PlayerHealth.thisPlayer.Atk3;
-        if (JustPressedSelect() && Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position)<2)
+        if (Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position)<2)
         {
-            GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); Instantiate(confirmMenuSfx);
-            TextBoxModal box = Instantiate(textBoxPrefab, Vector3.zero, Quaternion.identity, canvas.transform).GetComponent<TextBoxModal>();
-            box.text = text;
+            try { ButtonPromptSystem.promptObj.TalkPrompt(); } catch { }
+            if (JustPressedSelect())
+            {
+                GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets(); Instantiate(confirmMenuSfx);
+                TextBoxModal box = Instantiate(textBoxPrefab, Vector3.zero, Quaternion.identity, canvas.transform).GetComponent<TextBoxModal>();
+                box.text = text;
+            }
         }
     }
 }

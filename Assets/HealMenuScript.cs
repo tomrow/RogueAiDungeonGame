@@ -28,6 +28,7 @@ public class HealMenuScript : MonoBehaviour
         dialogueTextGrp.enabled = false;
         transform.localPosition = Vector3.zero;
         transform.localScale = (Vector3.up + Vector3.forward) * 2f;
+        PlayerHealth.canvasObj = transform.Find("/Canvas").gameObject;
     }
 
     // Update is called once per frame
@@ -49,7 +50,7 @@ public class HealMenuScript : MonoBehaviour
                 if (PlayerHealth.health >= PlayerHealth.maxHealth)
                 {
                     Instantiate(SoundEffectStorage.errorSfx);
-                    GameObject h = Instantiate(Resources.Load("AttackHudAnim").GameObject(), PlayerHealth.canvasObj.transform, false);
+                    GameObject h = Instantiate(Resources.Load("AttackHudAnim").GameObject(), PlayerHealth.canvasObj.transform);
                     h.GetComponent<AttackHudAnim>().subject = PlayerHealth.thisPlayer.transform; h.transform.position = Camera.main.WorldToScreenPoint(PlayerHealth.thisPlayer.transform.position);
                     h.GetComponent<Text>().text = "Your robot does not need repair"; mode = 2;break;
                 }

@@ -22,11 +22,15 @@ public class HubWorldConsole : MonoBehaviour
     void Update()
     {
         oldLt = lt; lt = PlayerHealth.thisPlayer.Atk3;
-        if (JustPressedSelect() && Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position) < 4)
+        if (Vector3.Distance(transform.position, PlayerHealth.thisPlayer.transform.position) < 4)
         {
-            GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets();
-            Instantiate(confirmMenuSfx);
-            Instantiate(shopFrontPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
+            try { ButtonPromptSystem.promptObj.GrabPrompt(); } catch { }
+            if(JustPressedSelect())
+            {   
+                GC.Collect(GC.MaxGeneration); Resources.UnloadUnusedAssets();
+                Instantiate(confirmMenuSfx);
+                Instantiate(shopFrontPrefab, Vector3.zero, Quaternion.identity, canvas.transform);
+            }
         }
     }
 }

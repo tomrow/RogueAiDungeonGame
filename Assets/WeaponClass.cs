@@ -33,9 +33,10 @@ public class WeaponClass : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         PlayerCtl p = other.gameObject.GetComponent<PlayerCtl>();
-        if ((p != null && p.weapon == null) && p.Atk3) //if the touching trigger is a player and weapon is not equipped
+        if ((p != null && p.weapon == null)) //if the touching trigger is a player and weapon is not equipped
         {
-            Collect();
+            try { ButtonPromptSystem.promptObj.GrabPrompt(); } catch { }
+            if (p.Atk3) { Collect(); }
         }
     }
     public void Collect()
