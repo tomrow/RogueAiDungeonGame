@@ -18,7 +18,6 @@ public class CharacterCreatorLogic : MonoBehaviour
     public List<Transform> categories; //head, arms, torso, legs
     int justpressedh;
     int mode;
-    float timer;
     public FadeOverlay fadeOverlay;
     //public RawImage fadeOverlay;
     //float alpha;
@@ -74,7 +73,6 @@ public class CharacterCreatorLogic : MonoBehaviour
             case 2:
                 fadeOverlay.sceneForTransfer = "hubWorld"; fadeOverlay.mode = FadeOverlay.Transitions.FadeOut;break;
             default:
-                timer = 0;
                 oldSelect = selectBtn; oldStart = startBtn; oldBack = backBtn;
                 oldDpad = dpadDir; oldHoriz = horizDir;
                 selectBtn = select.IsPressed(); startBtn = start.IsPressed(); backBtn = back.IsPressed();

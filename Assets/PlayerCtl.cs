@@ -189,7 +189,9 @@ public class PlayerCtl : MonoBehaviour
                     break;
                 case States.Leap:
                     animator.SetInteger("mode", 2);
-                    transform.position = Vector3.Lerp(leapOrigin, leapTarget, leapTimer) + (Vector3.up * Mathf.Sin(camLerpTimer * Mathf.PI)) ;
+                    transform.position = Vector3.Lerp(leapOrigin, leapTarget, leapTimer);
+                    transform.Translate(Vector3.up * Mathf.Sin(leapTimer * Mathf.PI) * 8);
+                    if(leapTimer >= 1) { state = States.Airborne; }
                     break;
                 case States.WalkTowardGoal:
                     animator.SetInteger("mode", 0);
