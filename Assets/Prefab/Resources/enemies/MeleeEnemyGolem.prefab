@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFundamentals
   hp: 25
   dead: 0
-  expAward: 0
+  expAward: 50
   KnockBackTimer: 0
   smoke: {fileID: 0}
 --- !u!114 &5249881881705770719

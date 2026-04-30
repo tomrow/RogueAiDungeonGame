@@ -170,13 +170,15 @@ public class EnemyAgentBrainWithAnimation : MonoBehaviour
         To damage the player do the following;
 
          */
+        Vector3 projectilePos = this.transform.position;
         if (MyAttackIsRanged)
         {
-            Instantiate(EnemyAttackBullet, this.transform.position, this.transform.rotation);
+            Instantiate(EnemyAttackBullet, projectilePos, this.transform.rotation);
         }
         else if ((Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist) && !MyAttackIsRanged)
         {
-            Instantiate(EnemyAttackMelee, this.transform.position, this.transform.rotation);
+            projectilePos += this.transform.forward * this.transform.localScale.x; //spawn punches in front of the enemy rather than inside it.
+            Instantiate(EnemyAttackMelee, projectilePos, this.transform.rotation);
         }
         return;
     }
