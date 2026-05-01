@@ -130,7 +130,7 @@ MonoBehaviour:
   weaponName: Blaster
   attackPower: 10
   playerCtl: {fileID: 0}
-  weaponCoolDownDuration: 0.2
+  weaponCoolDownDuration: 0.4
   bullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
   superBullet: {fileID: 9176913463659912956, guid: 47f0b9aa61abe184fa99d275b144c030, type: 3}
   firesfx: {fileID: 8360450570904253505, guid: 4877b5c18198b274381377c03d3a8cac, type: 3}

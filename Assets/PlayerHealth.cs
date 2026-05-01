@@ -156,13 +156,14 @@ public class PlayerHealth : MonoBehaviour
                 if (selection < 0) { selection = 0; }
                 if (selection < inventorySelectionViewPos) { inventorySelectionViewPos--; }
                 if (selection > inventorySelectionViewPos+3) { inventorySelectionViewPos++; }
-                cursorPos = selection + inventorySelectionViewPos; //set cursor graphic location
+                cursorPos = 0; //set cursor graphic location
                 //Debug.Log(newDir); Debug.Log("cursorPos "+ cursorPos.ToString() + " selection " + selection.ToString());
                 if (PlayerHealth.inventory.Count > 0)
                 { //populate menu text with list items
-                    MenuText = "";
-                    for (int i = 0; i < (PlayerHealth.inventory.Count < 4 ? PlayerHealth.inventory.Count : 4); i++)
-                    { MenuText += PlayerHealth.inventory[i].name + "\n"; }
+                    MenuText = PlayerHealth.inventory[selection].name + "\n" + (selection+1).ToString() + "/" + PlayerHealth.inventory.Count;
+                    /*for (int i = 0; i < (PlayerHealth.inventory.Count < 4 ? PlayerHealth.inventory.Count : 4); i++)
+                    { MenuText += PlayerHealth.inventory[i].name + "\n"; }*/
+
 
                 }
                 else { MenuMode = MenuModes.emptyInventoryMessage; } //show error when inventory is empty

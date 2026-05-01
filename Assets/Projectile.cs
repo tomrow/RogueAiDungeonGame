@@ -60,8 +60,8 @@ public class Projectile : MonoBehaviour
 
     private void DestroyOnHitWall()
     {
-        Debug.Log(rayout.point);
-        Debug.Log(rayout.transform.gameObject.name);
+        /*Debug.Log(rayout.point);
+        Debug.Log(rayout.transform.gameObject.name);*/
         //this.enabled = false;
         try 
         { 

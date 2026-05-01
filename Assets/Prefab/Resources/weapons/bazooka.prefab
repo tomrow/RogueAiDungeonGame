@@ -130,7 +130,7 @@ MonoBehaviour:
   weaponName: Launcher
   attackPower: 10
   playerCtl: {fileID: 0}
-  weaponCoolDownDuration: 0.2
+  weaponCoolDownDuration: 0.6
   bullet: {fileID: 9176913463659912956, guid: 32f3124295cda5c428710b839181407a, type: 3}
   superBullet: {fileID: 9176913463659912956, guid: 42539b480cb5a554385fc920f34bde80, type: 3}
   firesfx: {fileID: 3468487053185918500, guid: 451999d3876356146bd2b11311f98a68, type: 3}
