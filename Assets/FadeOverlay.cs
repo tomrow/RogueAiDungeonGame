@@ -39,6 +39,7 @@ public class FadeOverlay : MonoBehaviour
                 if (timer >= 1) { mode = Transitions.Exit; }
                 alpha = Mathf.Clamp01(timer);
                 fadeOverlay.color = new Color(0, 0, 0, alpha);
+                PlayerHealth.MenuMode = PlayerHealth.MenuModes.disabled;
                 break;
             case Transitions.Exit:
                 try { SceneManager.LoadScene(sceneForTransfer); } 

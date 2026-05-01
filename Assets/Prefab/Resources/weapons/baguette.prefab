@@ -218,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   weaponType: 3
   weaponName: Baguette
-  attackPower: 10
+  attackPower: 2
   playerCtl: {fileID: 0}
   weaponCoolDownDuration: 0.1
   bullet: {fileID: 9176913463659912956, guid: c7fd583d873d15743bd0e2ebf5f66950, type: 3}
