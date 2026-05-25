@@ -161,7 +161,7 @@ public class PlayerCtl : MonoBehaviour
                     break;
                 case States.HeavyAttack:
                     animator.SetInteger("mode", (int)state);
-                    if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, weapon.attackPower * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
+                    if (weapon != null) { AttackCreate(weapon.superBullet, weapon.superHitScan, (PlayerHealth.baseAtk + weapon.attackPower) * 2, weapon.weaponCoolDownDuration * 1.3f, weapon.superFireSfx, true); }
                     else { AttackCreate(defaultBullet, false, 20, 1, handCannonSuperSfx, true); }
                     PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                     transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
