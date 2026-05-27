@@ -11,7 +11,7 @@ public class TextBoxModal : MonoBehaviour
     Text dialogueTextGrp;
     public int mode = 0;
     float timer = 0;
-    public string[] text;
+    [TextArea(5,5)]public string[] text;
     InputAction ok;
     bool selectBtn, oldSelect;
     GameObject confirmMenuSfx;
