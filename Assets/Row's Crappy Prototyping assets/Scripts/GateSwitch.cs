@@ -46,6 +46,8 @@ public class GateSwitch : MonoBehaviour
             laserDoorReference = MyDoor.GetComponentInChildren<LaserDoor>(); // pull from the connected object's children to find the LaserDoor script.
             laserDoorReference.GateHasBeenOpened = true; //open the door.
             touched = true;
+            PlayerHealth.thisPlayer.state = PlayerCtl.States.PauseLookAtTarget;
+            PlayerHealth.thisPlayer.CamOrbitModeTarget = MyDoor.transform.Find("Collision&lasers");
         }
     }
 }

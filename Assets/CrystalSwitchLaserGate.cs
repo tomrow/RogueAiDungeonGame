@@ -6,6 +6,7 @@ public class CrystalSwitchLaserGate : MonoBehaviour
     [SerializeField, Tooltip("This is the switch's accompanying gate.")] GameObject MyDoor;
     LaserDoor laserDoorReference;
     CrystalDestroySwitchChecker[] crystals;
+    bool activated=false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,7 +22,7 @@ public class CrystalSwitchLaserGate : MonoBehaviour
             {
                 if (crystal.Check() == false) { count++; }
             }
-            if (count == crystals.Length) { Debug.Log("Puzzle Destroyed"); DoTrigger(); }
+            if (count == crystals.Length && !activated) { Debug.Log("Puzzle Destroyed"); DoTrigger(); activated = true; }
         
     }
 
@@ -29,5 +30,7 @@ public class CrystalSwitchLaserGate : MonoBehaviour
     {
         laserDoorReference = MyDoor.GetComponentInChildren<LaserDoor>(); // pull from the connected object's children to find the LaserDoor script.
         laserDoorReference.GateHasBeenOpened = true; //open the door.
+        PlayerHealth.thisPlayer.state = PlayerCtl.States.PauseLookAtTarget;
+        PlayerHealth.thisPlayer.CamOrbitModeTarget = MyDoor.transform.Find("Collision&lasers");
     }
 }

@@ -13,9 +13,11 @@ public class PlayerCtl : MonoBehaviour
     public GameObject animCtl;
     //Labels for player action states
     public enum States
-    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10, Leap=11, WalkTowardGoal=12, StandOnGoal=13 }
+    { NoLockOn = 0, LockedOn = 1, Airborne = 2, LightAttack = 3, HeavyAttack=4, SpecialAttack=5, Attacked=6, Skid=7, Knockback=8, KnockbackGetUp=9, Dead=10, Leap=11, WalkTowardGoal=12, StandOnGoal=13, PauseLookAtTarget=14 }
     public States state = States.NoLockOn;
-    public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer}
+    public enum CameraModes { Follow, Strafe, Static, FocusPlayerAndBoss, StickBehindPlayer, OrbitTarget }
+    public Transform CamOrbitModeTarget;
+    float orbitRotate;
     public CameraModes cameraState, cameraStateNext;
     float camLerpTimer;
     // Weapon type labels to identify which animations and attack boxes to use. This will be set in the parameter script for each weapon.
@@ -53,7 +55,8 @@ public class PlayerCtl : MonoBehaviour
     PlayerHealth health;
     public Vector3 leapOrigin, leapTarget;
     float leapTimer;
-
+    float invincibleTimer;
+    float invincibleBlinkTimer;
     void Start()
     {
         PlayerHealth.canvasObj = transform.Find("/Canvas").gameObject;
@@ -87,6 +90,10 @@ public class PlayerCtl : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        invincibleTimer = invincibleTimer > 0 ? invincibleTimer - Time.fixedDeltaTime : 0; //decrement the invincible timer so it doesnt last forever, and lower clamp it to zero
+        invincibleBlinkTimer = invincibleTimer > 0 ? Mathf.Repeat(invincibleBlinkTimer + Time.fixedDeltaTime * 6, 1) : 0; //increment flash timer when invincible, make it wraparound from 1 bcak to 0, and set it to 0 when not invincible
+        animCtl.transform.parent.localScale = invincibleBlinkTimer < 0.5 ? Vector3.one : Vector3.zero; // make player visuals flash
+
         upperBody = animator.GetNextAnimatorStateInfo(1);
         lowerBody = animator.GetNextAnimatorStateInfo(0);
         if (cameraState == cameraStateNext) { PositionCamera(cameraState, lerpCurrent); }
@@ -95,7 +102,8 @@ public class PlayerCtl : MonoBehaviour
         Camera.main.transform.rotation = Quaternion.Lerp(lerpCurrent.transform.rotation, lerpTarget.transform.rotation, camLerpTimer);
         if (cameraState != cameraStateNext)
         {
-            camLerpTimer += Time.fixedDeltaTime * 2;
+            if((cameraState != CameraModes.OrbitTarget)&&(cameraStateNext != CameraModes.OrbitTarget)){ camLerpTimer += Time.fixedDeltaTime * 2; }
+            else { camLerpTimer += Time.fixedDeltaTime * 1f; }
             if (camLerpTimer >= 1) { camLerpTimer = 0; cameraState = cameraStateNext; }
         }
         if (weapon != null) { animator.SetInteger("weaponType", (int)weapon.weaponType); }
@@ -134,6 +142,8 @@ public class PlayerCtl : MonoBehaviour
                     transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                     break;
                 case States.Airborne:
+                    invincibleTimer = invincibleTimer < Time.fixedDeltaTime ? invincibleTimer : Time.fixedDeltaTime;
+                    animCtl.transform.parent.localScale = Vector3.one; //cancel invincible flash during this animation
                     PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
                     if (lockOn && (lockOn != oldLockOnKeyState)) { checkLockOn(false); }
                     oldLockOnKeyState = lockOn;
@@ -167,11 +177,14 @@ public class PlayerCtl : MonoBehaviour
                     transform.localEulerAngles = Vector3.Scale(transform.localEulerAngles, Vector3.up); //fix tilt and roll before drawn to screen
                     break;
                 case States.Knockback:
+                    animCtl.transform.parent.localScale = Vector3.one; //cancel invincible flash during this animation
+                    invincibleTimer = 2;
                     animator.SetInteger("mode", (int)state);
                     knockBackTimer -= Time.fixedDeltaTime;
                     if (knockBackTimer < 0) { state = States.KnockbackGetUp; animator.SetTrigger("knockbackGetUp"); Debug.Log("Getting Up"); }
                     break;
                 case States.KnockbackGetUp:
+                    invincibleTimer = 4;
                     animator.SetInteger("mode", (int)state);
                     //(animatorStateInfo.IsName("knockBackGetUp") && animatorStateInfo.normalizedTime > 0.9f)
                     Debug.Log(lowerBody.ToString() + lowerBody.normalizedTime.ToString() + lowerBody.IsName("KnockBackGetUp").ToString());
@@ -188,23 +201,36 @@ public class PlayerCtl : MonoBehaviour
                     Destroy(gameObject);
                     break;
                 case States.Leap:
+                    invincibleTimer = 4;
+                    animCtl.transform.parent.localScale = Vector3.one; //cancel invincible flash during this animation
                     animator.SetInteger("mode", 2);
                     transform.position = Vector3.Lerp(leapOrigin, leapTarget, leapTimer);
                     transform.Translate(Vector3.up * Mathf.Sin(leapTimer * Mathf.PI) * 8);
                     if(leapTimer >= 1) { state = States.Airborne; }
                     break;
                 case States.WalkTowardGoal:
+                    invincibleTimer = 2;
+                    animCtl.transform.parent.localScale = Vector3.one; //cancel invincible flash during this animation
                     animator.SetInteger("mode", 0);
                     animator.SetFloat("speed", 1);
                     animator.SetFloat("animSpeed", 1);
-                cameraStateNext = CameraModes.Static;
-                break;
+                    cameraStateNext = CameraModes.Static;
+                    break;
                 case States.StandOnGoal:
+                    invincibleTimer = 2;
+                    animCtl.transform.parent.localScale = Vector3.one; //cancel invincible flash during this animation
                     animator.SetInteger("mode", 0);
                     animator.SetFloat("speed", 0);
                     animator.SetFloat("animSpeed", 1);
-                cameraStateNext = CameraModes.Static;
-                break;
+                    cameraStateNext = CameraModes.Static;
+                    break;
+                case States.PauseLookAtTarget:
+                    invincibleTimer = 4;
+                    animator.SetInteger("mode", 0);
+                    animator.SetFloat("speed", 0);
+                    animator.SetFloat("animSpeed", 1);
+                    cameraStateNext = CameraModes.OrbitTarget;
+                    break;
                 default:
                     throw new NotImplementedException();
                     break;
@@ -213,6 +239,7 @@ public class PlayerCtl : MonoBehaviour
 
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
     {
+        if (invincibleTimer > 0) { invincibleTimer++;  return; }
         Debug.Log("Ouch");
         if (PlayerHealth.health <= 0) { state = States.Dead; }
         else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; animator.SetTrigger("knockbackHeavy"); }
@@ -315,6 +342,14 @@ public class PlayerCtl : MonoBehaviour
                 obj.transform.rotation = transform.rotation;
                 obj.transform.position = transform.position + (obj.transform.forward * (0 - camDistFromPlayerSetting)*transform.localScale.z) + (obj.transform.up * (camDistFromPlayerSetting / 1)*transform.localScale.z);
                 if (lockedOnEnemy!=null) { obj.transform.LookAt(lockedOnEnemy.transform); } else { obj.transform.LookAt(transform); }
+                break;
+            case CameraModes.OrbitTarget:
+                orbitRotate += (Mathf.PI / 3) * Time.fixedDeltaTime;
+                obj.transform.position = CamOrbitModeTarget.position + (Vector3.up * (camDistFromPlayerSetting * 0.5f));
+                obj.transform.position += Vector3.left * (camDistFromPlayerSetting * Mathf.Sin(orbitRotate));
+                obj.transform.position += Vector3.forward * (camDistFromPlayerSetting * Mathf.Cos(orbitRotate));
+                obj.transform.LookAt(CamOrbitModeTarget);
+                if (orbitRotate >= Mathf.PI * 4) { state = States.NoLockOn; orbitRotate = 0; }
                 break;
         }
     }
