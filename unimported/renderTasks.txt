@@ -1,0 +1,3 @@
+render player targeting enemy with reticle
+render player attacking enemy with explosion
+render crystal
