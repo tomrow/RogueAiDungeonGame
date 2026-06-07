@@ -10,6 +10,7 @@ public class enemybulletscrip : MonoBehaviour
     [SerializeField] float MeleeAttackScaleVar;
     [SerializeField, Tooltip("Lifespan of projectile in Seconds.")] float ProjectileLifespan;
     [SerializeField, Tooltip("Scale Of Melee Attack. Currently Unused.")] float ProjectileScale;
+    bool queueDestructionOfProjectile = false;
     #endregion
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,6 +39,7 @@ public class enemybulletscrip : MonoBehaviour
             Destroy(this.gameObject);
         }
         ProjectileLifespan -= Time.deltaTime;
+        if (queueDestructionOfProjectile) { Destroy(this.gameObject); }
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -58,11 +60,11 @@ public class enemybulletscrip : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<PlayerCtl>())
             {
-                Destroy(this.gameObject);
+                queueDestructionOfProjectile = true; //only destroy once the next frame has begun, to allow the player to get hurt even if a melee attack hits the ground first
             }
             else if (collision.gameObject.GetComponent<Terrain>())
             {
-                Destroy(this.gameObject);
+                queueDestructionOfProjectile = true;
             }
         }
     }

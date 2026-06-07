@@ -41,7 +41,7 @@ public class GateSwitch : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerCtl>()) //So. If the player triggers the object...
+        if ((other.GetComponent<PlayerCtl>()!=null) && !touched) //So. If the player triggers the object...
         {
             laserDoorReference = MyDoor.GetComponentInChildren<LaserDoor>(); // pull from the connected object's children to find the LaserDoor script.
             laserDoorReference.GateHasBeenOpened = true; //open the door.

@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1359ebbe99fcb249ace01abbb326c29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damagenumber: 1
+  damagenumber: 4
   stuntimertemp: 1
   ProjectileSpeed: 3.12
   IsMelee: 0

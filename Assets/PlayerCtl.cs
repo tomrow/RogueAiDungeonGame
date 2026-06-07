@@ -57,6 +57,9 @@ public class PlayerCtl : MonoBehaviour
     float leapTimer;
     float invincibleTimer;
     float invincibleBlinkTimer;
+    Vector3 lastGoodGndPosition;
+    float lastGoodGndPositionTimer;
+    float fallTimer;
     void Start()
     {
         PlayerHealth.canvasObj = transform.Find("/Canvas").gameObject;
@@ -116,6 +119,7 @@ public class PlayerCtl : MonoBehaviour
             switch (state)
             {
                 case States.NoLockOn:
+                    SetGoodGndPos();
                     animator.SetInteger("mode", (int)state);
                     PlayerMovement(6, 2, 1f * (sprint ? runSpeed : walkSpeed), true); //double speed if sprint is held
                     if (lockOn && (oldLockOnKeyState == false)) { checkLockOn(false); }
@@ -129,6 +133,7 @@ public class PlayerCtl : MonoBehaviour
                     if (Atk2 && weaponCoolDown >= 0) { weaponCoolDown = 0 - Time.fixedDeltaTime; Debug.Log("Atk2 pressed"); state = States.HeavyAttack; weaponCoolDown = Mathf.Clamp(weaponCoolDown, -10, 0); animator.SetTrigger("battleStance"); }
                     break;
                 case States.LockedOn:
+                    SetGoodGndPos();
                     animator.SetInteger("mode", (int)state);
                     PlayerMovement(6, 2, 0.8f * (sprint ? runSpeed : walkSpeed), false); //double speed if sprint is held
                     if (lockedOnEnemy != null) { transform.LookAt(lockedOnEnemy.transform); } //if locked on, face enemy
@@ -152,6 +157,7 @@ public class PlayerCtl : MonoBehaviour
                     cameraStateNext = CameraModes.Follow;
                     airSpd += 0.5f;
                     transform.Translate(Vector3.up * (-1 * airSpd * Time.fixedDeltaTime));
+                    GoBackToGndAfterFallTooLong();
                     break;
                 case States.LightAttack:
                     animator.SetInteger("mode", (int)state);
@@ -237,6 +243,25 @@ public class PlayerCtl : MonoBehaviour
             }
     }
 
+    private void GoBackToGndAfterFallTooLong()
+    {
+        fallTimer += Time.fixedDeltaTime;
+        if (fallTimer > 2)
+        {
+            invincibleTimer = 0;
+            transform.position = lastGoodGndPosition;
+            DamageFrom(transform, PlayerHealth.health / 2, 2);
+            fallTimer = 0;
+            airSpd = 0;
+        }
+    }
+
+    private void SetGoodGndPos()
+    {
+        lastGoodGndPositionTimer += Time.fixedDeltaTime;
+        if(lastGoodGndPositionTimer > 5) { lastGoodGndPosition = transform.position; lastGoodGndPositionTimer = 0; }
+    }
+
     public void DamageFrom(Transform enemy, int damage, float KnockoutTime)
     {
         if (invincibleTimer > 0) { invincibleTimer++;  return; }
@@ -245,6 +270,7 @@ public class PlayerCtl : MonoBehaviour
         else if (state != States.Knockback && state != States.KnockbackGetUp) { state = States.Knockback; knockBackTimer = KnockoutTime; PlayerHealth.health -= damage; animator.SetTrigger("knockbackHeavy"); }
         
     }
+    
 
     void AttackCreate(GameObject bullet, bool hitscan, float power, float cooldownMax, GameObject firesfx, bool heavy)
     {

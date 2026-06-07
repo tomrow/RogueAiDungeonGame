@@ -177,7 +177,8 @@ public class EnemyAgentBrainWithAnimation : MonoBehaviour
         }
         else if ((Vector3.Distance(this.transform.position, PlayerHealth.thisPlayer.transform.position) <= MyComfortableDist) && !MyAttackIsRanged)
         {
-            projectilePos += this.transform.forward * this.transform.localScale.x; //spawn punches in front of the enemy rather than inside it.
+            projectilePos += (this.transform.forward * this.transform.localScale.x * 1.5f);// + (Vector3.down); //spawn punches in front of the enemy rather than inside it.
+            Debug.DrawLine(this.transform.position, projectilePos, Color.red, 1);
             Instantiate(EnemyAttackMelee, projectilePos, this.transform.rotation);
         }
         return;

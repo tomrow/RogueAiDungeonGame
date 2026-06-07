@@ -129,7 +129,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5000077
-  m_Speed: 1.17
+  m_Speed: 0.42
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -187,7 +187,7 @@ MonoBehaviour:
   agent: {fileID: 2736038551718929513}
   SightRange: 20
   MyAttackMaxDist: 2.3
-  MyComfortableDist: 0.64
+  MyComfortableDist: 1.15
   EnemyAttackBullet: {fileID: 5202910514285715138, guid: 56d6a1a33fbd1dc4fb3382ab9fcf46c9, type: 3}
   EnemyAttackMelee: {fileID: 5202910514285715138, guid: 56d6a1a33fbd1dc4fb3382ab9fcf46c9, type: 3}
   MyAttackIsRanged: 0

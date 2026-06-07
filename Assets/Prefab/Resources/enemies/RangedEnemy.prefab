@@ -468,7 +468,7 @@ MonoBehaviour:
   EnemyAttackBullet: {fileID: 5202910514285715138, guid: 980cf576f415efa4fa1b55bae932ebf0, type: 3}
   EnemyAttackMelee: {fileID: 5202910514285715138, guid: aa5884dcc1511894c871bae92399db1e, type: 3}
   MyAttackIsRanged: 1
-  TimeToAttack: 1.29
+  TimeToAttack: 3.01
   isSpooky: 0
   SpookSpeed: 0
   SpookObj: {fileID: 0}
