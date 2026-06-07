@@ -31,7 +31,7 @@ public class GateSwitch : MonoBehaviour
 
         try
         {
-            if (touched)
+            if ((touched) && (PlayerHealth.thisPlayer.state != PlayerCtl.States.PauseLookAtTarget) && (PlayerHealth.thisPlayer.cameraState == PlayerHealth.thisPlayer.cameraStateNext))
             {
                 orb.localScale = Vector3.Lerp(orbInitScale, Vector3.zero, timer); //when touched, the floating orb should start shrinking until it is nothing
                 timer = Mathf.Clamp01(timer+Time.deltaTime); //duration of shrink animation should not exceed 1 as it will invert and become visible again
