@@ -11,11 +11,15 @@ public class FadeOverlay : MonoBehaviour
     float alpha;
     Color transparent = new Color(0, 0, 0, 0);
     public string sceneForTransfer = "";
+    [Tooltip("Amount of time to wait until scene is automatically changed. Set to a negative number to disable this function")] public float automaticallyLeaveTimer = 900;
+    bool enableAutoLeave;
+    public string autoLeaveLocation = "DemoEndScreen";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timer = 0;
         fadeOverlay = GetComponent<RawImage>();
+        enableAutoLeave = automaticallyLeaveTimer >= 0;
     }
     public void FadeOut(){ timer = 0; mode = Transitions.FadeOut; }
     public void FadeIn(){ timer = 0; mode = Transitions.FadeIn; }
@@ -25,6 +29,12 @@ public class FadeOverlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (enableAutoLeave) 
+        { 
+            automaticallyLeaveTimer -= Time.deltaTime;
+            if (automaticallyLeaveTimer <= 0) { FadeOutToNewScene(autoLeaveLocation == "" ? sceneForTransfer : autoLeaveLocation); enableAutoLeave = false; }
+        }
         switch (mode)
         {
             case Transitions.FadeIn: //one second fade in

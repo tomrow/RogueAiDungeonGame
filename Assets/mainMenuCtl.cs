@@ -19,6 +19,7 @@ public class mainMenuCtl : MonoBehaviour
     InputAction cancel;
     [SerializeField]int dpadDir;
     int oldDpadDir;
+    public bool ResetGameProgressOnTitleScreen;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +27,16 @@ public class mainMenuCtl : MonoBehaviour
         confirm = InputSystem.actions.FindAction("Submit");
         cancel = InputSystem.actions.FindAction("Cancel");
         CursorOver(menuItems[menuSelection]);
+        if (ResetGameProgressOnTitleScreen)
+        {
+            Destroy(GameObject.Find("CharacterStatus"));
+            PlayerHealth.health = 40; PlayerHealth.stamina = 10; PlayerHealth.money = 0; PlayerHealth.level = 1;
+            PlayerHealth.baseAtk = 10; PlayerHealth.exp = 0; PlayerHealth.maxHealth = 40; PlayerHealth.maxStamina = 10;
+            PlayerHealth.body = new int[4];
+            PlayerHealth.body[0] = 1; PlayerHealth.body[1] = 1; PlayerHealth.body[2] = 1; PlayerHealth.body[3] = 1;
+            PlayerHealth.inventory.Clear();
+            PlayerHealth.hubTut = false; PlayerHealth.levTut = false;
+        }
     }
 
     // Update is called once per frame
@@ -84,13 +95,13 @@ public class mainMenuCtl : MonoBehaviour
 
     private void gotoSettings()
     {
-        try { SceneManager.LoadScene("testLevel"); }
-        catch {
+        //try { SceneManager.LoadScene("testLevel"); }
+        //catch {
             TextBoxModal t = Instantiate(Resources.Load("NpcDialogueBox").GameObject(), GameObject.Find("Canvas").transform).GetComponent<TextBoxModal>();
             t.stopAutoAdvanceOnThisPage = 1;
             t.autoAdvanceText = true;
             t.advanceInterval = 0.6f;
             t.text = errorText;
-        }
+        //}
     }
 }

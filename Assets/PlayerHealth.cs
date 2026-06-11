@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
     public static GameObject canvasObj;
     public static int health=40, stamina=10, money=0, level=1;
     public static int baseAtk=10, exp=0, maxHealth=40, maxStamina=10;
+    public static bool hubTut = false, levTut = false;
     //GameObject openMenuSfx,selectMenuSfx,confirmMenuSfx, backMenuSfx;
     GameObject levelUpEffect;
     

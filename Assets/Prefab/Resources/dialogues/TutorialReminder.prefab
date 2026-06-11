@@ -93,6 +93,8 @@ MonoBehaviour:
   autoAdvanceText: 0
   advanceInterval: 0
   stopAutoAdvanceOnThisPage: 0
+  hubTut: 0
+  levTut: 1
 --- !u!1 &7995538371322391118
 GameObject:
   m_ObjectHideFlags: 0

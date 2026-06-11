@@ -50,7 +50,7 @@ public class SelectMapMenuScript : MonoBehaviour
     {
         AddShopItem("tutorialWorld", "Tutorial World\nLearn how to play here.");
         AddShopItem("MeshVerTemplate", "Caves 1\nThe first floor of a mine for rare power crystals. The unknown energy has made the rocks mobile and has attracted hostile creatures. ");
-        AddShopItem("titlescreen", "Return to Title Screen ");
+        AddShopItem("DemoEndScreen", "Quit game.");
     }
 
 

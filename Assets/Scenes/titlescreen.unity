@@ -358,6 +358,7 @@ MonoBehaviour:
   - {fileID: 10618122}
   cursorObj: {fileID: 147450318}
   dpadDir: 0
+  ResetGameProgressOnTitleScreen: 1
 --- !u!4 &470368970
 Transform:
   m_ObjectHideFlags: 0

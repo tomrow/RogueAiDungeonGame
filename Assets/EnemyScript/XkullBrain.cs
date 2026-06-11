@@ -6,6 +6,7 @@ public class XkullBrain : MonoBehaviour
     public Vector3 translatePerSecond;
     public float followPlayerSpeed;
     Vector3 dirToPlayer;
+    
     RaycastHit rayout;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,6 +39,9 @@ public class XkullBrain : MonoBehaviour
         }
         transform.Translate(translatePerSecond*Time.deltaTime);
         transform.position += dirToPlayer * followPlayerSpeed * Time.deltaTime;
+
+        
+
     }
     private void OnTriggerEnter(Collider other)
     {

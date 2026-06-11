@@ -20,6 +20,7 @@ public class TextBoxModal : MonoBehaviour
     public float advanceInterval;
     float advTimer = 0;
     public int stopAutoAdvanceOnThisPage;
+    public bool hubTut, levTut;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +34,11 @@ public class TextBoxModal : MonoBehaviour
         transform.position = Vector3.zero;
         transform.localPosition = Vector3.zero;
         //GetComponent<RectTransform>().position = Vector3.zero;
+        if ((hubTut && PlayerHealth.hubTut)) { Destroy(gameObject); PlayerInputAggregator.inputEnabled = true; }
+        if ((levTut && PlayerHealth.levTut)) { Destroy(gameObject); PlayerInputAggregator.inputEnabled = true; }
+        if ((hubTut && !PlayerHealth.hubTut)) { PlayerHealth.hubTut = true; }
+        if ((levTut && !PlayerHealth.levTut)) { PlayerHealth.levTut = true; }
+
     }
     private bool JustPressedSelect()
     {
